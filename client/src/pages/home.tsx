@@ -149,11 +149,9 @@ export default function Home() {
       }
     };
     
-    // Try to start real audio after a short delay to ensure element is ready
-    setTimeout(startRealAudio, 100);
-    setTimeout(startRealAudio, 500);
-    setTimeout(startRealAudio, 1000);
-    setTimeout(startRealAudio, 2000);
+    // Note: Modern browsers block autoplay without user interaction
+    // Audio will start on first user interaction (click, scroll, etc.)
+    console.log('Audio system ready - waiting for user interaction to start');
     
     return () => {
       if (f1AudioEngine.current) {
@@ -245,6 +243,7 @@ export default function Home() {
       {/* F1 Racing Audio */}
       <audio
         ref={audioRef}
+        src="/attached_assets/13464_1459539280_1753112009861.mp3"
         loop
         preload="auto"
         className="hidden"

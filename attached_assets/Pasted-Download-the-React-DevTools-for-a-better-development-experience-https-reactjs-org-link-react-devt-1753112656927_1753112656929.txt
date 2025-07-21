@@ -1,0 +1,136 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+home.tsx:117 Initializing F1 Audio System...
+f1Audio.ts:9 Initializing F1 Heavy Metal Audio Engine...
+f1Audio.ts:19 F1 Heavy Metal Audio Context initialized successfully
+f1Audio.ts:20 Audio Context state: suspended
+home.tsx:270 F1 audio loading started...
+home.tsx:315 F1 racing video started loading
+home.tsx:273 F1 audio data loaded successfully
+home.tsx:262 F1 racing audio ready to play
+home.tsx:309 F1 racing video loaded successfully from: https://e909811c-c35d-49ea-b8fc-9dc82e493639-00-2qxkuzvwk8ww7.spock.replit.dev/attached_assets/5cf22b7b7ee772d0a22fefbd4da43ab3-720p-preview_1753110183979.mp4
+home.tsx:312 F1 racing video can start playing
+home.tsx:342 Backup racing video loaded successfully
+home.tsx:123 Attempting to start real F1 audio...
+home.tsx:124 Audio element readyState: 4
+home.tsx:125 Audio element src: 
+home.tsx:137 ❌ Real F1 audio blocked: play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD
+home.tsx:138 Falling back to synthetic audio...
+f1Audio.ts:203 🔥 STARTING F1 HEAVY METAL AUDIO ENGINE 🔥
+f1Audio.ts:204 AudioContext state: suspended
+f1Audio.ts:212 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+start @ f1Audio.ts:212
+(anonymous) @ home.tsx:141
+Promise.catch
+startRealAudio @ home.tsx:136
+setTimeout
+(anonymous) @ home.tsx:153
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=316b2477:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=316b2477:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=316b2477:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=316b2477:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=316b2477:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=316b2477:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=316b2477:19447
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=316b2477:18868
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=316b2477:9119
+commitRootImpl @ chunk-RPCDYKBN.js?v=316b2477:19432
+commitRoot @ chunk-RPCDYKBN.js?v=316b2477:19277
+finishConcurrentRender @ chunk-RPCDYKBN.js?v=316b2477:18805
+performConcurrentWorkOnRoot @ chunk-RPCDYKBN.js?v=316b2477:18718
+workLoop @ chunk-RPCDYKBN.js?v=316b2477:197
+flushWork @ chunk-RPCDYKBN.js?v=316b2477:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=316b2477:384Understand this warning
+home.tsx:262 F1 racing audio ready to play
+home.tsx:123 Attempting to start real F1 audio...
+home.tsx:124 Audio element readyState: 4
+home.tsx:125 Audio element src: 
+home.tsx:137 ❌ Real F1 audio blocked: play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD
+home.tsx:138 Falling back to synthetic audio...
+f1Audio.ts:203 🔥 STARTING F1 HEAVY METAL AUDIO ENGINE 🔥
+f1Audio.ts:204 AudioContext state: suspended
+f1Audio.ts:212 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+start @ f1Audio.ts:212
+(anonymous) @ home.tsx:141
+Promise.catch
+startRealAudio @ home.tsx:136
+setTimeout
+(anonymous) @ home.tsx:154
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=316b2477:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=316b2477:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=316b2477:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=316b2477:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=316b2477:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=316b2477:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=316b2477:19447
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=316b2477:18868
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=316b2477:9119
+commitRootImpl @ chunk-RPCDYKBN.js?v=316b2477:19432
+commitRoot @ chunk-RPCDYKBN.js?v=316b2477:19277
+finishConcurrentRender @ chunk-RPCDYKBN.js?v=316b2477:18805
+performConcurrentWorkOnRoot @ chunk-RPCDYKBN.js?v=316b2477:18718
+workLoop @ chunk-RPCDYKBN.js?v=316b2477:197
+flushWork @ chunk-RPCDYKBN.js?v=316b2477:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=316b2477:384Understand this warning
+home.tsx:262 F1 racing audio ready to play
+home.tsx:123 Attempting to start real F1 audio...
+home.tsx:124 Audio element readyState: 4
+home.tsx:125 Audio element src: 
+home.tsx:137 ❌ Real F1 audio blocked: play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD
+home.tsx:138 Falling back to synthetic audio...
+f1Audio.ts:203 🔥 STARTING F1 HEAVY METAL AUDIO ENGINE 🔥
+f1Audio.ts:204 AudioContext state: suspended
+f1Audio.ts:212 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+start @ f1Audio.ts:212
+(anonymous) @ home.tsx:141
+Promise.catch
+startRealAudio @ home.tsx:136
+setTimeout
+(anonymous) @ home.tsx:155
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=316b2477:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=316b2477:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=316b2477:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=316b2477:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=316b2477:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=316b2477:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=316b2477:19447
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=316b2477:18868
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=316b2477:9119
+commitRootImpl @ chunk-RPCDYKBN.js?v=316b2477:19432
+commitRoot @ chunk-RPCDYKBN.js?v=316b2477:19277
+finishConcurrentRender @ chunk-RPCDYKBN.js?v=316b2477:18805
+performConcurrentWorkOnRoot @ chunk-RPCDYKBN.js?v=316b2477:18718
+workLoop @ chunk-RPCDYKBN.js?v=316b2477:197
+flushWork @ chunk-RPCDYKBN.js?v=316b2477:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=316b2477:384Understand this warning
+home.tsx:262 F1 racing audio ready to play
+home.tsx:123 Attempting to start real F1 audio...
+home.tsx:124 Audio element readyState: 4
+home.tsx:125 Audio element src: 
+home.tsx:137 ❌ Real F1 audio blocked: play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD
+home.tsx:138 Falling back to synthetic audio...
+f1Audio.ts:203 🔥 STARTING F1 HEAVY METAL AUDIO ENGINE 🔥
+f1Audio.ts:204 AudioContext state: suspended
+f1Audio.ts:212 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+start @ f1Audio.ts:212
+(anonymous) @ home.tsx:141
+Promise.catch
+startRealAudio @ home.tsx:136
+setTimeout
+(anonymous) @ home.tsx:156
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=316b2477:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=316b2477:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=316b2477:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=316b2477:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=316b2477:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=316b2477:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=316b2477:19447
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=316b2477:18868
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=316b2477:9119
+commitRootImpl @ chunk-RPCDYKBN.js?v=316b2477:19432
+commitRoot @ chunk-RPCDYKBN.js?v=316b2477:19277
+finishConcurrentRender @ chunk-RPCDYKBN.js?v=316b2477:18805
+performConcurrentWorkOnRoot @ chunk-RPCDYKBN.js?v=316b2477:18718
+workLoop @ chunk-RPCDYKBN.js?v=316b2477:197
+flushWork @ chunk-RPCDYKBN.js?v=316b2477:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=316b2477:384Understand this warning
+home.tsx:262 F1 racing audio ready to play
