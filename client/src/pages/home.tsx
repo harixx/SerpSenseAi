@@ -437,7 +437,7 @@ export default function Home() {
                   <div className="w-16 h-16 bg-crimson/20 rounded-lg flex items-center justify-center mb-6">
                     <Users className="text-crimson text-2xl" />
                   </div>
-                  <h3 className="font-playfair text-2xl font-semibold text-white mb-4">Digital Agencies</h3>
+                  <h3 className="font-playfair text-2xl font-semibold mb-4 text-center text-[#e7b008]">Digital Agencies</h3>
                   <p className="mb-6 text-[#e5e7eb]">
                     "Client presentations transformed overnight. We now deliver concrete intelligence about why their competitors dominate specific niches—and how to beat them."
                   </p>
