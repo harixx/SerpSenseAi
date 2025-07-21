@@ -111,36 +111,13 @@ export default function Home() {
     <div className="min-h-screen text-white overflow-x-hidden relative">
       {/* Fixed F1 Video Background */}
       <div className="fixed inset-0 z-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          className="w-full h-full object-cover"
-          style={{ 
-            backgroundAttachment: 'fixed',
-            mixBlendMode: 'normal'
-          }}
-          onError={(e) => {
-            console.log('Video failed to load, using fallback image');
-            e.currentTarget.style.display = 'none';
-            const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-            if (fallback) fallback.style.display = 'block';
-          }}
-        >
-          {/* High-quality F1 racing videos from Pixabay */}
-          <source src="https://cdn.pixabay.com/video/2023/04/24/159092-821073534_large.mp4" type="video/mp4" />
-          <source src="https://cdn.pixabay.com/video/2022/12/09/142516-781516854_large.mp4" type="video/mp4" />
-          <source src="https://cdn.pixabay.com/video/2023/07/14/171466-844264018_large.mp4" type="video/mp4" />
-        </video>
-        {/* Fallback Ferrari image */}
-        <img 
-          src="https://cdn.bhdw.net/im/ferrari-f1-75-formula-1-2022-new-car-front-view-red-91089_w635.webp" 
-          alt="Ferrari F1 Background"
-          className="w-full h-full object-cover"
-          style={{ display: 'none' }}
-        />
+        {/* Dynamic F1 Racing Background Animation */}
+        <div className="w-full h-full animated-f1-background">
+          <div className="f1-track-lines"></div>
+          <div className="f1-speed-blur"></div>
+          <div className="f1-racing-cars"></div>
+          <div className="f1-track-gradient"></div>
+        </div>
         {/* Professional dark overlay for readability */}
         <div 
           className="absolute inset-0 w-full h-full"
