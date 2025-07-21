@@ -361,7 +361,7 @@ export default function Home() {
                       </div>
                       <div>
                         <h4 className="font-playfair text-xl font-semibold text-white mb-2">Strategic Recommendations</h4>
-                        <p className="text-platinum/70">Receive actionable, intelligence-driven tactics that help you outperform—not just optimize.</p>
+                        <p className="text-[#e7b008]">Receive actionable, intelligence-driven tactics that help you outperform—not just optimize.</p>
                       </div>
                     </div>
                   </CardContent>
