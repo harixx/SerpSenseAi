@@ -192,6 +192,8 @@ export default function Home() {
       </nav>
       {/* Hero Section */}
       <section className="min-h-screen hero-gradient flex items-center justify-center relative overflow-hidden z-10">
+        {/* Ferrari blend overlay for hero section */}
+        <div className="absolute inset-0 bg-black/40 mix-blend-multiply z-0"></div>
         {/* Hero-specific animated elements */}
         <motion.div
           style={{ y: y1, scale: scale1 }}
@@ -221,7 +223,7 @@ export default function Home() {
           }}
         />
         
-        <div className="container mx-auto px-6 text-center relative z-10">
+        <div className="container mx-auto px-6 text-center relative z-20">
           <motion.div
             initial="initial"
             animate="animate"
