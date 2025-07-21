@@ -108,7 +108,7 @@ export default function Home() {
   const spotsRemaining = Math.max(0, 100 - (waitlistCount?.count || 0));
 
   return (
-    <div className="min-h-screen text-platinum overflow-x-hidden relative">
+    <div className="min-h-screen text-white overflow-x-hidden relative">
       {/* Fixed F1 Video Background */}
       <div className="fixed inset-0 z-0">
         <video
@@ -141,23 +141,21 @@ export default function Home() {
           className="w-full h-full object-cover"
           style={{ display: 'none' }}
         />
-        {/* Video overlay with blend mode */}
-        <div 
-          className="absolute inset-0 w-full h-full video-overlay"
-          style={{
-            background: 'linear-gradient(hsl(0, 84%, 60%), transparent 70%)',
-            backgroundSize: '100% 100%',
-            mixBlendMode: 'difference',
-            backgroundAttachment: 'fixed'
-          }}
-        ></div>
-        
-        {/* Additional performance overlay */}
+        {/* Professional dark overlay for readability */}
         <div 
           className="absolute inset-0 w-full h-full"
           style={{
-            background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, transparent 50%, rgba(185, 28, 28, 0.05) 100%)',
-            mixBlendMode: 'overlay',
+            background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.8) 100%)',
+            backdropFilter: 'blur(1px)',
+            pointerEvents: 'none'
+          }}
+        ></div>
+        
+        {/* Subtle crimson accent overlay */}
+        <div 
+          className="absolute inset-0 w-full h-full"
+          style={{
+            background: 'radial-gradient(ellipse at center bottom, rgba(220, 38, 38, 0.08) 0%, transparent 60%)',
             pointerEvents: 'none'
           }}
         ></div>
@@ -165,36 +163,36 @@ export default function Home() {
 
       {/* Floating Background Elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        {/* Large floating shapes */}
+        {/* Elegant floating shapes with professional colors */}
         <motion.div
           style={{ y: y1, rotate: rotate1, scale: scale1, opacity: opacity1 }}
-          className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-crimson/20 to-ruby/10 rounded-full blur-2xl"
+          className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-crimson/10 to-white/5 rounded-full blur-3xl"
         />
         <motion.div
           style={{ y: y2, rotate: rotate2, opacity: opacity2 }}
-          className="absolute top-1/4 right-10 w-80 h-80 bg-gradient-to-tl from-gold/15 to-crimson/10 rounded-full blur-3xl"
+          className="absolute top-1/4 right-10 w-80 h-80 bg-gradient-to-tl from-white/8 to-crimson/6 rounded-full blur-3xl"
         />
         <motion.div
           style={{ y: y3, opacity: opacity1 }}
-          className="absolute bottom-1/3 left-1/4 w-64 h-64 bg-gradient-to-tr from-ruby/20 to-gold/15 rounded-full blur-2xl"
+          className="absolute bottom-1/3 left-1/4 w-64 h-64 bg-gradient-to-tr from-crimson/8 to-white/4 rounded-full blur-2xl"
         />
         <motion.div
           style={{ y: y4, rotate: rotate1, opacity: opacity2 }}
-          className="absolute bottom-10 right-1/4 w-72 h-72 bg-gradient-to-bl from-crimson/15 to-obsidian/20 rounded-full blur-3xl"
+          className="absolute bottom-10 right-1/4 w-72 h-72 bg-gradient-to-bl from-white/6 to-crimson/4 rounded-full blur-3xl"
         />
         
-        {/* Geometric floating elements */}
+        {/* Refined geometric elements */}
         <motion.div
           style={{ y: y1, rotate: rotate2 }}
-          className="absolute top-1/2 left-1/2 w-32 h-32 border border-crimson/30 rotate-45 opacity-20 animate-float-slow"
+          className="absolute top-1/2 left-1/2 w-32 h-32 border border-white/10 rotate-45 opacity-15 animate-float-slow"
         />
         <motion.div
           style={{ y: y3, rotate: rotate1 }}
-          className="absolute top-1/3 right-1/3 w-24 h-24 border border-gold/40 rounded-full opacity-25 animate-float-medium"
+          className="absolute top-1/3 right-1/3 w-24 h-24 border border-crimson/20 rounded-full opacity-20 animate-float-medium"
         />
         <motion.div
           style={{ y: y2, rotate: rotate2 }}
-          className="absolute bottom-1/2 left-1/3 w-16 h-16 bg-ruby/20 rotate-45 opacity-30 animate-float-fast"
+          className="absolute bottom-1/2 left-1/3 w-16 h-16 bg-white/10 rotate-45 opacity-15 animate-float-fast"
         />
         
         {/* Floating particles */}
@@ -213,7 +211,7 @@ export default function Home() {
                 left: `${(i * 8.33) % 100}%`,
                 top: `${(i * 12) % 100}%`,
               }}
-              className={`absolute w-2 h-2 bg-crimson/40 rounded-full blur-sm`}
+              className={`absolute w-2 h-2 bg-white/30 rounded-full blur-sm`}
               animate={{
                 scale: [1, 1.5, 1],
                 opacity: [0.2, 0.6, 0.2]
@@ -246,13 +244,13 @@ export default function Home() {
       </nav>
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden z-10">
-        {/* Hero-specific animated elements */}
+        {/* Professional hero animated elements */}
         <motion.div
           style={{ y: y1, scale: scale1 }}
-          className="absolute top-20 left-20 w-72 h-72 bg-crimson rounded-full blur-3xl opacity-15"
+          className="absolute top-20 left-20 w-72 h-72 bg-white/5 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.1, 1],
-            opacity: [0.1, 0.2, 0.1]
+            opacity: [0.05, 0.1, 0.05]
           }}
           transition={{
             duration: 8,
@@ -262,10 +260,10 @@ export default function Home() {
         />
         <motion.div
           style={{ y: y2, rotate: rotate1 }}
-          className="absolute bottom-20 right-20 w-96 h-96 bg-ruby rounded-full blur-3xl opacity-15"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-crimson/8 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.15, 1],
-            opacity: [0.1, 0.25, 0.1]
+            opacity: [0.05, 0.12, 0.05]
           }}
           transition={{
             duration: 10,
@@ -294,7 +292,7 @@ export default function Home() {
             
             <motion.p 
               variants={fadeInUp}
-              className="text-xl lg:text-2xl text-platinum/80 mb-8 max-w-4xl mx-auto font-light leading-relaxed"
+              className="text-xl lg:text-2xl text-white/90 mb-8 max-w-4xl mx-auto font-light leading-relaxed"
             >
               The first AI-powered SERP intelligence platform that reveals{" "}
               <em className="text-crimson font-medium">why</em> pages rank—not just who ranks.
@@ -303,7 +301,7 @@ export default function Home() {
             
             <motion.div variants={fadeInUp} className="glassmorphism p-8 rounded-2xl max-w-lg mx-auto mb-8">
               <h3 className="font-playfair text-2xl font-semibold mb-4 text-white">Join the Elite Waitlist</h3>
-              <p className="text-platinum/70 mb-6">Limited access. Strategic advantage.</p>
+              <p className="text-white/70 mb-6">Limited access. Strategic advantage.</p>
               
               <Form {...heroForm}>
                 <form onSubmit={heroForm.handleSubmit(onSubmit)} className="space-y-4" id="hero-form">
@@ -317,7 +315,7 @@ export default function Home() {
                             {...field}
                             type="email"
                             placeholder="Enter your professional email"
-                            className="w-full px-4 py-3 bg-obsidian/50 border border-crimson/30 rounded-lg text-white placeholder-platinum/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20"
+                            className="w-full px-4 py-3 bg-black/30 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20"
                           />
                         </FormControl>
                         <FormMessage className="text-crimson" />

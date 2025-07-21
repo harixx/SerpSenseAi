@@ -68,18 +68,21 @@
 
   html {
     height: 200vh; /* Creates vertical scroll for effect */
-    background-color: hsl(0, 84%, 60%); /* Crimson red base */
+    background-color: #0a0a0a; /* Deep black base */
     overflow-x: hidden;
   }
 
   body {
     height: 100%;
-    background-image: linear-gradient(hsl(0, 84%, 60%), transparent 70%);
-    background-size: 100% 100%;
-    mix-blend-mode: difference;
+    background: linear-gradient(
+      180deg,
+      rgba(10, 10, 10, 0.95) 0%,
+      rgba(20, 20, 20, 0.9) 40%,
+      rgba(10, 10, 10, 0.95) 100%
+    );
     @apply font-sans antialiased;
     font-family: 'Inter', sans-serif;
-    color: #e5e7eb;
+    color: #ffffff;
   }
   
   .font-playfair {
@@ -149,9 +152,10 @@
   }
   
   .glassmorphism {
-    background: rgba(28, 28, 28, 0.8);
+    background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(220, 38, 38, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   }
   
   .hero-gradient {
