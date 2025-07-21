@@ -263,7 +263,7 @@ export default function Home() {
                       <div className="grid grid-cols-2 gap-2 text-xs">
                         <div className="flex items-center">
                           <Brain className="w-3 h-3 text-gold mr-1" />
-                          <span>Authoritative Tone</span>
+                          <span className="text-[#e5e7eb]">Authoritative Tone</span>
                         </div>
                         <div className="flex items-center">
                           <Globe className="w-3 h-3 text-gold mr-1" />
@@ -271,7 +271,7 @@ export default function Home() {
                         </div>
                         <div className="flex items-center">
                           <BarChart3 className="w-3 h-3 text-gold mr-1" />
-                          <span>High Depth Score</span>
+                          <span className="text-[#e5e7eb]">High Depth Score</span>
                         </div>
                         <div className="flex items-center">
                           <Zap className="w-3 h-3 text-gold mr-1" />
