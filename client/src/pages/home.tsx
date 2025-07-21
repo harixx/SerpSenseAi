@@ -557,7 +557,7 @@ export default function Home() {
                     />
                     <div>
                       <h4 className="text-white font-semibold">Elena Vasquez</h4>
-                      <p className="text-platinum/60 text-sm">Content Strategy Lead</p>
+                      <p className="text-sm text-[#e7b008]">Content Strategy Lead</p>
                     </div>
                   </div>
                   <blockquote className="text-platinum/80 italic mb-4">
