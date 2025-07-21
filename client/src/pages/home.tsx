@@ -52,7 +52,7 @@ export default function Home() {
   const y1 = useTransform(scrollY, [0, 300], [0, 50]);
   const y2 = useTransform(scrollY, [0, 300], [0, -50]);
 
-  const { data: waitlistCount } = useQuery({
+  const { data: waitlistCount } = useQuery<{ count: number }>({
     queryKey: ["/api/waitlist/count"],
     refetchInterval: 30000,
   });
