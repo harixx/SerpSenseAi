@@ -420,7 +420,7 @@ export default function Home() {
                     <Building className="text-crimson text-2xl" />
                   </div>
                   <h3 className="font-playfair text-2xl font-semibold text-white mb-4">Enterprise SEO Leads</h3>
-                  <p className="text-platinum/70 mb-6">
+                  <p className="mb-6 text-[#e5e7eb]">
                     "Instead of guessing why competitors rank, I can reverse-engineer their exact content strategy—tone, depth, UX patterns—and build superior alternatives."
                   </p>
                   <div className="flex items-center justify-between text-sm">
@@ -560,7 +560,7 @@ export default function Home() {
                       <p className="text-sm text-[#e7b008]">Content Strategy Lead</p>
                     </div>
                   </div>
-                  <blockquote className="text-platinum/80 italic mb-4">
+                  <blockquote className="italic mb-4 text-[#e5e7eb]">
                     "Finally, a tool that explains the 'why' behind rankings. Our content team now creates with surgical precision instead of educated guesses."
                   </blockquote>
                   <div className="flex items-center text-gold text-sm">
