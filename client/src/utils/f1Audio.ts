@@ -200,23 +200,26 @@ export class F1AudioEngine {
       return;
     }
     
-    console.log('F1 audio engine starting...');
+    console.log('🔥 STARTING F1 HEAVY METAL AUDIO ENGINE 🔥');
     console.log('AudioContext state:', this.audioContext?.state);
     
-    // Always try to resume context first
-    if (this.audioContext) {
-      this.audioContext.resume().then(() => {
-        console.log('Audio context resumed/running successfully');
-        this.isPlaying = true;
-        this.createF1EngineSound();
-        console.log('🤘 Heavy metal F1 synthetic audio engine started! 🤘');
-      }).catch(e => {
-        console.error('Failed to resume audio context:', e);
-        // Try to start anyway
-        this.isPlaying = true;
-        this.createF1EngineSound();
-      });
+    if (!this.audioContext || !this.gainNode) {
+      console.error('Audio context or gain node missing!');
+      return;
     }
+    
+    // Force audio context to start
+    this.audioContext.resume().then(() => {
+      console.log('✅ Audio context running - creating sounds...');
+      this.isPlaying = true;
+      this.createF1EngineSound();
+      console.log('🤘 HEAVY METAL F1 AUDIO IS NOW PLAYING! 🤘');
+    }).catch(e => {
+      console.log('Context resume failed, starting anyway:', e);
+      this.isPlaying = true;
+      this.createF1EngineSound();
+      console.log('🤘 HEAVY METAL F1 AUDIO STARTED (FALLBACK)! 🤘');
+    });
   }
 
   public stop() {

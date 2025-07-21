@@ -112,72 +112,65 @@ export default function Home() {
 
   const spotsRemaining = Math.max(0, 100 - (waitlistCount?.count || 0));
 
-  // Initialize F1 Audio Engine with Auto-Start
+  // Initialize F1 Audio Engine with Immediate Auto-Start
   useEffect(() => {
     console.log('Initializing F1 Heavy Metal Audio Engine...');
     f1AudioEngine.current = new F1AudioEngine();
     
-    // Auto-start audio after short delay
-    const autoStartAudio = () => {
+    // Force immediate audio start
+    const forceStartAudio = () => {
+      if (f1AudioEngine.current) {
+        console.log('FORCING heavy metal F1 audio start...');
+        f1AudioEngine.current.setVolume(0.4); // Higher volume
+        f1AudioEngine.current.start();
+        setAudioEnabled(true);
+        setUsingSyntheticAudio(true);
+        console.log('Heavy metal F1 audio FORCED to start!');
+      }
+    };
+    
+    // Start immediately without waiting
+    forceStartAudio();
+    
+    // Also try after delays in case first attempt fails
+    setTimeout(forceStartAudio, 100);
+    setTimeout(forceStartAudio, 500);
+    setTimeout(forceStartAudio, 1000);
+    
+    return () => {
+      if (f1AudioEngine.current) {
+        f1AudioEngine.current.stop();
+      }
+    };
+  }, []);
+
+  // Force audio to start on any interaction
+  useEffect(() => {
+    const forceAudioOnInteraction = () => {
       if (f1AudioEngine.current && !audioEnabled) {
-        console.log('Auto-starting heavy metal F1 audio...');
-        f1AudioEngine.current.setVolume(0.3);
+        console.log('User interaction detected - STARTING AUDIO NOW!');
+        f1AudioEngine.current.setVolume(0.4);
         f1AudioEngine.current.start();
         setAudioEnabled(true);
         setUsingSyntheticAudio(true);
       }
     };
-    
-    // Try immediate auto-start
-    const immediateStart = setTimeout(autoStartAudio, 500);
-    
-    // Fallback: Start on any user interaction
-    const interactionStart = () => {
-      if (!audioEnabled) {
-        autoStartAudio();
-      }
-    };
-    
-    // Multiple trigger events for maximum compatibility
-    const events = ['click', 'touchstart', 'scroll', 'mousemove', 'keydown'];
-    events.forEach(event => {
-      document.addEventListener(event, interactionStart, { once: true });
-    });
-    
+
+    // Listen for any user interaction
+    document.addEventListener('click', forceAudioOnInteraction);
+    document.addEventListener('touchstart', forceAudioOnInteraction);
+    document.addEventListener('scroll', forceAudioOnInteraction);
+    document.addEventListener('mousemove', forceAudioOnInteraction);
+    document.addEventListener('keydown', forceAudioOnInteraction);
+
     return () => {
-      clearTimeout(immediateStart);
-      events.forEach(event => {
-        document.removeEventListener(event, interactionStart);
-      });
-      if (f1AudioEngine.current) {
-        f1AudioEngine.current.stop();
-      }
+      document.removeEventListener('click', forceAudioOnInteraction);
+      document.removeEventListener('touchstart', forceAudioOnInteraction);
+      document.removeEventListener('scroll', forceAudioOnInteraction);
+      document.removeEventListener('mousemove', forceAudioOnInteraction);
+      document.removeEventListener('keydown', forceAudioOnInteraction);
     };
   }, [audioEnabled]);
-
-  // Auto-start audio when component mounts
-  useEffect(() => {
-    if (f1AudioEngine.current && !audioEnabled) {
-      // Try to start immediately
-      const attemptAutoStart = () => {
-        try {
-          console.log('Attempting automatic audio start...');
-          f1AudioEngine.current!.setVolume(0.3);
-          f1AudioEngine.current!.start();
-          setAudioEnabled(true);
-          setUsingSyntheticAudio(true);
-          console.log('Heavy metal F1 audio auto-started successfully!');
-        } catch (error) {
-          console.log('Auto-start blocked, will start on user interaction:', error);
-        }
-      };
-      
-      // Try multiple times with increasing delays
-      setTimeout(attemptAutoStart, 100);
-      setTimeout(attemptAutoStart, 500);
-      setTimeout(attemptAutoStart, 1000);
-    }
-  }, [f1AudioEngine.current]);
 
   const toggleAudio = () => {
     if (audioEnabled) {
@@ -211,7 +204,7 @@ export default function Home() {
       {/* Audio Status */}
       {!audioEnabled && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-crimson/90 text-white px-4 py-2 rounded-lg text-sm font-bold animate-pulse">
-          Heavy Metal F1 Audio Loading... 🤘
+          Click anywhere to start Heavy Metal F1 Audio! 🤘
         </div>
       )}
       {/* Racing Video Background */}
