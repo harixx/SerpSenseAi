@@ -377,7 +377,7 @@ export default function Home() {
                       </div>
                       <div>
                         <h4 className="font-playfair text-xl font-semibold text-white mb-2">Performance Acceleration</h4>
-                        <p className="text-platinum/70">Transform competitor analysis from guesswork into scientific advantage with LLM-powered insights.</p>
+                        <p className="text-[#e5e7eb]">Transform competitor analysis from guesswork into scientific advantage with LLM-powered insights.</p>
                       </div>
                     </div>
                   </CardContent>
@@ -438,7 +438,7 @@ export default function Home() {
                     <Users className="text-crimson text-2xl" />
                   </div>
                   <h3 className="font-playfair text-2xl font-semibold text-white mb-4">Digital Agencies</h3>
-                  <p className="text-platinum/70 mb-6">
+                  <p className="mb-6 text-[#e5e7eb]">
                     "Client presentations transformed overnight. We now deliver concrete intelligence about why their competitors dominate specific niches—and how to beat them."
                   </p>
                   <div className="flex items-center justify-between text-sm">
@@ -456,7 +456,7 @@ export default function Home() {
                     <PenTool className="text-crimson text-2xl" />
                   </div>
                   <h3 className="font-playfair text-2xl font-semibold text-white mb-4">Content Strategists</h3>
-                  <p className="text-platinum/70 mb-6">
+                  <p className="mb-6 text-[#e5e7eb]">
                     "Finally, data-driven content direction. I can identify the exact sentiment, tone, and depth that drives rankings in any niche—then optimize accordingly."
                   </p>
                   <div className="flex items-center justify-between text-sm">
