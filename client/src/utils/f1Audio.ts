@@ -26,26 +26,35 @@ export class F1AudioEngine {
     // Stop any existing oscillators
     this.stop();
 
-    // Create multiple oscillators for rich F1 engine sound
+    // Create multiple oscillators for heavy metal F1 engine sound with deep bass
     const frequencies = [
+      80,  // Deep bass foundation
+      120, // Sub-bass rumble
       180, // Base engine frequency
+      240, // Low-mid punch
       360, // First harmonic
-      540, // Second harmonic
-      720, // Third harmonic
-      900, // Fourth harmonic
+      480, // Heavy mid
+      720, // Aggressive high-mid
+      960, // Sharp harmonics
     ];
 
     frequencies.forEach((freq, index) => {
       const oscillator = this.audioContext!.createOscillator();
       const oscGain = this.audioContext!.createGain();
+      const distortion = this.audioContext!.createWaveShaper();
       
-      // Use sawtooth wave for aggressive F1 sound
-      oscillator.type = 'sawtooth';
+      // Use different wave types for heavy metal character
+      const waveTypes: OscillatorType[] = ['sawtooth', 'square', 'sawtooth', 'square', 'sawtooth', 'triangle', 'sawtooth', 'square'];
+      oscillator.type = waveTypes[index] || 'sawtooth';
       oscillator.frequency.setValueAtTime(freq, this.audioContext!.currentTime);
       
-      // Set different volumes for each harmonic
-      const volumes = [0.8, 0.6, 0.4, 0.3, 0.2];
+      // Heavy bass emphasis and aggressive volumes
+      const volumes = [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25];
       oscGain.gain.value = volumes[index] || 0.1;
+      
+      // Add distortion for heavy metal character
+      distortion.curve = this.createDistortionCurve(freq < 200 ? 80 : 50);
+      distortion.oversample = '4x';
       
       // Add frequency modulation for engine character
       const lfo = this.audioContext!.createOscillator();
@@ -58,7 +67,8 @@ export class F1AudioEngine {
       lfoGain.connect(oscillator.frequency);
       lfo.start();
       
-      oscillator.connect(oscGain);
+      oscillator.connect(distortion);
+      distortion.connect(oscGain);
       if (this.gainNode) {
         oscGain.connect(this.gainNode);
       }
@@ -67,8 +77,74 @@ export class F1AudioEngine {
       this.oscillators.push(oscillator, lfo);
     });
 
-    // Add engine rev variations
+    // Add engine rev variations and heavy metal beat
     this.addEngineRevs();
+    this.addHeavyMetalBeat();
+  }
+
+  private createDistortionCurve(amount: number): Float32Array {
+    const samples = 44100;
+    const curve = new Float32Array(samples);
+    const deg = Math.PI / 180;
+    
+    for (let i = 0; i < samples; i++) {
+      const x = (i * 2) / samples - 1;
+      curve[i] = ((3 + amount) * x * 20 * deg) / (Math.PI + amount * Math.abs(x));
+    }
+    
+    return curve;
+  }
+
+  private addHeavyMetalBeat() {
+    if (!this.audioContext || !this.gainNode) return;
+
+    // Create kick drum pattern for heavy metal beat
+    const kickFreq = 60; // Deep kick frequency
+    const beatInterval = 500; // 120 BPM heavy metal tempo
+    
+    const createKick = () => {
+      if (!this.isPlaying) return;
+      
+      const kickOsc = this.audioContext!.createOscillator();
+      const kickGain = this.audioContext!.createGain();
+      const kickFilter = this.audioContext!.createBiquadFilter();
+      
+      kickOsc.type = 'sine';
+      kickOsc.frequency.setValueAtTime(kickFreq, this.audioContext!.currentTime);
+      
+      // Kick drum envelope
+      kickGain.gain.setValueAtTime(0, this.audioContext!.currentTime);
+      kickGain.gain.exponentialRampToValueAtTime(0.8, this.audioContext!.currentTime + 0.01);
+      kickGain.gain.exponentialRampToValueAtTime(0.01, this.audioContext!.currentTime + 0.1);
+      
+      // Low-pass filter for thump
+      kickFilter.type = 'lowpass';
+      kickFilter.frequency.value = 100;
+      kickFilter.Q.value = 10;
+      
+      kickOsc.connect(kickFilter);
+      kickFilter.connect(kickGain);
+      if (this.gainNode) {
+        kickGain.connect(this.gainNode);
+      }
+      
+      kickOsc.start();
+      kickOsc.stop(this.audioContext!.currentTime + 0.1);
+    };
+
+    // Heavy metal kick pattern: strong on 1 and 3
+    const beatPattern = () => {
+      if (!this.isPlaying) return;
+      
+      createKick(); // Beat 1
+      setTimeout(() => {
+        if (this.isPlaying) createKick(); // Beat 3
+      }, beatInterval / 2);
+      
+      setTimeout(beatPattern, beatInterval);
+    };
+    
+    beatPattern();
   }
 
   private addEngineRevs() {
@@ -133,7 +209,8 @@ export class F1AudioEngine {
 
   public setVolume(volume: number) {
     if (this.gainNode) {
-      this.gainNode.gain.setValueAtTime(volume, this.audioContext!.currentTime);
+      // Boost bass frequencies for heavy metal feel
+      this.gainNode.gain.setValueAtTime(volume * 1.2, this.audioContext!.currentTime);
     }
   }
 

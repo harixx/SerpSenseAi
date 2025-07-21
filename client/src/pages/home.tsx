@@ -134,10 +134,10 @@ export default function Home() {
             setUsingSyntheticAudio(false);
             console.log('F1 racing audio (HTML5) started');
           }).catch((e) => {
-            console.log('HTML5 audio failed, using synthetic F1 engine:', e);
+            console.log('HTML5 audio failed, using heavy metal F1 engine:', e);
             // Fallback to synthetic audio
             if (f1AudioEngine.current) {
-              f1AudioEngine.current.setVolume(0.15);
+              f1AudioEngine.current.setVolume(0.2); // Increased volume for heavy metal
               f1AudioEngine.current.start();
               setAudioEnabled(true);
               setUsingSyntheticAudio(true);
@@ -146,11 +146,11 @@ export default function Home() {
         } else {
           // Use synthetic audio directly
           if (f1AudioEngine.current) {
-            f1AudioEngine.current.setVolume(0.15);
+            f1AudioEngine.current.setVolume(0.2); // Heavy metal volume
             f1AudioEngine.current.start();
             setAudioEnabled(true);
             setUsingSyntheticAudio(true);
-            console.log('F1 synthetic audio started');
+            console.log('F1 heavy metal audio started');
           }
         }
       }
@@ -194,8 +194,9 @@ export default function Home() {
           }
         });
       } else {
-        // Fallback to synthetic
+        // Fallback to heavy metal synthetic
         if (f1AudioEngine.current) {
+          f1AudioEngine.current.setVolume(0.2);
           f1AudioEngine.current.start();
           setAudioEnabled(true);
           setUsingSyntheticAudio(true);
@@ -402,9 +403,9 @@ export default function Home() {
               size="icon"
               className="border-crimson text-crimson hover:bg-crimson hover:text-white"
               onClick={toggleAudio}
-              title={audioEnabled ? "Mute F1 Sound" : "Enable F1 Sound"}
+              title={audioEnabled ? "Mute Heavy Metal F1 Sound" : "Enable Heavy Metal F1 Sound"}
             >
-              {audioEnabled ? "🔊" : "🔇"} {usingSyntheticAudio && audioEnabled ? "⚡" : ""}
+              {audioEnabled ? "🔊" : "🔇"} {usingSyntheticAudio && audioEnabled ? "🤘" : ""}
             </Button>
           </div>
         </div>
