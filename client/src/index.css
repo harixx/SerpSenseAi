@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
   --background: hsl(0, 0%, 100%);
@@ -31,10 +31,8 @@
   --crimson: hsl(0, 84%, 60%);
   --ruby: hsl(0, 79%, 41%);
   --platinum: hsl(220, 13%, 91%);
-  --silver: hsl(220, 9%, 75%);
   --gold: hsl(45, 93%, 47%);
   --obsidian: hsl(0, 0%, 11%);
-  --warm-white: hsl(45, 10%, 95%);
 }
 
 .dark {
@@ -120,16 +118,8 @@
     color: var(--platinum);
   }
   
-  .text-silver {
-    color: var(--silver);
-  }
-  
   .text-gold {
     color: var(--gold);
-  }
-  
-  .text-warm-white {
-    color: var(--warm-white);
   }
   
   .text-obsidian {
