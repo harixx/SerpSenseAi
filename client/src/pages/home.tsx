@@ -377,7 +377,7 @@ export default function Home() {
                       </div>
                       <div>
                         <h4 className="font-playfair text-xl font-semibold text-white mb-2">Performance Acceleration</h4>
-                        <p className="text-[#e5e7eb]">Transform competitor analysis from guesswork into scientific advantage with LLM-powered insights.</p>
+                        <p className="text-[#e7b008]">Transform competitor analysis from guesswork into scientific advantage with LLM-powered insights.</p>
                       </div>
                     </div>
                   </CardContent>
