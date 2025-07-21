@@ -534,7 +534,7 @@ export default function Home() {
                       <p className="text-sm text-[#e7b008]">Founder, Growth Labs</p>
                     </div>
                   </div>
-                  <blockquote className="text-platinum/80 italic mb-4">
+                  <blockquote className="italic mb-4 text-[#e5e7eb]">
                     "Our client retention increased 40% after implementing insights from SERP Intelligence. The strategic depth is unmatched."
                   </blockquote>
                   <div className="flex items-center text-gold text-sm">
