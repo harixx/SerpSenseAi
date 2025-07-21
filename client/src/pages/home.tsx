@@ -115,7 +115,6 @@ export default function Home() {
           </Button>
         </div>
       </nav>
-
       {/* Hero Section */}
       <section className="min-h-screen hero-gradient flex items-center justify-center relative overflow-hidden">
         {/* Animated background elements */}
@@ -213,7 +212,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Feature Explainer */}
       <section className="py-20 bg-obsidian/50 relative">
         <div className="container mx-auto px-6">
@@ -389,7 +387,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Use Case Block */}
       <section className="py-20 bg-charcoal relative">
         <div className="container mx-auto px-6">
@@ -472,7 +469,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Testimonial Block */}
       <section className="py-20 bg-obsidian/30 relative">
         <div className="container mx-auto px-6">
@@ -509,7 +505,7 @@ export default function Home() {
                     />
                     <div>
                       <h4 className="text-white font-semibold">Sarah Chen</h4>
-                      <p className="text-platinum/60 text-sm">SEO Director, TechCorp</p>
+                      <p className="text-sm text-[#e7b008]">SEO Director, TechCorp</p>
                     </div>
                   </div>
                   <blockquote className="text-platinum/80 italic mb-4">
@@ -604,7 +600,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Final CTA */}
       <section className="py-20 bg-charcoal relative overflow-hidden">
         {/* Animated background elements */}
@@ -703,7 +698,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Footer */}
       <footer className="bg-obsidian py-12 border-t border-crimson/20">
         <div className="container mx-auto px-6">
