@@ -203,20 +203,19 @@ export class F1AudioEngine {
     console.log('F1 audio engine starting...');
     console.log('AudioContext state:', this.audioContext?.state);
     
-    if (this.audioContext?.state === 'suspended') {
-      console.log('Resuming suspended audio context...');
+    // Always try to resume context first
+    if (this.audioContext) {
       this.audioContext.resume().then(() => {
-        console.log('Audio context resumed successfully');
+        console.log('Audio context resumed/running successfully');
         this.isPlaying = true;
         this.createF1EngineSound();
-        console.log('Heavy metal F1 synthetic audio engine started!');
+        console.log('🤘 Heavy metal F1 synthetic audio engine started! 🤘');
       }).catch(e => {
         console.error('Failed to resume audio context:', e);
+        // Try to start anyway
+        this.isPlaying = true;
+        this.createF1EngineSound();
       });
-    } else {
-      this.isPlaying = true;
-      this.createF1EngineSound();
-      console.log('Heavy metal F1 synthetic audio engine started!');
     }
   }
 

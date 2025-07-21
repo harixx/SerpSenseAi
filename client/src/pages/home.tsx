@@ -112,13 +112,13 @@ export default function Home() {
 
   const spotsRemaining = Math.max(0, 100 - (waitlistCount?.count || 0));
 
-  // Initialize F1 Audio Engine
+  // Initialize F1 Audio Engine with Auto-Start
   useEffect(() => {
     console.log('Initializing F1 Heavy Metal Audio Engine...');
     f1AudioEngine.current = new F1AudioEngine();
     
-    // Auto-start on first user interaction
-    const startAudio = () => {
+    // Auto-start audio after short delay
+    const autoStartAudio = () => {
       if (f1AudioEngine.current && !audioEnabled) {
         console.log('Auto-starting heavy metal F1 audio...');
         f1AudioEngine.current.setVolume(0.3);
@@ -128,44 +128,56 @@ export default function Home() {
       }
     };
     
-    // Add click listener to trigger audio
-    const timeoutId = setTimeout(() => {
-      document.addEventListener('click', startAudio, { once: true });
-    }, 1000);
+    // Try immediate auto-start
+    const immediateStart = setTimeout(autoStartAudio, 500);
+    
+    // Fallback: Start on any user interaction
+    const interactionStart = () => {
+      if (!audioEnabled) {
+        autoStartAudio();
+      }
+    };
+    
+    // Multiple trigger events for maximum compatibility
+    const events = ['click', 'touchstart', 'scroll', 'mousemove', 'keydown'];
+    events.forEach(event => {
+      document.addEventListener(event, interactionStart, { once: true });
+    });
     
     return () => {
-      clearTimeout(timeoutId);
-      document.removeEventListener('click', startAudio);
+      clearTimeout(immediateStart);
+      events.forEach(event => {
+        document.removeEventListener(event, interactionStart);
+      });
       if (f1AudioEngine.current) {
         f1AudioEngine.current.stop();
       }
     };
   }, [audioEnabled]);
 
-  // F1 Audio Management
+  // Auto-start audio when component mounts
   useEffect(() => {
-    const handleUserInteraction = () => {
-      if (!audioEnabled && f1AudioEngine.current) {
-        console.log('Starting heavy metal F1 audio engine...');
-        f1AudioEngine.current.setVolume(0.3); // Higher volume for heavy metal
-        f1AudioEngine.current.start();
-        setAudioEnabled(true);
-        setUsingSyntheticAudio(true);
-        console.log('Heavy metal F1 synthetic audio started');
-      }
-    };
-
-    // Try to start audio on any user interaction
-    document.addEventListener('click', handleUserInteraction, { once: true });
-    document.addEventListener('touchstart', handleUserInteraction, { once: true });
-    document.addEventListener('scroll', handleUserInteraction, { once: true });
-
-    return () => {
-      document.removeEventListener('click', handleUserInteraction);
-      document.removeEventListener('touchstart', handleUserInteraction);
-      document.removeEventListener('scroll', handleUserInteraction);
-    };
-  }, [audioEnabled]);
+    if (f1AudioEngine.current && !audioEnabled) {
+      // Try to start immediately
+      const attemptAutoStart = () => {
+        try {
+          console.log('Attempting automatic audio start...');
+          f1AudioEngine.current!.setVolume(0.3);
+          f1AudioEngine.current!.start();
+          setAudioEnabled(true);
+          setUsingSyntheticAudio(true);
+          console.log('Heavy metal F1 audio auto-started successfully!');
+        } catch (error) {
+          console.log('Auto-start blocked, will start on user interaction:', error);
+        }
+      };
+      
+      // Try multiple times with increasing delays
+      setTimeout(attemptAutoStart, 100);
+      setTimeout(attemptAutoStart, 500);
+      setTimeout(attemptAutoStart, 1000);
+    }
+  }, [f1AudioEngine.current]);
 
   const toggleAudio = () => {
     if (audioEnabled) {
@@ -196,10 +208,10 @@ export default function Home() {
         </div>
       )}
       
-      {/* Audio Instructions */}
+      {/* Audio Status */}
       {!audioEnabled && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-crimson/90 text-white px-4 py-2 rounded-lg text-sm font-bold animate-pulse">
-          Click "Start Audio" for Heavy Metal F1 Experience! 🤘
+          Heavy Metal F1 Audio Loading... 🤘
         </div>
       )}
       {/* Racing Video Background */}
@@ -381,9 +393,9 @@ export default function Home() {
               size="sm"
               className={audioEnabled ? "bg-crimson hover:bg-ruby text-white animate-pulse" : "border-crimson text-crimson hover:bg-crimson hover:text-white"}
               onClick={toggleAudio}
-              title={audioEnabled ? "Mute Heavy Metal F1 Sound" : "Click for Heavy Metal F1 Sound!"}
+              title={audioEnabled ? "Mute Heavy Metal F1 Sound" : "Enable Heavy Metal F1 Sound"}
             >
-              {audioEnabled ? "🔊 🤘" : "🔇 Start Audio"} 
+              {audioEnabled ? "🔊 🤘" : "🔇 Audio"} 
             </Button>
           </div>
         </div>
