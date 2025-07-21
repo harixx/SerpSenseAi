@@ -226,9 +226,8 @@ export default function Home() {
               The AI Brain Behind{" "}
               <span className="text-crimson">SERP Domination</span>
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-xl max-w-3xl mx-auto text-[#e5e7eb] bg-[#ab000000]">While others chase keywords, we unlock the strategic insights that fuel real, lasting results. Your website is more than code and content, it's a narrative waiting to be uncovered. We analyze the entire story, revealing the hidden drivers behind your search success.
-
-            Ready to see what others miss?
+            <motion.p variants={fadeInUp} className="text-xl max-w-3xl mx-auto text-[#e5e7eb] bg-[#ab000000]">While others chase keywords, we unlock the strategic insights that fuel real, lasting results. Your website is more than code and content, it's a narrative waiting to be uncovered. We analyze the entire story, revealing the hidden drivers behind your search success. 
+            Ready to see what others miss? 
             Request your personalized strategy, discover the advantage of intelligence over imitation.</motion.p>
           </motion.div>
           
