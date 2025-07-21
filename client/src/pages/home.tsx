@@ -287,7 +287,7 @@ export default function Home() {
                         <h5 className="text-white font-medium">SEO Best Practices 2024</h5>
                         <span className="text-xs bg-crimson/20 text-crimson px-2 py-1 rounded">87% Match</span>
                       </div>
-                      <p className="text-sm text-platinum/60 mb-3">Updated strategies for modern search engine optimization...</p>
+                      <p className="text-sm mb-3 text-[#e5e7eb]">Updated strategies for modern search engine optimization...</p>
                       <div className="grid grid-cols-2 gap-2 text-xs">
                         <div className="flex items-center">
                           <Brain className="w-3 h-3 text-gold mr-1" />
