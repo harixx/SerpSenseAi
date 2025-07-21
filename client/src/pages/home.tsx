@@ -226,10 +226,10 @@ export default function Home() {
               The AI Brain Behind{" "}
               <span className="text-crimson">SERP Domination</span>
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-xl text-platinum/70 max-w-3xl mx-auto">
-              While others count keywords, we decode the strategic intelligence that drives rankings.
-              Every page tells a story—we reveal the plot.
-            </motion.p>
+            <motion.p variants={fadeInUp} className="text-xl max-w-3xl mx-auto text-[#e5e7eb] bg-[#ab000000]">While others chase keywords, we unlock the strategic insights that fuel real, lasting results. Your website is more than code and content, it's a narrative waiting to be uncovered. We analyze the entire story, revealing the hidden drivers behind your search success.
+
+            Ready to see what others miss?
+            Request your personalized strategy, discover the advantage of intelligence over imitation.</motion.p>
           </motion.div>
           
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -455,7 +455,7 @@ export default function Home() {
                   <div className="w-16 h-16 bg-crimson/20 rounded-lg flex items-center justify-center mb-6">
                     <PenTool className="text-crimson text-2xl" />
                   </div>
-                  <h3 className="font-playfair text-2xl font-semibold text-white mb-4">Content Strategists</h3>
+                  <h3 className="font-playfair text-2xl font-semibold mb-4 text-center text-[#e7b008]">Content Strategists</h3>
                   <p className="mb-6 text-[#e5e7eb]">
                     "Finally, data-driven content direction. I can identify the exact sentiment, tone, and depth that drives rankings in any niche—then optimize accordingly."
                   </p>
