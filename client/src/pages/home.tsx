@@ -295,11 +295,11 @@ export default function Home() {
                         </div>
                         <div className="flex items-center">
                           <Globe className="w-3 h-3 text-gold mr-1" />
-                          <span>Desktop Focused</span>
+                          <span className="text-[#e5e7eb]">Desktop Focused</span>
                         </div>
                         <div className="flex items-center">
                           <BarChart3 className="w-3 h-3 text-gold mr-1" />
-                          <span>Medium Depth</span>
+                          <span className="text-[#e5e7eb]">Medium Depth</span>
                         </div>
                         <div className="flex items-center">
                           <Zap className="w-3 h-3 text-gold mr-1" />
