@@ -108,7 +108,7 @@ export default function Home() {
   const spotsRemaining = Math.max(0, 100 - (waitlistCount?.count || 0));
 
   return (
-    <div className="min-h-screen text-platinum overflow-x-hidden relative bg-scroll-effect">
+    <div className="min-h-screen text-platinum overflow-x-hidden relative">
       {/* Floating Background Elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Large floating shapes */}
@@ -191,9 +191,7 @@ export default function Home() {
         </div>
       </nav>
       {/* Hero Section */}
-      <section className="min-h-screen hero-gradient flex items-center justify-center relative overflow-hidden z-10">
-        {/* Ferrari blend overlay for hero section */}
-        <div className="absolute inset-0 bg-black/40 mix-blend-multiply z-0"></div>
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden z-10">
         {/* Hero-specific animated elements */}
         <motion.div
           style={{ y: y1, scale: scale1 }}

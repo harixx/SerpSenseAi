@@ -67,32 +67,22 @@
   }
 
   html {
-    /* Fixed background with Ferrari F1 image */
-    background-color: var(--charcoal);
+    height: 200vh; /* Creates vertical scroll for effect */
+    background-color: hsl(0, 84%, 60%); /* Crimson red base */
     background-image: url('https://cdn.bhdw.net/im/ferrari-f1-75-formula-1-2022-new-car-front-view-red-91089_w635.webp');
-    background-size: cover;
-    background-position: center center;
+    background-size: 100% auto;
+    background-position: top center;
     background-attachment: fixed;
-    background-repeat: no-repeat;
-    min-height: 100vh;
   }
 
   body {
+    height: 100%;
+    background-image: linear-gradient(hsl(0, 84%, 60%), transparent 70%);
+    background-size: 100% 100%;
+    mix-blend-mode: difference;
     @apply font-sans antialiased;
     font-family: 'Inter', sans-serif;
     color: #e5e7eb;
-    min-height: 100vh;
-    background-image: linear-gradient(
-      135deg, 
-      hsla(0, 84%, 60%, 0.2) 0%, 
-      hsla(0, 79%, 41%, 0.1) 25%,
-      transparent 50%,
-      hsla(45, 93%, 47%, 0.05) 75%,
-      hsla(0, 84%, 60%, 0.15) 100%
-    );
-    background-size: 100% 100%;
-    mix-blend-mode: difference;
-    background-attachment: fixed;
   }
   
   .font-playfair {
@@ -306,67 +296,14 @@
   animation: float-fast 4s ease-in-out infinite;
 }
 
-/* Background Scroll Effect Styles */
-.bg-scroll-effect {
-  position: relative;
-  background: transparent;
-}
-
-.bg-scroll-effect::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-image: 
-    radial-gradient(circle at 25% 75%, rgba(220, 38, 38, 0.3) 0%, transparent 40%),
-    radial-gradient(circle at 75% 25%, rgba(185, 28, 28, 0.25) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.15) 0%, transparent 60%),
-    linear-gradient(45deg, rgba(220, 38, 38, 0.1) 0%, transparent 30%, rgba(185, 28, 28, 0.15) 70%, transparent 100%);
-  background-size: 200% 200%, 150% 150%, 300% 300%, 100% 100%;
-  background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%;
-  background-attachment: fixed;
-  mix-blend-mode: overlay;
-  z-index: -1;
-  animation: scroll-bg-shift 20s ease-in-out infinite;
-}
-
-.bg-scroll-effect::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: linear-gradient(
-    170deg,
-    hsla(0, 84%, 60%, 0.2) 0%,
-    transparent 25%,
-    hsla(0, 79%, 41%, 0.15) 50%,
-    transparent 75%,
-    hsla(45, 93%, 47%, 0.1) 100%
-  );
-  background-attachment: fixed;
-  mix-blend-mode: difference;
-  z-index: -1;
-}
-
-@keyframes scroll-bg-shift {
-  0%, 100% {
-    background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%;
-    opacity: 0.8;
+/* Enhanced scroll effects for floating elements */
+@keyframes enhanced-float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg) scale(1); 
+    opacity: 0.6;
   }
-  25% {
-    background-position: 100% 0%, 0% 100%, 25% 75%, 25% 25%;
-    opacity: 1;
-  }
-  50% {
-    background-position: 100% 100%, 0% 0%, 75% 25%, 50% 50%;
+  50% { 
+    transform: translateY(-20px) rotate(5deg) scale(1.1); 
     opacity: 0.9;
-  }
-  75% {
-    background-position: 0% 100%, 100% 0%, 0% 0%, 75% 75%;
-    opacity: 1;
   }
 }
