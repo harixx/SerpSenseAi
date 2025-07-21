@@ -358,7 +358,7 @@ export default function Home() {
               The AI Brain Behind{" "}
               <span className="text-crimson">SERP Domination</span>
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-xl max-w-3xl mx-auto text-[#e5e7eb] space-y-6">
+            <motion.div variants={fadeInUp} className="text-xl max-w-3xl mx-auto text-[#e5e7eb] space-y-6">
               <div className="font-playfair text-2xl font-bold mb-8">
                 Stop Counting Keywords. Start Unlocking Strategy.
               </div>
@@ -380,7 +380,7 @@ export default function Home() {
               <div className="text-crimson font-bold text-xl mt-6">
                 👉 Request Your Free SEO Intelligence Audit
               </div>
-            </motion.p>
+            </motion.div>
           </motion.div>
           
           <div className="grid lg:grid-cols-2 gap-12 items-center">
