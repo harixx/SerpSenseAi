@@ -112,99 +112,162 @@ export default function Home() {
 
   const spotsRemaining = Math.max(0, 100 - (waitlistCount?.count || 0));
 
-  // Initialize F1 Audio Engine with Immediate Auto-Start
+  // Initialize F1 Audio System
   useEffect(() => {
-    console.log('Initializing F1 Heavy Metal Audio Engine...');
+    console.log('Initializing F1 Audio System...');
     f1AudioEngine.current = new F1AudioEngine();
     
-    // Force immediate audio start
-    const forceStartAudio = () => {
-      if (f1AudioEngine.current) {
-        console.log('FORCING heavy metal F1 audio start...');
-        f1AudioEngine.current.setVolume(0.4); // Higher volume
-        f1AudioEngine.current.start();
-        setAudioEnabled(true);
-        setUsingSyntheticAudio(true);
-        console.log('Heavy metal F1 audio FORCED to start!');
+    // Try real F1 audio first
+    const startRealAudio = () => {
+      if (audioRef.current) {
+        console.log('Starting real F1 audio...');
+        audioRef.current.volume = 0.5;
+        audioRef.current.play().then(() => {
+          setAudioEnabled(true);
+          setUsingSyntheticAudio(false);
+          console.log('Real F1 audio started successfully!');
+        }).catch((e) => {
+          console.log('Real F1 audio failed, using synthetic:', e);
+          // Fallback to synthetic
+          if (f1AudioEngine.current) {
+            f1AudioEngine.current.setVolume(0.3);
+            f1AudioEngine.current.start();
+            setAudioEnabled(true);
+            setUsingSyntheticAudio(true);
+          }
+        });
       }
     };
     
-    // Start immediately without waiting
-    forceStartAudio();
+    // Try to start real audio immediately
+    startRealAudio();
     
-    // Also try after delays in case first attempt fails
-    setTimeout(forceStartAudio, 100);
-    setTimeout(forceStartAudio, 500);
-    setTimeout(forceStartAudio, 1000);
+    // Also try after delays
+    setTimeout(startRealAudio, 500);
+    setTimeout(startRealAudio, 1000);
     
     return () => {
       if (f1AudioEngine.current) {
         f1AudioEngine.current.stop();
       }
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
     };
   }, []);
 
-  // Force audio to start on any interaction
+  // Start audio on user interaction
   useEffect(() => {
-    const forceAudioOnInteraction = () => {
-      if (f1AudioEngine.current && !audioEnabled) {
-        console.log('User interaction detected - STARTING AUDIO NOW!');
-        f1AudioEngine.current.setVolume(0.4);
-        f1AudioEngine.current.start();
-        setAudioEnabled(true);
-        setUsingSyntheticAudio(true);
+    const startAudioOnInteraction = () => {
+      if (!audioEnabled) {
+        console.log('User interaction detected - starting F1 audio!');
+        
+        // Try real audio first
+        if (audioRef.current) {
+          audioRef.current.volume = 0.5;
+          audioRef.current.play().then(() => {
+            setAudioEnabled(true);
+            setUsingSyntheticAudio(false);
+            console.log('Real F1 audio started on interaction!');
+          }).catch(() => {
+            // Fallback to synthetic
+            if (f1AudioEngine.current) {
+              f1AudioEngine.current.setVolume(0.3);
+              f1AudioEngine.current.start();
+              setAudioEnabled(true);
+              setUsingSyntheticAudio(true);
+              console.log('Synthetic F1 audio started on interaction!');
+            }
+          });
+        }
       }
     };
 
-    // Listen for any user interaction
-    document.addEventListener('click', forceAudioOnInteraction);
-    document.addEventListener('touchstart', forceAudioOnInteraction);
-    document.addEventListener('scroll', forceAudioOnInteraction);
-    document.addEventListener('mousemove', forceAudioOnInteraction);
-    document.addEventListener('keydown', forceAudioOnInteraction);
+    // Listen for user interactions
+    document.addEventListener('click', startAudioOnInteraction);
+    document.addEventListener('touchstart', startAudioOnInteraction);
+    document.addEventListener('scroll', startAudioOnInteraction);
+    document.addEventListener('keydown', startAudioOnInteraction);
 
     return () => {
-      document.removeEventListener('click', forceAudioOnInteraction);
-      document.removeEventListener('touchstart', forceAudioOnInteraction);
-      document.removeEventListener('scroll', forceAudioOnInteraction);
-      document.removeEventListener('mousemove', forceAudioOnInteraction);
-      document.removeEventListener('keydown', forceAudioOnInteraction);
+      document.removeEventListener('click', startAudioOnInteraction);
+      document.removeEventListener('touchstart', startAudioOnInteraction);
+      document.removeEventListener('scroll', startAudioOnInteraction);
+      document.removeEventListener('keydown', startAudioOnInteraction);
     };
   }, [audioEnabled]);
 
   const toggleAudio = () => {
     if (audioEnabled) {
       // Stop audio
-      if (f1AudioEngine.current) {
+      if (usingSyntheticAudio && f1AudioEngine.current) {
         f1AudioEngine.current.stop();
-        console.log('Heavy metal F1 audio stopped');
+      } else if (audioRef.current) {
+        audioRef.current.pause();
       }
       setAudioEnabled(false);
+      console.log('F1 audio stopped');
     } else {
-      // Start heavy metal F1 audio
-      if (f1AudioEngine.current) {
-        f1AudioEngine.current.setVolume(0.3);
-        f1AudioEngine.current.start();
-        setAudioEnabled(true);
-        setUsingSyntheticAudio(true);
-        console.log('Heavy metal F1 audio started via toggle');
+      // Start F1 audio - try real first, then synthetic
+      if (audioRef.current) {
+        audioRef.current.volume = 0.5;
+        audioRef.current.play().then(() => {
+          setAudioEnabled(true);
+          setUsingSyntheticAudio(false);
+          console.log('Real F1 audio started via toggle');
+        }).catch(() => {
+          if (f1AudioEngine.current) {
+            f1AudioEngine.current.setVolume(0.3);
+            f1AudioEngine.current.start();
+            setAudioEnabled(true);
+            setUsingSyntheticAudio(true);
+            console.log('Synthetic F1 audio started via toggle');
+          }
+        });
       }
     }
   };
 
   return (
     <div className="min-h-screen text-white overflow-x-hidden relative">
+      {/* F1 Racing Audio */}
+      <audio
+        ref={audioRef}
+        loop
+        preload="auto"
+        className="hidden"
+        onError={(e) => {
+          console.log('F1 audio failed to load, using synthetic fallback');
+          // Fallback to synthetic audio
+          if (f1AudioEngine.current && !usingSyntheticAudio) {
+            f1AudioEngine.current.setVolume(0.3);
+            f1AudioEngine.current.start();
+            setUsingSyntheticAudio(true);
+          }
+        }}
+        onCanPlay={() => {
+          console.log('F1 racing audio ready to play');
+        }}
+        onPlay={() => {
+          console.log('F1 racing audio started playing');
+          setAudioEnabled(true);
+          setUsingSyntheticAudio(false);
+        }}
+      >
+        <source src="/attached_assets/13464_1459539280_1753112009861.mp3" type="audio/mpeg" />
+      </audio>
+
       {/* Heavy Metal F1 Audio Status */}
-      {audioEnabled && usingSyntheticAudio && (
+      {audioEnabled && (
         <div className="fixed top-20 right-4 z-50 bg-black/80 text-crimson px-3 py-1 rounded text-sm font-bold animate-bounce">
-          🤘 HEAVY METAL F1 ACTIVE 🤘
+          🤘 {usingSyntheticAudio ? "SYNTHETIC" : "REAL"} F1 AUDIO 🤘
         </div>
       )}
       
       {/* Audio Status */}
       {!audioEnabled && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-crimson/90 text-white px-4 py-2 rounded-lg text-sm font-bold animate-pulse">
-          Click anywhere to start Heavy Metal F1 Audio! 🤘
+          Click anywhere to start F1 Audio! 🤘
         </div>
       )}
       {/* Racing Video Background */}

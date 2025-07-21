@@ -14,6 +14,11 @@ app.use('/attached_assets', express.static('attached_assets', {
       res.setHeader('Accept-Ranges', 'bytes');
       res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache for 24 hours
       res.setHeader('Access-Control-Allow-Origin', '*');
+    } else if (path.endsWith('.mp3')) {
+      res.setHeader('Content-Type', 'audio/mpeg');
+      res.setHeader('Accept-Ranges', 'bytes');
+      res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+      res.setHeader('Access-Control-Allow-Origin', '*');
     }
   }
 }));
