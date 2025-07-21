@@ -226,9 +226,29 @@ export default function Home() {
               The AI Brain Behind{" "}
               <span className="text-crimson">SERP Domination</span>
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-xl max-w-3xl mx-auto text-[#e5e7eb] bg-[#ab000000]">While others chase keywords, we unlock the strategic insights that fuel real, lasting results. Your website is more than code and content, it's a narrative waiting to be uncovered. We analyze the entire story, revealing the hidden drivers behind your search success. 
-            Ready to see what others miss? 
-            Request your personalized strategy, discover the advantage of intelligence over imitation.</motion.p>
+            <motion.p variants={fadeInUp} className="text-xl max-w-3xl mx-auto text-[#e5e7eb] space-y-6">
+              <div className="font-playfair text-2xl font-bold mb-8">
+                Stop Counting Keywords. Start Unlocking Strategy.
+              </div>
+              
+              <div className="space-y-4 text-lg">
+                <div>🔍 Others chase rankings. We uncover the why behind them.</div>
+                <div>🧠 We decode intent. Not just search terms, the strategy behind what's winning.</div>
+                <div>📖 Every page tells a story. We reveal the plot that drives visibility and trust.</div>
+                <div>🚀 No guesswork. No fluff. Just data-driven insight that impacts revenue.</div>
+              </div>
+              
+              <div className="font-playfair text-xl font-semibold mt-8 mb-4">
+                See What Others Miss.
+              </div>
+              <div className="text-lg">
+                Get a custom strategy backed by real search intelligence not assumptions.
+              </div>
+              
+              <div className="text-crimson font-bold text-xl mt-6">
+                👉 Request Your Free SEO Intelligence Audit
+              </div>
+            </motion.p>
           </motion.div>
           
           <div className="grid lg:grid-cols-2 gap-12 items-center">
