@@ -111,8 +111,33 @@ export default function Home() {
     <div className="min-h-screen text-white overflow-x-hidden relative">
       {/* Fixed F1 Video Background */}
       <div className="fixed inset-0 z-0">
-        {/* Dynamic F1 Racing Background Animation */}
-        <div className="w-full h-full animated-f1-background">
+        {/* F1 Racing Video Background */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover"
+          style={{ 
+            backgroundAttachment: 'fixed',
+            mixBlendMode: 'normal'
+          }}
+          onError={(e) => {
+            console.log('F1 video failed to load, using animated background fallback');
+            e.currentTarget.style.display = 'none';
+            const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+            if (fallback) fallback.style.display = 'block';
+          }}
+          onLoadedData={() => {
+            console.log('F1 racing video loaded successfully');
+          }}
+        >
+          <source src="https://media.istockphoto.com/id/1300279099/video/multiple-open-wheel-single-seater-car-race-cars-driving-across-finish-line.mp4?s=mp4-640x640_is&k=20&c=8kJ7ZLJ9F5Q1nQEy5cKjzj8jNQj9KkL6J7Q5nQj8LnM=" type="video/mp4" />
+        </video>
+        
+        {/* Animated F1 background as fallback */}
+        <div className="w-full h-full animated-f1-background" style={{ display: 'none' }}>
           <div className="f1-track-lines"></div>
           <div className="f1-speed-blur"></div>
           <div className="f1-racing-cars"></div>
