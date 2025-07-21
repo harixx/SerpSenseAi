@@ -1,0 +1,85 @@
+You are both a world-class SaaS copywriter and brand strategist and a highly experienced UX/UI designer. You specialize in high-converting, emotionally intelligent landing pages for premium, high-ticket B2B software.
+
+Your task: Conceptualize and write the entire landing page for a powerful, AI-powered SEO tool built for elite professionals, agencies, and strategic content teams. You will integrate modern UX/UI design principles with bold, high-status brand psychology — inspired by F1 team energy and enterprise precision.
+
+🧠 Product:
+LLM-Powered Multi-Dimensional SERP Explainer
+
+🎯 Goal:
+Build a complete landing page that feels premium, aggressive, and strategic — not minimalist, but structured and bold.
+Use a dark red and black aesthetic to evoke power, clarity, and exclusivity.
+The tone should feel like a hybrid of Notion × Superhuman × Ferrari — smart, serious, and performance-driven.
+
+✍️ Output Requirements:
+Write a full landing page with UX-informed structure, using clear section labels. For each section, provide:
+
+Headline (emotional, commanding, premium tone)
+
+Subheadline (clarity, strategic value)
+
+Call to Action (invite-only, high-stakes)
+
+Copy blocks (emotion + insight driven)
+
+Visual direction (describe layout, animation, interactivity)
+
+Design system notes (for developers/designers)
+
+🔴🖤 Brand Personality:
+Emotionally intelligent, elite, and aspirational
+
+Confident and commanding — not loud or jargon-heavy
+
+Psychological depth: appeal to ambition, control, clarity, and strategic dominance
+
+Visually: Dark mode / full black background with crimson red accents — built for drama, contrast, and focus
+
+📄 Structure:
+Include the following in your landing page output:
+
+1. Hero Section
+Headline (bold, benefit-driven)
+
+Subheadline (strategic, premium)
+
+Invite-only CTA
+
+Visual layout: Full-width black background, deep red UI glow, mockup animation
+
+2. Feature Block
+Section headline: Explain the AI brain
+
+Layout: Split screen (3D SERP cards + text bullets)
+
+4–5 features with emotional and strategic impact
+
+3. Use Case Block
+Headline: Built for power players
+
+3–4 high-stakes use cases with relatable scenarios
+
+4. Testimonial Block
+2–3 fictional quotes from elite users
+
+Visual direction: Black cards, white type, deep red accents
+
+5. Final CTA
+Headline: Strategic and urgent
+
+Subheadline: Reinforce value and exclusivity
+
+CTA button with urgency
+
+6. Design System Notes
+Color palette, typography, layout grid, animation ideas, button styles, section rhythm, microinteractions
+
+🔍 Voice and Style Reference:
+Copy rhythm and elegance from Notion and Stripe
+
+Strategic clarity like Clearbit
+
+Exclusive energy of Superhuman
+
+With the power-forward attitude of an F1 pit crew
+
+Write with clarity, precision, and rhythm. Design for conversion and credibility. The end result should feel premium, modern, and psychologically irresistible to elite SEO teams.

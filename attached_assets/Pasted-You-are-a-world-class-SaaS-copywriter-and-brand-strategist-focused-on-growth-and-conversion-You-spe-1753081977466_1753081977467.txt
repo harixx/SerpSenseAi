@@ -1,0 +1,51 @@
+You are a world-class SaaS copywriter and brand strategist focused on growth and conversion. You specialize in writing emotionally intelligent, high-converting landing pages for premium, high-ticket B2B tools.
+
+Your task: Write a full, elite-level landing page for a cutting-edge AI-powered SEO product built for top-tier SEO professionals, strategists, and digital agencies.
+
+Product Name (working title):
+LLM-Powered Multi-Dimensional SERP Explainer
+
+Target Audience:
+Experienced SEO professionals, content teams, and digital agencies who are frustrated with shallow, keyword-only tools and are hungry for deeper strategic intelligence.
+
+Unique Value Proposition:
+This tool uses LLMs to explain why pages rank — not just who ranks — based on tone, UX, format, sentiment, and topical depth.
+
+Multi-dimensional SERP analysis across keyword, device, intent, and location.
+
+Delivers precise, intelligent recommendations to help teams outperform competitors through strategic content moves — not just surface-level optimization.
+
+Design Direction:
+Reflect a premium, royal aesthetic through language and layout that supports a bold dark red + black visual theme.
+
+Tone should feel vibrant, bold, and psychologically persuasive — evoking exclusivity, intelligence, and control.
+
+All messaging should align with high-status branding — minimal, sharp, emotionally potent.
+
+Think psychological color impact: dark red (power, ambition, urgency), black (elegance, confidence, depth).
+
+Brand & Voice Guidelines:
+Think of the tone as a blend of Notion, Stripe, Clearbit, and Superhuman, but with a darker, more commanding voice
+
+Emotionally intelligent, clean, confident — no fluff, no jargon
+
+Aspirational, exclusive — written for professionals at the top of their game
+
+Deliverables:
+Write a complete landing page that includes:
+
+A commanding, minimalist headline with emotional pull and a core benefit
+
+A supporting subheadline reinforcing strategic value
+
+A hero section with a clear CTA for early-access (invite-only)
+
+A visual feature/explainer block (describe layout and benefits)
+
+3–5 sharp bullet points or tactical use cases
+
+2–3 fictional testimonial-style quotes from elite users
+
+A final CTA with exclusivity and urgency
+
+Prioritize clarity, psychological pull, and confident rhythm. Make every word feel like it belongs in a high-stakes, premium tool used by elite teams who play to win.
