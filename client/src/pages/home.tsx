@@ -120,31 +120,40 @@ export default function Home() {
     // Try real F1 audio first
     const startRealAudio = () => {
       if (audioRef.current) {
-        console.log('Starting real F1 audio...');
-        audioRef.current.volume = 0.5;
-        audioRef.current.play().then(() => {
-          setAudioEnabled(true);
-          setUsingSyntheticAudio(false);
-          console.log('Real F1 audio started successfully!');
-        }).catch((e) => {
-          console.log('Real F1 audio failed, using synthetic:', e);
-          // Fallback to synthetic
-          if (f1AudioEngine.current) {
-            f1AudioEngine.current.setVolume(0.3);
-            f1AudioEngine.current.start();
+        console.log('Attempting to start real F1 audio...');
+        console.log('Audio element readyState:', audioRef.current.readyState);
+        console.log('Audio element src:', audioRef.current.src);
+        
+        audioRef.current.volume = 0.6;
+        audioRef.current.currentTime = 0;
+        
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
             setAudioEnabled(true);
-            setUsingSyntheticAudio(true);
-          }
-        });
+            setUsingSyntheticAudio(false);
+            console.log('✅ Real F1 audio started successfully!');
+          }).catch((e) => {
+            console.log('❌ Real F1 audio blocked:', e.message);
+            console.log('Falling back to synthetic audio...');
+            if (f1AudioEngine.current) {
+              f1AudioEngine.current.setVolume(0.3);
+              f1AudioEngine.current.start();
+              setAudioEnabled(true);
+              setUsingSyntheticAudio(true);
+            }
+          });
+        }
+      } else {
+        console.log('❌ Audio element not found');
       }
     };
     
-    // Try to start real audio immediately
-    startRealAudio();
-    
-    // Also try after delays
+    // Try to start real audio after a short delay to ensure element is ready
+    setTimeout(startRealAudio, 100);
     setTimeout(startRealAudio, 500);
     setTimeout(startRealAudio, 1000);
+    setTimeout(startRealAudio, 2000);
     
     return () => {
       if (f1AudioEngine.current) {
@@ -164,19 +173,22 @@ export default function Home() {
         
         // Try real audio first
         if (audioRef.current) {
-          audioRef.current.volume = 0.5;
+          console.log('User interaction - attempting audio start...');
+          audioRef.current.volume = 0.6;
+          audioRef.current.currentTime = 0;
           audioRef.current.play().then(() => {
             setAudioEnabled(true);
             setUsingSyntheticAudio(false);
-            console.log('Real F1 audio started on interaction!');
-          }).catch(() => {
+            console.log('✅ Real F1 audio started on interaction!');
+          }).catch((e) => {
+            console.log('❌ Real audio failed on interaction:', e.message);
             // Fallback to synthetic
             if (f1AudioEngine.current) {
               f1AudioEngine.current.setVolume(0.3);
               f1AudioEngine.current.start();
               setAudioEnabled(true);
               setUsingSyntheticAudio(true);
-              console.log('Synthetic F1 audio started on interaction!');
+              console.log('✅ Synthetic F1 audio started on interaction!');
             }
           });
         }
@@ -237,12 +249,13 @@ export default function Home() {
         preload="auto"
         className="hidden"
         onError={(e) => {
-          console.log('F1 audio failed to load, using synthetic fallback');
-          // Fallback to synthetic audio
+          console.log('F1 audio failed to load:', e);
+          console.log('Using synthetic fallback...');
           if (f1AudioEngine.current && !usingSyntheticAudio) {
             f1AudioEngine.current.setVolume(0.3);
             f1AudioEngine.current.start();
             setUsingSyntheticAudio(true);
+            setAudioEnabled(true);
           }
         }}
         onCanPlay={() => {
@@ -253,6 +266,12 @@ export default function Home() {
           setAudioEnabled(true);
           setUsingSyntheticAudio(false);
         }}
+        onLoadStart={() => {
+          console.log('F1 audio loading started...');
+        }}
+        onLoadedData={() => {
+          console.log('F1 audio data loaded successfully');
+        }}
       >
         <source src="/attached_assets/13464_1459539280_1753112009861.mp3" type="audio/mpeg" />
       </audio>
@@ -262,7 +281,7 @@ export default function Home() {
       {/* Audio Status */}
       {!audioEnabled && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-crimson/90 text-white px-4 py-2 rounded-lg text-sm font-bold animate-pulse">
-          Click anywhere to start F1 Audio! 🤘
+          Click anywhere to start F1 Audio
         </div>
       )}
       {/* Racing Video Background */}
@@ -442,11 +461,11 @@ export default function Home() {
             <Button
               variant={audioEnabled ? "default" : "outline"}
               size="sm"
-              className={audioEnabled ? "bg-crimson hover:bg-ruby text-white animate-pulse" : "border-crimson text-crimson hover:bg-crimson hover:text-white"}
+              className={audioEnabled ? "bg-crimson hover:bg-ruby text-white" : "border-crimson text-crimson hover:bg-crimson hover:text-white"}
               onClick={toggleAudio}
-              title={audioEnabled ? "Mute Heavy Metal F1 Sound" : "Enable Heavy Metal F1 Sound"}
+              title={audioEnabled ? "Mute F1 Sound" : "Enable F1 Sound"}
             >
-              {audioEnabled ? "🔊 🤘" : "🔇 Audio"} 
+              {audioEnabled ? "🔊" : "🔇"} Audio
             </Button>
           </div>
         </div>
