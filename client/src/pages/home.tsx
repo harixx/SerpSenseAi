@@ -124,13 +124,20 @@ export default function Home() {
             mixBlendMode: 'normal'
           }}
           onError={(e) => {
-            console.log('F1 racing video failed to load, trying backup video');
+            console.error('F1 racing video failed to load:', e);
+            console.log('Video source attempted:', e.currentTarget.currentSrc);
             e.currentTarget.style.display = 'none';
             const fallback = e.currentTarget.nextElementSibling as HTMLElement;
             if (fallback) fallback.style.display = 'block';
           }}
-          onLoadedData={() => {
-            console.log('F1 racing video loaded successfully');
+          onLoadedData={(e) => {
+            console.log('F1 racing video loaded successfully from:', e.currentTarget.currentSrc);
+          }}
+          onCanPlay={() => {
+            console.log('F1 racing video can start playing');
+          }}
+          onLoadStart={() => {
+            console.log('F1 racing video started loading');
           }}
         >
           <source src="/attached_assets/5cf22b7b7ee772d0a22fefbd4da43ab3-720p-preview_1753110183979.mp4" type="video/mp4" />
