@@ -329,7 +329,7 @@ export default function Home() {
                       </div>
                       <div>
                         <h4 className="font-playfair text-xl font-semibold text-white mb-2">Multi-Dimensional Intelligence</h4>
-                        <p className="text-platinum/70">Analyzes tone, sentiment, UX patterns, content structure, and topical depth—not just keywords and backlinks.</p>
+                        <p className="text-[#e7b008]">Analyzes tone, sentiment, UX patterns, content structure, and topical depth—not just keywords and backlinks.</p>
                       </div>
                     </div>
                   </CardContent>
@@ -345,7 +345,7 @@ export default function Home() {
                       </div>
                       <div>
                         <h4 className="font-playfair text-xl font-semibold text-white mb-2">Precision Targeting</h4>
-                        <p className="text-platinum/70">Cross-reference rankings by keyword, location, device type, and search intent for surgical precision.</p>
+                        <p className="text-[#e7b008]">Cross-reference rankings by keyword, location, device type, and search intent for surgical precision.</p>
                       </div>
                     </div>
                   </CardContent>
