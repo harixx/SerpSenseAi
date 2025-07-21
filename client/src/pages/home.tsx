@@ -109,9 +109,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen text-white overflow-x-hidden relative">
-      {/* Fixed F1 Video Background */}
+      {/* Racing Video Background */}
       <div className="fixed inset-0 z-0">
-        {/* F1 Racing Video Background */}
+        {/* Racing Video Background */}
         <video
           autoPlay
           muted
@@ -124,24 +124,57 @@ export default function Home() {
             mixBlendMode: 'normal'
           }}
           onError={(e) => {
-            console.log('F1 video failed to load, using animated background fallback');
+            console.log('Primary video failed to load, trying backup video');
             e.currentTarget.style.display = 'none';
             const fallback = e.currentTarget.nextElementSibling as HTMLElement;
             if (fallback) fallback.style.display = 'block';
           }}
           onLoadedData={() => {
-            console.log('F1 racing video loaded successfully');
+            console.log('Racing video loaded successfully');
           }}
         >
-          <source src="https://media.istockphoto.com/id/1300279099/video/multiple-open-wheel-single-seater-car-race-cars-driving-across-finish-line.mp4?s=mp4-640x640_is&k=20&c=8kJ7ZLJ9F5Q1nQEy5cKjzj8jNQj9KkL6J7Q5nQj8LnM=" type="video/mp4" />
+          <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4" type="video/mp4" />
+          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
         </video>
         
-        {/* Animated F1 background as fallback */}
-        <div className="w-full h-full animated-f1-background" style={{ display: 'none' }}>
-          <div className="f1-track-lines"></div>
-          <div className="f1-speed-blur"></div>
-          <div className="f1-racing-cars"></div>
-          <div className="f1-track-gradient"></div>
+        {/* Backup Racing Video */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover"
+          style={{ 
+            display: 'none',
+            backgroundAttachment: 'fixed',
+            mixBlendMode: 'normal'
+          }}
+          onError={(e) => {
+            console.log('Backup video failed to load, using animated background');
+            e.currentTarget.style.display = 'none';
+            const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+            if (fallback) fallback.style.display = 'block';
+          }}
+          onLoadedData={() => {
+            console.log('Backup racing video loaded successfully');
+          }}
+        >
+          <source src="https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4" type="video/mp4" />
+        </video>
+        
+        {/* Animated Racing Background as fallback */}
+        <div className="w-full h-full racing-background" style={{ display: 'none' }}>
+          <div className="racing-lines"></div>
+          <div className="speed-blur"></div>
+          <div className="racing-particles">
+            <div className="racing-particle"></div>
+            <div className="racing-particle"></div>
+            <div className="racing-particle"></div>
+            <div className="racing-particle"></div>
+            <div className="racing-particle"></div>
+            <div className="racing-particle"></div>
+          </div>
         </div>
         {/* Professional dark overlay for readability */}
         <div 
