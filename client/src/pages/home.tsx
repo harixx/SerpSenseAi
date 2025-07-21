@@ -139,9 +139,9 @@ export default function Home() {
               variants={fadeInUp}
               className="font-playfair text-6xl lg:text-7xl font-bold mb-6 leading-tight"
             >
-              <span className="text-white">Beyond</span>{" "}
+              <span className="text-platinum">Beyond</span>{" "}
               <span className="text-crimson text-shadow-glow">Keywords.</span><br />
-              <span className="text-white">Beyond</span>{" "}
+              <span className="text-platinum">Beyond</span>{" "}
               <span className="text-crimson text-shadow-glow">Rankings.</span>
             </motion.h1>
             
@@ -155,8 +155,8 @@ export default function Home() {
             </motion.p>
             
             <motion.div variants={fadeInUp} className="glassmorphism p-8 rounded-2xl max-w-lg mx-auto mb-8">
-              <h3 className="font-playfair text-2xl font-semibold mb-4 text-white">Join the Elite Waitlist</h3>
-              <p className="text-platinum/70 mb-6">Limited access. Strategic advantage.</p>
+              <h3 className="font-playfair text-2xl font-semibold mb-4 text-platinum">Join the Elite Waitlist</h3>
+              <p className="text-silver mb-6">Limited access. Strategic advantage.</p>
               
               <Form {...heroForm}>
                 <form onSubmit={heroForm.handleSubmit(onSubmit)} className="space-y-4" id="hero-form">
@@ -170,7 +170,7 @@ export default function Home() {
                             {...field}
                             type="email"
                             placeholder="Enter your professional email"
-                            className="w-full px-4 py-3 bg-obsidian/50 border border-crimson/30 rounded-lg text-white placeholder-platinum/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20"
+                            className="w-full px-4 py-3 bg-obsidian/50 border border-crimson/30 rounded-lg text-platinum placeholder-silver/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20"
                           />
                         </FormControl>
                         <FormMessage className="text-crimson" />
@@ -180,7 +180,7 @@ export default function Home() {
                   <Button
                     type="submit"
                     disabled={waitlistMutation.isPending}
-                    className="w-full bg-crimson hover:bg-ruby text-white py-3 px-6 rounded-lg font-semibold cta-hover animate-glow-pulse"
+                    className="w-full bg-crimson hover:bg-ruby text-platinum py-3 px-6 rounded-lg font-semibold cta-hover animate-glow-pulse"
                   >
                     {waitlistMutation.isPending ? "Processing..." : "Request Exclusive Access"}
                   </Button>
@@ -224,7 +224,7 @@ export default function Home() {
             variants={staggerContainer}
             className="text-center mb-16"
           >
-            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl lg:text-5xl font-bold text-white mb-6">
+            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl lg:text-5xl font-bold text-platinum mb-6">
               The AI Brain Behind{" "}
               <span className="text-crimson">SERP Domination</span>
             </motion.h2>
@@ -248,7 +248,7 @@ export default function Home() {
                 
                 <CardContent className="p-0 space-y-4">
                   <div className="flex items-center justify-between mb-6">
-                    <h4 className="font-playfair text-xl font-semibold text-white">Live SERP Analysis</h4>
+                    <h4 className="font-playfair text-xl font-semibold text-platinum">Live SERP Analysis</h4>
                     <div className="flex items-center space-x-2">
                       <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                       <span className="text-xs text-platinum/60">AI Processing</span>
@@ -258,26 +258,26 @@ export default function Home() {
                   <Card className="glassmorphism p-4 rounded-lg border border-crimson/20 feature-card">
                     <CardContent className="p-0">
                       <div className="flex justify-between items-start mb-2">
-                        <h5 className="text-white font-medium">Advanced SEO Strategies Guide</h5>
+                        <h5 className="text-platinum font-medium">Advanced SEO Strategies Guide</h5>
                         <span className="text-xs bg-crimson/20 text-crimson px-2 py-1 rounded">92% Match</span>
                       </div>
                       <p className="text-sm text-platinum/60 mb-3">Comprehensive guide covering technical and content optimization...</p>
                       <div className="grid grid-cols-2 gap-2 text-xs">
                         <div className="flex items-center">
                           <Brain className="w-3 h-3 text-gold mr-1" />
-                          <span>Authoritative Tone</span>
+                          <span className="text-silver">Authoritative Tone</span>
                         </div>
                         <div className="flex items-center">
                           <Globe className="w-3 h-3 text-gold mr-1" />
-                          <span>Mobile Optimized</span>
+                          <span className="text-silver">Mobile Optimized</span>
                         </div>
                         <div className="flex items-center">
                           <BarChart3 className="w-3 h-3 text-gold mr-1" />
-                          <span>High Depth Score</span>
+                          <span className="text-silver">High Depth Score</span>
                         </div>
                         <div className="flex items-center">
                           <Zap className="w-3 h-3 text-gold mr-1" />
-                          <span>Positive Sentiment</span>
+                          <span className="text-silver">Positive Sentiment</span>
                         </div>
                       </div>
                     </CardContent>
@@ -286,26 +286,26 @@ export default function Home() {
                   <Card className="glassmorphism p-4 rounded-lg border border-crimson/20 feature-card">
                     <CardContent className="p-0">
                       <div className="flex justify-between items-start mb-2">
-                        <h5 className="text-white font-medium">SEO Best Practices 2024</h5>
+                        <h5 className="text-platinum font-medium">SEO Best Practices 2024</h5>
                         <span className="text-xs bg-crimson/20 text-crimson px-2 py-1 rounded">87% Match</span>
                       </div>
                       <p className="text-sm text-platinum/60 mb-3">Updated strategies for modern search engine optimization...</p>
                       <div className="grid grid-cols-2 gap-2 text-xs">
                         <div className="flex items-center">
                           <Brain className="w-3 h-3 text-gold mr-1" />
-                          <span>Educational Tone</span>
+                          <span className="text-silver">Educational Tone</span>
                         </div>
                         <div className="flex items-center">
                           <Globe className="w-3 h-3 text-gold mr-1" />
-                          <span>Desktop Focused</span>
+                          <span className="text-silver">Desktop Focused</span>
                         </div>
                         <div className="flex items-center">
                           <BarChart3 className="w-3 h-3 text-gold mr-1" />
-                          <span>Medium Depth</span>
+                          <span className="text-silver">Medium Depth</span>
                         </div>
                         <div className="flex items-center">
                           <Zap className="w-3 h-3 text-gold mr-1" />
-                          <span>Neutral Sentiment</span>
+                          <span className="text-silver">Neutral Sentiment</span>
                         </div>
                       </div>
                     </CardContent>
@@ -330,7 +330,7 @@ export default function Home() {
                         <Brain className="text-crimson text-xl" />
                       </div>
                       <div>
-                        <h4 className="font-playfair text-xl font-semibold text-white mb-2">Multi-Dimensional Intelligence</h4>
+                        <h4 className="font-playfair text-xl font-semibold text-platinum mb-2">Multi-Dimensional Intelligence</h4>
                         <p className="text-platinum/70">Analyzes tone, sentiment, UX patterns, content structure, and topical depth—not just keywords and backlinks.</p>
                       </div>
                     </div>
@@ -346,7 +346,7 @@ export default function Home() {
                         <Target className="text-crimson text-xl" />
                       </div>
                       <div>
-                        <h4 className="font-playfair text-xl font-semibold text-white mb-2">Precision Targeting</h4>
+                        <h4 className="font-playfair text-xl font-semibold text-platinum mb-2">Precision Targeting</h4>
                         <p className="text-platinum/70">Cross-reference rankings by keyword, location, device type, and search intent for surgical precision.</p>
                       </div>
                     </div>
@@ -362,7 +362,7 @@ export default function Home() {
                         <Crown className="text-crimson text-xl" />
                       </div>
                       <div>
-                        <h4 className="font-playfair text-xl font-semibold text-white mb-2">Strategic Recommendations</h4>
+                        <h4 className="font-playfair text-xl font-semibold text-platinum mb-2">Strategic Recommendations</h4>
                         <p className="text-platinum/70">Receive actionable, intelligence-driven tactics that help you outperform—not just optimize.</p>
                       </div>
                     </div>
@@ -378,7 +378,7 @@ export default function Home() {
                         <Rocket className="text-crimson text-xl" />
                       </div>
                       <div>
-                        <h4 className="font-playfair text-xl font-semibold text-white mb-2">Performance Acceleration</h4>
+                        <h4 className="font-playfair text-xl font-semibold text-platinum mb-2">Performance Acceleration</h4>
                         <p className="text-platinum/70">Transform competitor analysis from guesswork into scientific advantage with LLM-powered insights.</p>
                       </div>
                     </div>
@@ -400,7 +400,7 @@ export default function Home() {
             variants={staggerContainer}
             className="text-center mb-16"
           >
-            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl lg:text-5xl font-bold text-white mb-6">
+            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl lg:text-5xl font-bold text-platinum mb-6">
               Built for <span className="text-crimson">Power Players</span>
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-xl text-platinum/70 max-w-3xl mx-auto">
@@ -422,7 +422,7 @@ export default function Home() {
                   <div className="w-16 h-16 bg-crimson/20 rounded-lg flex items-center justify-center mb-6">
                     <Building className="text-crimson text-2xl" />
                   </div>
-                  <h3 className="font-playfair text-2xl font-semibold text-white mb-4">Enterprise SEO Leads</h3>
+                  <h3 className="font-playfair text-2xl font-semibold text-platinum mb-4">Enterprise SEO Leads</h3>
                   <p className="text-platinum/70 mb-6">
                     "Instead of guessing why competitors rank, I can reverse-engineer their exact content strategy—tone, depth, UX patterns—and build superior alternatives."
                   </p>
@@ -440,7 +440,7 @@ export default function Home() {
                   <div className="w-16 h-16 bg-crimson/20 rounded-lg flex items-center justify-center mb-6">
                     <Users className="text-crimson text-2xl" />
                   </div>
-                  <h3 className="font-playfair text-2xl font-semibold text-white mb-4">Digital Agencies</h3>
+                  <h3 className="font-playfair text-2xl font-semibold text-platinum mb-4">Digital Agencies</h3>
                   <p className="text-platinum/70 mb-6">
                     "Client presentations transformed overnight. We now deliver concrete intelligence about why their competitors dominate specific niches—and how to beat them."
                   </p>
@@ -458,7 +458,7 @@ export default function Home() {
                   <div className="w-16 h-16 bg-crimson/20 rounded-lg flex items-center justify-center mb-6">
                     <PenTool className="text-crimson text-2xl" />
                   </div>
-                  <h3 className="font-playfair text-2xl font-semibold text-white mb-4">Content Strategists</h3>
+                  <h3 className="font-playfair text-2xl font-semibold text-platinum mb-4">Content Strategists</h3>
                   <p className="text-platinum/70 mb-6">
                     "Finally, data-driven content direction. I can identify the exact sentiment, tone, and depth that drives rankings in any niche—then optimize accordingly."
                   </p>
@@ -483,7 +483,7 @@ export default function Home() {
             variants={staggerContainer}
             className="text-center mb-16"
           >
-            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl lg:text-5xl font-bold text-white mb-6">
+            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl lg:text-5xl font-bold text-platinum mb-6">
               Trusted by <span className="text-crimson">Elite Teams</span>
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-xl text-platinum/70">
@@ -508,7 +508,7 @@ export default function Home() {
                       className="w-16 h-16 rounded-full object-cover mr-4"
                     />
                     <div>
-                      <h4 className="text-white font-semibold">Sarah Chen</h4>
+                      <h4 className="text-platinum font-semibold">Sarah Chen</h4>
                       <p className="text-platinum/60 text-sm">SEO Director, TechCorp</p>
                     </div>
                   </div>
@@ -534,7 +534,7 @@ export default function Home() {
                       className="w-16 h-16 rounded-full object-cover mr-4"
                     />
                     <div>
-                      <h4 className="text-white font-semibold">Marcus Rodriguez</h4>
+                      <h4 className="text-platinum font-semibold">Marcus Rodriguez</h4>
                       <p className="text-platinum/60 text-sm">Founder, Growth Labs</p>
                     </div>
                   </div>
@@ -560,7 +560,7 @@ export default function Home() {
                       className="w-16 h-16 rounded-full object-cover mr-4"
                     />
                     <div>
-                      <h4 className="text-white font-semibold">Elena Vasquez</h4>
+                      <h4 className="text-platinum font-semibold">Elena Vasquez</h4>
                       <p className="text-platinum/60 text-sm">Content Strategy Lead</p>
                     </div>
                   </div>
@@ -587,19 +587,19 @@ export default function Home() {
           >
             <div className="flex items-center space-x-2">
               <Shield className="w-4 h-4 text-gold" />
-              <span className="text-sm">Enterprise Security</span>
+              <span className="text-sm text-silver">Enterprise Security</span>
             </div>
             <div className="flex items-center space-x-2">
               <Award className="w-4 h-4 text-gold" />
-              <span className="text-sm">SOC 2 Compliant</span>
+              <span className="text-sm text-silver">SOC 2 Compliant</span>
             </div>
             <div className="flex items-center space-x-2">
               <Globe className="w-4 h-4 text-gold" />
-              <span className="text-sm">GDPR Ready</span>
+              <span className="text-sm text-silver">GDPR Ready</span>
             </div>
             <div className="flex items-center space-x-2">
               <Timer className="w-4 h-4 text-gold" />
-              <span className="text-sm">99.9% Uptime</span>
+              <span className="text-sm text-silver">99.9% Uptime</span>
             </div>
           </motion.div>
         </div>
@@ -625,7 +625,7 @@ export default function Home() {
             variants={staggerContainer}
             className="max-w-4xl mx-auto"
           >
-            <motion.h2 variants={fadeInUp} className="font-playfair text-5xl lg:text-6xl font-bold text-white mb-6">
+            <motion.h2 variants={fadeInUp} className="font-playfair text-5xl lg:text-6xl font-bold text-platinum mb-6">
               Stop Guessing.{" "}
               <span className="text-crimson text-shadow-glow">Start Dominating.</span>
             </motion.h2>
@@ -640,11 +640,11 @@ export default function Home() {
                 <div className="flex items-center justify-center space-x-4 mb-4">
                   <div className="flex items-center">
                     <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
-                    <span className="text-sm">30-Day Risk-Free Trial</span>
+                    <span className="text-sm text-silver">30-Day Risk-Free Trial</span>
                   </div>
                   <div className="flex items-center">
                     <UserPlus className="w-4 h-4 text-gold mr-2" />
-                    <span className="text-sm">Limited Cohort</span>
+                    <span className="text-sm text-silver">Limited Cohort</span>
                   </div>
                 </div>
                 <p className="text-platinum/60 text-sm">
@@ -664,7 +664,7 @@ export default function Home() {
                             {...field}
                             type="email"
                             placeholder="Your professional email"
-                            className="w-full px-4 py-3 bg-obsidian/50 border border-crimson/30 rounded-lg text-white placeholder-platinum/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20"
+                            className="w-full px-4 py-3 bg-obsidian/50 border border-crimson/30 rounded-lg text-platinum placeholder-silver/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20"
                           />
                         </FormControl>
                         <FormMessage className="text-crimson" />
@@ -674,7 +674,7 @@ export default function Home() {
                   <Button
                     type="submit"
                     disabled={waitlistMutation.isPending}
-                    className="w-full bg-crimson hover:bg-ruby text-white py-4 px-8 rounded-lg font-bold text-lg cta-hover animate-glow-pulse"
+                    className="w-full bg-crimson hover:bg-ruby text-platinum py-4 px-8 rounded-lg font-bold text-lg cta-hover animate-glow-pulse"
                   >
                     {waitlistMutation.isPending ? "Processing..." : "Secure Your Strategic Advantage"}
                   </Button>
