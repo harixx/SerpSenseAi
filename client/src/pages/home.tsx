@@ -109,6 +109,60 @@ export default function Home() {
 
   return (
     <div className="min-h-screen text-platinum overflow-x-hidden relative">
+      {/* Fixed F1 Video Background */}
+      <div className="fixed inset-0 z-0">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="w-full h-full object-cover"
+          style={{ 
+            backgroundAttachment: 'fixed',
+            mixBlendMode: 'normal'
+          }}
+          onError={(e) => {
+            console.log('Video failed to load, using fallback image');
+            e.currentTarget.style.display = 'none';
+            const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+            if (fallback) fallback.style.display = 'block';
+          }}
+        >
+          {/* High-quality F1 racing videos from Pixabay */}
+          <source src="https://cdn.pixabay.com/video/2023/04/24/159092-821073534_large.mp4" type="video/mp4" />
+          <source src="https://cdn.pixabay.com/video/2022/12/09/142516-781516854_large.mp4" type="video/mp4" />
+          <source src="https://cdn.pixabay.com/video/2023/07/14/171466-844264018_large.mp4" type="video/mp4" />
+        </video>
+        {/* Fallback Ferrari image */}
+        <img 
+          src="https://cdn.bhdw.net/im/ferrari-f1-75-formula-1-2022-new-car-front-view-red-91089_w635.webp" 
+          alt="Ferrari F1 Background"
+          className="w-full h-full object-cover"
+          style={{ display: 'none' }}
+        />
+        {/* Video overlay with blend mode */}
+        <div 
+          className="absolute inset-0 w-full h-full video-overlay"
+          style={{
+            background: 'linear-gradient(hsl(0, 84%, 60%), transparent 70%)',
+            backgroundSize: '100% 100%',
+            mixBlendMode: 'difference',
+            backgroundAttachment: 'fixed'
+          }}
+        ></div>
+        
+        {/* Additional performance overlay */}
+        <div 
+          className="absolute inset-0 w-full h-full"
+          style={{
+            background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, transparent 50%, rgba(185, 28, 28, 0.05) 100%)',
+            mixBlendMode: 'overlay',
+            pointerEvents: 'none'
+          }}
+        ></div>
+      </div>
+
       {/* Floating Background Elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Large floating shapes */}

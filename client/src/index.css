@@ -69,10 +69,7 @@
   html {
     height: 200vh; /* Creates vertical scroll for effect */
     background-color: hsl(0, 84%, 60%); /* Crimson red base */
-    background-image: url('https://cdn.bhdw.net/im/ferrari-f1-75-formula-1-2022-new-car-front-view-red-91089_w635.webp');
-    background-size: 100% auto;
-    background-position: top center;
-    background-attachment: fixed;
+    overflow-x: hidden;
   }
 
   body {
@@ -306,4 +303,18 @@
     transform: translateY(-20px) rotate(5deg) scale(1.1); 
     opacity: 0.9;
   }
+}
+
+/* Video background optimization */
+video {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+/* Smooth blend mode transitions */
+.video-overlay {
+  transition: mix-blend-mode 0.3s ease;
 }
