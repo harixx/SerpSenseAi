@@ -61,12 +61,41 @@
 @layer base {
   * {
     @apply border-border;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    /* Fixed background with SERP Intelligence themed pattern */
+    background-color: var(--charcoal);
+    background-image: 
+      radial-gradient(circle at 20% 80%, rgba(220, 38, 38, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(185, 28, 28, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(220, 38, 38, 0.08) 0%, transparent 50%),
+      linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(28, 28, 28, 0.8) 50%, rgba(0, 0, 0, 0.9) 100%);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    background-position: top center;
+    background-attachment: fixed;
+    min-height: 100vh;
   }
 
   body {
-    @apply font-sans antialiased bg-charcoal;
+    @apply font-sans antialiased;
     font-family: 'Inter', sans-serif;
     color: #e5e7eb;
+    min-height: 100vh;
+    background-image: linear-gradient(
+      135deg, 
+      hsla(0, 84%, 60%, 0.1) 0%, 
+      hsla(0, 79%, 41%, 0.05) 25%,
+      transparent 50%,
+      hsla(45, 93%, 47%, 0.03) 75%,
+      hsla(0, 84%, 60%, 0.08) 100%
+    );
+    background-size: 100% 100%;
+    mix-blend-mode: difference;
+    background-attachment: fixed;
   }
   
   .font-playfair {
@@ -278,4 +307,69 @@
 
 .animate-float-fast {
   animation: float-fast 4s ease-in-out infinite;
+}
+
+/* Background Scroll Effect Styles */
+.bg-scroll-effect {
+  position: relative;
+  background: transparent;
+}
+
+.bg-scroll-effect::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-image: 
+    radial-gradient(circle at 25% 75%, rgba(220, 38, 38, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 75% 25%, rgba(185, 28, 28, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(45, 93%, 47%, 0.1) 0%, transparent 60%),
+    linear-gradient(45deg, rgba(220, 38, 38, 0.05) 0%, transparent 30%, rgba(185, 28, 28, 0.08) 70%, transparent 100%);
+  background-size: 200% 200%, 150% 150%, 300% 300%, 100% 100%;
+  background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%;
+  background-attachment: fixed;
+  mix-blend-mode: overlay;
+  z-index: -1;
+  animation: scroll-bg-shift 20s ease-in-out infinite;
+}
+
+.bg-scroll-effect::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(
+    170deg,
+    hsla(0, 84%, 60%, 0.12) 0%,
+    transparent 25%,
+    hsla(0, 79%, 41%, 0.08) 50%,
+    transparent 75%,
+    hsla(45, 93%, 47%, 0.06) 100%
+  );
+  background-attachment: fixed;
+  mix-blend-mode: difference;
+  z-index: -1;
+}
+
+@keyframes scroll-bg-shift {
+  0%, 100% {
+    background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%;
+    opacity: 0.8;
+  }
+  25% {
+    background-position: 100% 0%, 0% 100%, 25% 75%, 25% 25%;
+    opacity: 1;
+  }
+  50% {
+    background-position: 100% 100%, 0% 0%, 75% 25%, 50% 50%;
+    opacity: 0.9;
+  }
+  75% {
+    background-position: 0% 100%, 100% 0%, 0% 0%, 75% 75%;
+    opacity: 1;
+  }
 }

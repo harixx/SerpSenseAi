@@ -108,7 +108,7 @@ export default function Home() {
   const spotsRemaining = Math.max(0, 100 - (waitlistCount?.count || 0));
 
   return (
-    <div className="min-h-screen bg-charcoal text-platinum overflow-x-hidden relative">
+    <div className="min-h-screen text-platinum overflow-x-hidden relative bg-scroll-effect">
       {/* Floating Background Elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Large floating shapes */}
