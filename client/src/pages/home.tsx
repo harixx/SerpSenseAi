@@ -267,7 +267,7 @@ export default function Home() {
                         </div>
                         <div className="flex items-center">
                           <Globe className="w-3 h-3 text-gold mr-1" />
-                          <span>Mobile Optimized</span>
+                          <span className="text-[#e5e7eb]">Mobile Optimized</span>
                         </div>
                         <div className="flex items-center">
                           <BarChart3 className="w-3 h-3 text-gold mr-1" />
@@ -275,7 +275,7 @@ export default function Home() {
                         </div>
                         <div className="flex items-center">
                           <Zap className="w-3 h-3 text-gold mr-1" />
-                          <span>Positive Sentiment</span>
+                          <span className="text-[#e5e7eb]">Positive Sentiment</span>
                         </div>
                       </div>
                     </CardContent>
