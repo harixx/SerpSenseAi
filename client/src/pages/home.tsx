@@ -508,7 +508,7 @@ export default function Home() {
                       <p className="text-sm text-[#e7b008]">SEO Director, TechCorp</p>
                     </div>
                   </div>
-                  <blockquote className="text-platinum/80 italic mb-4">
+                  <blockquote className="italic mb-4 text-[#e5e7eb]">
                     "This completely changed how we approach competitive analysis. We're not just tracking rankings—we're understanding the strategic thinking behind them."
                   </blockquote>
                   <div className="flex items-center text-gold text-sm">
