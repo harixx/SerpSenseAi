@@ -6,6 +6,7 @@ export class F1AudioEngine {
   private isPlaying = false;
 
   constructor() {
+    console.log('Initializing F1 Heavy Metal Audio Engine...');
     this.initAudioContext();
   }
 
@@ -15,14 +16,21 @@ export class F1AudioEngine {
       this.gainNode = this.audioContext.createGain();
       this.gainNode.connect(this.audioContext.destination);
       this.gainNode.gain.value = 0.1; // Start with low volume
+      console.log('F1 Heavy Metal Audio Context initialized successfully');
+      console.log('Audio Context state:', this.audioContext.state);
     } catch (error) {
-      console.log('Web Audio API not supported');
+      console.error('Web Audio API not supported:', error);
     }
   }
 
   private createF1EngineSound() {
-    if (!this.audioContext || !this.gainNode) return;
+    if (!this.audioContext || !this.gainNode) {
+      console.error('Audio context or gain node not available');
+      return;
+    }
 
+    console.log('Creating heavy metal F1 engine sound...');
+    
     // Stop any existing oscillators
     this.stop();
 
@@ -77,9 +85,13 @@ export class F1AudioEngine {
       this.oscillators.push(oscillator, lfo);
     });
 
+    console.log(`Created ${frequencies.length} heavy metal F1 oscillators`);
+    
     // Add engine rev variations and heavy metal beat
     this.addEngineRevs();
     this.addHeavyMetalBeat();
+    
+    console.log('Heavy metal F1 engine sound created successfully!');
   }
 
   private createDistortionCurve(amount: number): Float32Array {
@@ -183,15 +195,29 @@ export class F1AudioEngine {
   }
 
   public start() {
-    if (this.isPlaying) return;
-    
-    if (this.audioContext?.state === 'suspended') {
-      this.audioContext.resume();
+    if (this.isPlaying) {
+      console.log('F1 audio engine already playing');
+      return;
     }
     
-    this.isPlaying = true;
-    this.createF1EngineSound();
-    console.log('F1 synthetic audio engine started');
+    console.log('F1 audio engine starting...');
+    console.log('AudioContext state:', this.audioContext?.state);
+    
+    if (this.audioContext?.state === 'suspended') {
+      console.log('Resuming suspended audio context...');
+      this.audioContext.resume().then(() => {
+        console.log('Audio context resumed successfully');
+        this.isPlaying = true;
+        this.createF1EngineSound();
+        console.log('Heavy metal F1 synthetic audio engine started!');
+      }).catch(e => {
+        console.error('Failed to resume audio context:', e);
+      });
+    } else {
+      this.isPlaying = true;
+      this.createF1EngineSound();
+      console.log('Heavy metal F1 synthetic audio engine started!');
+    }
   }
 
   public stop() {

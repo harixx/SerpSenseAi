@@ -114,45 +114,44 @@ export default function Home() {
 
   // Initialize F1 Audio Engine
   useEffect(() => {
+    console.log('Initializing F1 Heavy Metal Audio Engine...');
     f1AudioEngine.current = new F1AudioEngine();
+    
+    // Auto-start on first user interaction
+    const startAudio = () => {
+      if (f1AudioEngine.current && !audioEnabled) {
+        console.log('Auto-starting heavy metal F1 audio...');
+        f1AudioEngine.current.setVolume(0.3);
+        f1AudioEngine.current.start();
+        setAudioEnabled(true);
+        setUsingSyntheticAudio(true);
+      }
+    };
+    
+    // Add click listener to trigger audio
+    const timeoutId = setTimeout(() => {
+      document.addEventListener('click', startAudio, { once: true });
+    }, 1000);
+    
     return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener('click', startAudio);
       if (f1AudioEngine.current) {
         f1AudioEngine.current.stop();
       }
     };
-  }, []);
+  }, [audioEnabled]);
 
   // F1 Audio Management
   useEffect(() => {
     const handleUserInteraction = () => {
-      if (!audioEnabled) {
-        // Try HTML5 audio first
-        if (audioRef.current) {
-          audioRef.current.volume = 0.25;
-          audioRef.current.play().then(() => {
-            setAudioEnabled(true);
-            setUsingSyntheticAudio(false);
-            console.log('F1 racing audio (HTML5) started');
-          }).catch((e) => {
-            console.log('HTML5 audio failed, using heavy metal F1 engine:', e);
-            // Fallback to synthetic audio
-            if (f1AudioEngine.current) {
-              f1AudioEngine.current.setVolume(0.2); // Increased volume for heavy metal
-              f1AudioEngine.current.start();
-              setAudioEnabled(true);
-              setUsingSyntheticAudio(true);
-            }
-          });
-        } else {
-          // Use synthetic audio directly
-          if (f1AudioEngine.current) {
-            f1AudioEngine.current.setVolume(0.2); // Heavy metal volume
-            f1AudioEngine.current.start();
-            setAudioEnabled(true);
-            setUsingSyntheticAudio(true);
-            console.log('F1 heavy metal audio started');
-          }
-        }
+      if (!audioEnabled && f1AudioEngine.current) {
+        console.log('Starting heavy metal F1 audio engine...');
+        f1AudioEngine.current.setVolume(0.3); // Higher volume for heavy metal
+        f1AudioEngine.current.start();
+        setAudioEnabled(true);
+        setUsingSyntheticAudio(true);
+        console.log('Heavy metal F1 synthetic audio started');
       }
     };
 
@@ -171,59 +170,38 @@ export default function Home() {
   const toggleAudio = () => {
     if (audioEnabled) {
       // Stop audio
-      if (usingSyntheticAudio && f1AudioEngine.current) {
+      if (f1AudioEngine.current) {
         f1AudioEngine.current.stop();
-      } else if (audioRef.current) {
-        audioRef.current.pause();
+        console.log('Heavy metal F1 audio stopped');
       }
       setAudioEnabled(false);
     } else {
-      // Start audio
-      if (usingSyntheticAudio && f1AudioEngine.current) {
+      // Start heavy metal F1 audio
+      if (f1AudioEngine.current) {
+        f1AudioEngine.current.setVolume(0.3);
         f1AudioEngine.current.start();
         setAudioEnabled(true);
-      } else if (audioRef.current) {
-        audioRef.current.play().then(() => {
-          setAudioEnabled(true);
-        }).catch((e) => {
-          console.log('HTML5 audio failed, switching to synthetic:', e);
-          if (f1AudioEngine.current) {
-            f1AudioEngine.current.start();
-            setAudioEnabled(true);
-            setUsingSyntheticAudio(true);
-          }
-        });
-      } else {
-        // Fallback to heavy metal synthetic
-        if (f1AudioEngine.current) {
-          f1AudioEngine.current.setVolume(0.2);
-          f1AudioEngine.current.start();
-          setAudioEnabled(true);
-          setUsingSyntheticAudio(true);
-        }
+        setUsingSyntheticAudio(true);
+        console.log('Heavy metal F1 audio started via toggle');
       }
     }
   };
 
   return (
     <div className="min-h-screen text-white overflow-x-hidden relative">
-      {/* F1 Racing Audio */}
-      <audio
-        ref={audioRef}
-        loop
-        preload="auto"
-        className="hidden"
-        onError={(e) => {
-          console.log('F1 audio failed to load, using fallback');
-        }}
-        onCanPlay={() => {
-          console.log('F1 racing audio ready to play');
-        }}
-      >
-        <source src="https://www.soundjay.com/misc/sounds/race-car-passing-by-02.mp3" type="audio/mpeg" />
-        <source src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-one/zapsplat_transport_race_car_formula_one_f1_rev_engine_002_14419.mp3" type="audio/mpeg" />
-        <source src="https://freesound.org/data/previews/316/316847_5123451-lq.mp3" type="audio/mpeg" />
-      </audio>
+      {/* Heavy Metal F1 Audio Status */}
+      {audioEnabled && usingSyntheticAudio && (
+        <div className="fixed top-20 right-4 z-50 bg-black/80 text-crimson px-3 py-1 rounded text-sm font-bold animate-bounce">
+          🤘 HEAVY METAL F1 ACTIVE 🤘
+        </div>
+      )}
+      
+      {/* Audio Instructions */}
+      {!audioEnabled && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-crimson/90 text-white px-4 py-2 rounded-lg text-sm font-bold animate-pulse">
+          Click "Start Audio" for Heavy Metal F1 Experience! 🤘
+        </div>
+      )}
       {/* Racing Video Background */}
       <div className="fixed inset-0 z-0">
         {/* Racing Video Background */}
@@ -399,13 +377,13 @@ export default function Home() {
               Request Access
             </Button>
             <Button
-              variant="outline"
-              size="icon"
-              className="border-crimson text-crimson hover:bg-crimson hover:text-white"
+              variant={audioEnabled ? "default" : "outline"}
+              size="sm"
+              className={audioEnabled ? "bg-crimson hover:bg-ruby text-white animate-pulse" : "border-crimson text-crimson hover:bg-crimson hover:text-white"}
               onClick={toggleAudio}
-              title={audioEnabled ? "Mute Heavy Metal F1 Sound" : "Enable Heavy Metal F1 Sound"}
+              title={audioEnabled ? "Mute Heavy Metal F1 Sound" : "Click for Heavy Metal F1 Sound!"}
             >
-              {audioEnabled ? "🔊" : "🔇"} {usingSyntheticAudio && audioEnabled ? "🤘" : ""}
+              {audioEnabled ? "🔊 🤘" : "🔇 Start Audio"} 
             </Button>
           </div>
         </div>
