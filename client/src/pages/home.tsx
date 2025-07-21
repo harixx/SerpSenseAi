@@ -257,12 +257,7 @@ export default function Home() {
         <source src="/attached_assets/13464_1459539280_1753112009861.mp3" type="audio/mpeg" />
       </audio>
 
-      {/* Heavy Metal F1 Audio Status */}
-      {audioEnabled && (
-        <div className="fixed top-20 right-4 z-50 bg-black/80 text-crimson px-3 py-1 rounded text-sm font-bold animate-bounce">
-          🤘 {usingSyntheticAudio ? "SYNTHETIC" : "REAL"} F1 AUDIO 🤘
-        </div>
-      )}
+
       
       {/* Audio Status */}
       {!audioEnabled && (
