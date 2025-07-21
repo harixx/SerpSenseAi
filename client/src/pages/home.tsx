@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { F1AudioEngine } from "@/utils/f1Audio";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -49,6 +50,10 @@ export default function Home() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { scrollY } = useScroll();
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const f1AudioEngine = useRef<F1AudioEngine | null>(null);
+  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [usingSyntheticAudio, setUsingSyntheticAudio] = useState(false);
   
   // Parallax transforms for different scroll speeds
   const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
@@ -107,8 +112,117 @@ export default function Home() {
 
   const spotsRemaining = Math.max(0, 100 - (waitlistCount?.count || 0));
 
+  // Initialize F1 Audio Engine
+  useEffect(() => {
+    f1AudioEngine.current = new F1AudioEngine();
+    return () => {
+      if (f1AudioEngine.current) {
+        f1AudioEngine.current.stop();
+      }
+    };
+  }, []);
+
+  // F1 Audio Management
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      if (!audioEnabled) {
+        // Try HTML5 audio first
+        if (audioRef.current) {
+          audioRef.current.volume = 0.25;
+          audioRef.current.play().then(() => {
+            setAudioEnabled(true);
+            setUsingSyntheticAudio(false);
+            console.log('F1 racing audio (HTML5) started');
+          }).catch((e) => {
+            console.log('HTML5 audio failed, using synthetic F1 engine:', e);
+            // Fallback to synthetic audio
+            if (f1AudioEngine.current) {
+              f1AudioEngine.current.setVolume(0.15);
+              f1AudioEngine.current.start();
+              setAudioEnabled(true);
+              setUsingSyntheticAudio(true);
+            }
+          });
+        } else {
+          // Use synthetic audio directly
+          if (f1AudioEngine.current) {
+            f1AudioEngine.current.setVolume(0.15);
+            f1AudioEngine.current.start();
+            setAudioEnabled(true);
+            setUsingSyntheticAudio(true);
+            console.log('F1 synthetic audio started');
+          }
+        }
+      }
+    };
+
+    // Try to start audio on any user interaction
+    document.addEventListener('click', handleUserInteraction, { once: true });
+    document.addEventListener('touchstart', handleUserInteraction, { once: true });
+    document.addEventListener('scroll', handleUserInteraction, { once: true });
+
+    return () => {
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('touchstart', handleUserInteraction);
+      document.removeEventListener('scroll', handleUserInteraction);
+    };
+  }, [audioEnabled]);
+
+  const toggleAudio = () => {
+    if (audioEnabled) {
+      // Stop audio
+      if (usingSyntheticAudio && f1AudioEngine.current) {
+        f1AudioEngine.current.stop();
+      } else if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      setAudioEnabled(false);
+    } else {
+      // Start audio
+      if (usingSyntheticAudio && f1AudioEngine.current) {
+        f1AudioEngine.current.start();
+        setAudioEnabled(true);
+      } else if (audioRef.current) {
+        audioRef.current.play().then(() => {
+          setAudioEnabled(true);
+        }).catch((e) => {
+          console.log('HTML5 audio failed, switching to synthetic:', e);
+          if (f1AudioEngine.current) {
+            f1AudioEngine.current.start();
+            setAudioEnabled(true);
+            setUsingSyntheticAudio(true);
+          }
+        });
+      } else {
+        // Fallback to synthetic
+        if (f1AudioEngine.current) {
+          f1AudioEngine.current.start();
+          setAudioEnabled(true);
+          setUsingSyntheticAudio(true);
+        }
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen text-white overflow-x-hidden relative">
+      {/* F1 Racing Audio */}
+      <audio
+        ref={audioRef}
+        loop
+        preload="auto"
+        className="hidden"
+        onError={(e) => {
+          console.log('F1 audio failed to load, using fallback');
+        }}
+        onCanPlay={() => {
+          console.log('F1 racing audio ready to play');
+        }}
+      >
+        <source src="https://www.soundjay.com/misc/sounds/race-car-passing-by-02.mp3" type="audio/mpeg" />
+        <source src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-one/zapsplat_transport_race_car_formula_one_f1_rev_engine_002_14419.mp3" type="audio/mpeg" />
+        <source src="https://freesound.org/data/previews/316/316847_5123451-lq.mp3" type="audio/mpeg" />
+      </audio>
       {/* Racing Video Background */}
       <div className="fixed inset-0 z-0">
         {/* Racing Video Background */}
@@ -275,13 +389,24 @@ export default function Home() {
           <div className="font-playfair text-2xl font-bold text-crimson">
             SERP Intelligence
           </div>
-          <Button 
-            variant="default" 
-            className="bg-crimson hover:bg-ruby text-white px-6 py-2 cta-hover"
-            onClick={() => document.getElementById('hero-form')?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            Request Access
-          </Button>
+          <div className="flex items-center space-x-4">
+            <Button 
+              variant="default" 
+              className="bg-crimson hover:bg-ruby text-white px-6 py-2 cta-hover"
+              onClick={() => document.getElementById('hero-form')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              Request Access
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="border-crimson text-crimson hover:bg-crimson hover:text-white"
+              onClick={toggleAudio}
+              title={audioEnabled ? "Mute F1 Sound" : "Enable F1 Sound"}
+            >
+              {audioEnabled ? "🔊" : "🔇"} {usingSyntheticAudio && audioEnabled ? "⚡" : ""}
+            </Button>
+          </div>
         </div>
       </nav>
       {/* Hero Section */}
