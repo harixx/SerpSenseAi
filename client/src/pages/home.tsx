@@ -291,7 +291,7 @@ export default function Home() {
                       <div className="grid grid-cols-2 gap-2 text-xs">
                         <div className="flex items-center">
                           <Brain className="w-3 h-3 text-gold mr-1" />
-                          <span>Educational Tone</span>
+                          <span className="text-[#e5e7eb]">Educational Tone</span>
                         </div>
                         <div className="flex items-center">
                           <Globe className="w-3 h-3 text-gold mr-1" />
