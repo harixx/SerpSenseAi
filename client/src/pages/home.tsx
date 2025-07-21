@@ -124,17 +124,17 @@ export default function Home() {
             mixBlendMode: 'normal'
           }}
           onError={(e) => {
-            console.log('Primary video failed to load, trying backup video');
+            console.log('F1 racing video failed to load, trying backup video');
             e.currentTarget.style.display = 'none';
             const fallback = e.currentTarget.nextElementSibling as HTMLElement;
             if (fallback) fallback.style.display = 'block';
           }}
           onLoadedData={() => {
-            console.log('Racing video loaded successfully');
+            console.log('F1 racing video loaded successfully');
           }}
         >
+          <source src="/attached_assets/5cf22b7b7ee772d0a22fefbd4da43ab3-720p-preview_1753110183979.mp4" type="video/mp4" />
           <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4" type="video/mp4" />
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
         </video>
         
         {/* Backup Racing Video */}
