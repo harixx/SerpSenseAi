@@ -49,8 +49,17 @@ export default function Home() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 300], [0, 50]);
-  const y2 = useTransform(scrollY, [0, 300], [0, -50]);
+  
+  // Parallax transforms for different scroll speeds
+  const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
+  const y2 = useTransform(scrollY, [0, 1000], [0, -150]);
+  const y3 = useTransform(scrollY, [0, 1000], [0, 100]);
+  const y4 = useTransform(scrollY, [0, 1000], [0, -250]);
+  const rotate1 = useTransform(scrollY, [0, 1000], [0, 360]);
+  const rotate2 = useTransform(scrollY, [0, 1000], [0, -180]);
+  const scale1 = useTransform(scrollY, [0, 500], [1, 1.2]);
+  const opacity1 = useTransform(scrollY, [0, 300], [0.1, 0.3]);
+  const opacity2 = useTransform(scrollY, [200, 800], [0.1, 0.4]);
 
   const { data: waitlistCount } = useQuery<{ count: number }>({
     queryKey: ["/api/waitlist/count"],
@@ -99,7 +108,73 @@ export default function Home() {
   const spotsRemaining = Math.max(0, 100 - (waitlistCount?.count || 0));
 
   return (
-    <div className="min-h-screen bg-charcoal text-platinum overflow-x-hidden">
+    <div className="min-h-screen bg-charcoal text-platinum overflow-x-hidden relative">
+      {/* Floating Background Elements */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        {/* Large floating shapes */}
+        <motion.div
+          style={{ y: y1, rotate: rotate1, scale: scale1, opacity: opacity1 }}
+          className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-crimson/20 to-ruby/10 rounded-full blur-2xl"
+        />
+        <motion.div
+          style={{ y: y2, rotate: rotate2, opacity: opacity2 }}
+          className="absolute top-1/4 right-10 w-80 h-80 bg-gradient-to-tl from-gold/15 to-crimson/10 rounded-full blur-3xl"
+        />
+        <motion.div
+          style={{ y: y3, opacity: opacity1 }}
+          className="absolute bottom-1/3 left-1/4 w-64 h-64 bg-gradient-to-tr from-ruby/20 to-gold/15 rounded-full blur-2xl"
+        />
+        <motion.div
+          style={{ y: y4, rotate: rotate1, opacity: opacity2 }}
+          className="absolute bottom-10 right-1/4 w-72 h-72 bg-gradient-to-bl from-crimson/15 to-obsidian/20 rounded-full blur-3xl"
+        />
+        
+        {/* Geometric floating elements */}
+        <motion.div
+          style={{ y: y1, rotate: rotate2 }}
+          className="absolute top-1/2 left-1/2 w-32 h-32 border border-crimson/30 rotate-45 opacity-20 animate-float-slow"
+        />
+        <motion.div
+          style={{ y: y3, rotate: rotate1 }}
+          className="absolute top-1/3 right-1/3 w-24 h-24 border border-gold/40 rounded-full opacity-25 animate-float-medium"
+        />
+        <motion.div
+          style={{ y: y2, rotate: rotate2 }}
+          className="absolute bottom-1/2 left-1/3 w-16 h-16 bg-ruby/20 rotate-45 opacity-30 animate-float-fast"
+        />
+        
+        {/* Floating particles */}
+        {[...Array(12)].map((_, i) => {
+          const particleY = useTransform(scrollY, [0, 1000], [0, (i % 3 + 1) * 100]);
+          const particleX = useTransform(scrollY, [0, 1000], [0, (i % 2 === 0 ? 50 : -50)]);
+          const particleOpacity = useTransform(scrollY, [0, 500], [0.2, 0.6]);
+          
+          return (
+            <motion.div
+              key={i}
+              style={{
+                y: particleY,
+                x: particleX,
+                opacity: particleOpacity,
+                left: `${(i * 8.33) % 100}%`,
+                top: `${(i * 12) % 100}%`,
+              }}
+              className={`absolute w-2 h-2 bg-crimson/40 rounded-full blur-sm`}
+              animate={{
+                scale: [1, 1.5, 1],
+                opacity: [0.2, 0.6, 0.2]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                repeatType: "reverse",
+                delay: i * 0.2
+              }}
+            />
+          );
+        })}
+      </div>
+
       {/* Sticky Navigation */}
       <nav className="fixed top-0 w-full z-50 glassmorphism border-b border-crimson/20">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -116,15 +191,34 @@ export default function Home() {
         </div>
       </nav>
       {/* Hero Section */}
-      <section className="min-h-screen hero-gradient flex items-center justify-center relative overflow-hidden">
-        {/* Animated background elements */}
+      <section className="min-h-screen hero-gradient flex items-center justify-center relative overflow-hidden z-10">
+        {/* Hero-specific animated elements */}
         <motion.div
-          style={{ y: y1 }}
-          className="absolute top-20 left-20 w-72 h-72 bg-crimson rounded-full blur-3xl opacity-10"
+          style={{ y: y1, scale: scale1 }}
+          className="absolute top-20 left-20 w-72 h-72 bg-crimson rounded-full blur-3xl opacity-15"
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.1, 0.2, 0.1]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
         />
         <motion.div
-          style={{ y: y2 }}
-          className="absolute bottom-20 right-20 w-96 h-96 bg-ruby rounded-full blur-3xl opacity-10"
+          style={{ y: y2, rotate: rotate1 }}
+          className="absolute bottom-20 right-20 w-96 h-96 bg-ruby rounded-full blur-3xl opacity-15"
+          animate={{
+            scale: [1, 1.15, 1],
+            opacity: [0.1, 0.25, 0.1]
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            repeatType: "reverse",
+            delay: 2
+          }}
         />
         
         <div className="container mx-auto px-6 text-center relative z-10">
@@ -213,7 +307,16 @@ export default function Home() {
         </div>
       </section>
       {/* Feature Explainer */}
-      <section className="py-20 bg-obsidian/50 relative">
+      <section className="py-20 bg-obsidian/50 relative z-10 overflow-hidden">
+        {/* Section-specific animated background */}
+        <motion.div
+          style={{ y: y3, opacity: opacity1 }}
+          className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-gold/10 to-crimson/5 rounded-full blur-3xl"
+        />
+        <motion.div
+          style={{ y: y4, rotate: rotate2 }}
+          className="absolute -bottom-32 -right-32 w-80 h-80 bg-gradient-to-tl from-ruby/15 to-gold/10 rounded-full blur-2xl"
+        />
         <div className="container mx-auto px-6">
           <motion.div
             initial="initial"
@@ -407,7 +510,16 @@ export default function Home() {
         </div>
       </section>
       {/* Use Case Block */}
-      <section className="py-20 bg-charcoal relative">
+      <section className="py-20 bg-charcoal relative z-10 overflow-hidden">
+        {/* Use case section animated elements */}
+        <motion.div
+          style={{ y: y1, scale: scale1, opacity: opacity2 }}
+          className="absolute top-1/4 left-10 w-64 h-64 bg-gradient-to-r from-crimson/10 to-transparent rounded-full blur-2xl"
+        />
+        <motion.div
+          style={{ y: y2, rotate: rotate1 }}
+          className="absolute bottom-1/3 right-10 w-72 h-72 bg-gradient-to-l from-gold/10 to-transparent rounded-full blur-3xl"
+        />
         <div className="container mx-auto px-6">
           <motion.div
             initial="initial"
