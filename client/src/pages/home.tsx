@@ -531,7 +531,7 @@ export default function Home() {
                     />
                     <div>
                       <h4 className="text-white font-semibold">Marcus Rodriguez</h4>
-                      <p className="text-platinum/60 text-sm">Founder, Growth Labs</p>
+                      <p className="text-sm text-[#e7b008]">Founder, Growth Labs</p>
                     </div>
                   </div>
                   <blockquote className="text-platinum/80 italic mb-4">
