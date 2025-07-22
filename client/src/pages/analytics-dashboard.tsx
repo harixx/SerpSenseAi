@@ -90,7 +90,7 @@ export default function AnalyticsDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-crimson">
-                {data?.conversions?.conversionRate?.toFixed(1) || 0}%
+                {data?.conversions?.conversionRate || 0}%
               </div>
               <p className="text-xs text-platinum/50">
                 {data?.conversions?.signups || 0} of {data?.conversions?.totalVisitors || 0} visitors
@@ -108,7 +108,7 @@ export default function AnalyticsDashboard() {
                 {Math.round((data?.sessions?.avgTimeOnSite || 0) / 60)}m
               </div>
               <p className="text-xs text-platinum/50">
-                Bounce rate: {data?.sessions?.bounceRate?.toFixed(1) || 0}%
+                Bounce rate: {data?.sessions?.bounceRate || 0}%
               </p>
             </CardContent>
           </Card>
@@ -160,7 +160,7 @@ export default function AnalyticsDashboard() {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-platinum/70">Engagement Rate</span>
-                      <span className="text-platinum">{(100 - (data?.sessions?.bounceRate || 0)).toFixed(1)}%</span>
+                      <span className="text-platinum">{(100 - (data?.sessions?.bounceRate || 0))}%</span>
                     </div>
                     <Progress 
                       value={100 - (data?.sessions?.bounceRate || 0)} 
@@ -173,7 +173,7 @@ export default function AnalyticsDashboard() {
                       <span className="text-platinum/70">Return Visitor Rate</span>
                       <span className="text-platinum">
                         {data?.sessions?.totalSessions && data?.sessions?.uniqueUsers ? 
-                          (((data.sessions.totalSessions - data.sessions.uniqueUsers) / data.sessions.totalSessions) * 100).toFixed(1) : 0}%
+                          Math.round(((data.sessions.totalSessions - data.sessions.uniqueUsers) / data.sessions.totalSessions) * 100) : 0}%
                       </span>
                     </div>
                     <Progress 
@@ -238,7 +238,7 @@ export default function AnalyticsDashboard() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-crimson">{element.conversionRate?.toFixed(1) || 0}%</p>
+                        <p className="font-bold text-crimson">{element.conversionRate || 0}%</p>
                         <p className="text-sm text-platinum/60">{element.clicks} clicks</p>
                       </div>
                     </div>
