@@ -636,7 +636,7 @@ video {
   right: 0;
   bottom: 0;
   background: transparent;
-  z-index: 10;
+  z-index: 30;
   pointer-events: none;
 }
 
@@ -649,12 +649,41 @@ video {
   bottom: 0;
   background: linear-gradient(
     135deg,
-    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.3) 0%,
     transparent 20%,
     transparent 80%,
-    rgba(0, 0, 0, 0.1) 100%
+    rgba(0, 0, 0, 0.3) 100%
   );
-  z-index: 10;
+  z-index: 30;
+}
+
+/* Additional video blocking for picture-in-picture and controls */
+video::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* Force hide any browser video UI elements */
+video[controls] {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+video::-webkit-media-controls-overlay-enclosure {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+video::-webkit-media-controls-panel {
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
 /* Hide all video controls and picture-in-picture preview */

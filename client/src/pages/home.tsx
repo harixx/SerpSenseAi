@@ -409,37 +409,132 @@ export default function Home() {
           }}
         ></div>
         
-        {/* Interactive corner shields to hide any video previews */}
+        {/* Enhanced corner shields to completely hide video previews */}
         <div 
-          className="absolute top-0 left-0 w-32 h-32"
+          className="absolute top-0 left-0 w-48 h-48"
           style={{
-            background: 'radial-gradient(circle at top left, rgba(0, 0, 0, 0.8) 0%, transparent 70%)',
+            background: 'radial-gradient(circle at top left, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 80%)',
             pointerEvents: 'none',
-            zIndex: 15
+            zIndex: 20
           }}
         ></div>
         <div 
-          className="absolute top-0 right-0 w-32 h-32"
+          className="absolute top-0 right-0 w-48 h-48"
           style={{
-            background: 'radial-gradient(circle at top right, rgba(0, 0, 0, 0.8) 0%, transparent 70%)',
+            background: 'radial-gradient(circle at top right, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 80%)',
             pointerEvents: 'none',
-            zIndex: 15
+            zIndex: 20
           }}
         ></div>
         <div 
-          className="absolute bottom-0 left-0 w-32 h-32"
+          className="absolute bottom-0 left-0 w-48 h-48"
           style={{
-            background: 'radial-gradient(circle at bottom left, rgba(0, 0, 0, 0.8) 0%, transparent 70%)',
+            background: 'radial-gradient(circle at bottom left, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 80%)',
             pointerEvents: 'none',
-            zIndex: 15
+            zIndex: 20
           }}
         ></div>
         <div 
-          className="absolute bottom-0 right-0 w-32 h-32"
+          className="absolute bottom-0 right-0 w-48 h-48"
           style={{
-            background: 'radial-gradient(circle at bottom right, rgba(0, 0, 0, 0.8) 0%, transparent 70%)',
+            background: 'radial-gradient(circle at bottom right, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 80%)',
             pointerEvents: 'none',
-            zIndex: 15
+            zIndex: 20
+          }}
+        ></div>
+        
+        {/* Additional edge shields for video preview blocking */}
+        <div 
+          className="absolute top-0 left-0 w-full h-20"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, transparent 100%)',
+            pointerEvents: 'none',
+            zIndex: 18
+          }}
+        ></div>
+        <div 
+          className="absolute bottom-0 left-0 w-full h-20"
+          style={{
+            background: 'linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 100%)',
+            pointerEvents: 'none',
+            zIndex: 18
+          }}
+        ></div>
+        <div 
+          className="absolute top-0 left-0 w-20 h-full"
+          style={{
+            background: 'linear-gradient(to right, rgba(0, 0, 0, 0.6) 0%, transparent 100%)',
+            pointerEvents: 'none',
+            zIndex: 18
+          }}
+        ></div>
+        <div 
+          className="absolute top-0 right-0 w-20 h-full"
+          style={{
+            background: 'linear-gradient(to left, rgba(0, 0, 0, 0.6) 0%, transparent 100%)',
+            pointerEvents: 'none',
+            zIndex: 18
+          }}
+        ></div>
+        
+        {/* Specific bottom-left video preview blocker */}
+        <div 
+          className="absolute bottom-0 left-0 w-64 h-48"
+          style={{
+            background: `
+              linear-gradient(135deg, 
+                rgba(10, 10, 10, 0.98) 0%, 
+                rgba(20, 20, 20, 0.9) 30%, 
+                rgba(0, 0, 0, 0.7) 60%, 
+                transparent 100%
+              )
+            `,
+            pointerEvents: 'none',
+            zIndex: 25,
+            backdropFilter: 'blur(2px)'
+          }}
+        ></div>
+        
+        {/* Additional comprehensive video blocker overlay */}
+        <div 
+          className="absolute inset-0 w-full h-full"
+          style={{
+            background: `
+              radial-gradient(ellipse at bottom left, 
+                rgba(10, 10, 10, 0.95) 0%, 
+                rgba(0, 0, 0, 0.6) 15%, 
+                transparent 30%
+              ),
+              radial-gradient(ellipse at bottom right, 
+                rgba(10, 10, 10, 0.95) 0%, 
+                rgba(0, 0, 0, 0.6) 15%, 
+                transparent 30%
+              ),
+              radial-gradient(ellipse at top left, 
+                rgba(10, 10, 10, 0.95) 0%, 
+                rgba(0, 0, 0, 0.6) 15%, 
+                transparent 30%
+              ),
+              radial-gradient(ellipse at top right, 
+                rgba(10, 10, 10, 0.95) 0%, 
+                rgba(0, 0, 0, 0.6) 15%, 
+                transparent 30%
+              )
+            `,
+            pointerEvents: 'none',
+            zIndex: 30
+          }}
+        ></div>
+        
+        {/* Final layer - complete edge masking */}
+        <div 
+          className="absolute bottom-0 left-0"
+          style={{
+            width: '200px',
+            height: '150px',
+            background: 'linear-gradient(45deg, rgba(10, 10, 10, 1) 0%, rgba(10, 10, 10, 0.8) 50%, transparent 100%)',
+            pointerEvents: 'none',
+            zIndex: 35
           }}
         ></div>
       </div>
