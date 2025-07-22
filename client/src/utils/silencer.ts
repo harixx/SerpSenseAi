@@ -9,59 +9,66 @@ export const silenceConsole = () => {
   const originalWarn = console.warn;
   const originalError = console.error;
   
-  // Override console methods with filtering
+  // Override console methods with comprehensive filtering
   console.log = (...args: any[]) => {
     const message = args.join(' ');
-    // Block React DevTools and other development messages
+    // Block all development and framework messages
     if (message.includes('Download the React DevTools') || 
         message.includes('react-devtools') ||
-        message.includes('development experience')) {
+        message.includes('development experience') ||
+        message.includes('ReactDevTools') ||
+        message.includes('https://reactjs.org/link/react-devtools') ||
+        message.includes('AudioContext was not allowed') ||
+        message.includes('autoplay') ||
+        message.includes('user gesture')) {
       return;
     }
-    // In production, silence everything
-    if (import.meta.env.PROD || window.location.hostname !== 'localhost') {
-      return;
-    }
-    originalLog(...args);
+    return; // Silence everything for professional website
   };
   
   console.info = (...args: any[]) => {
     const message = args.join(' ');
     if (message.includes('Download the React DevTools') || 
         message.includes('react-devtools') ||
-        message.includes('development experience')) {
+        message.includes('development experience') ||
+        message.includes('ReactDevTools') ||
+        message.includes('https://reactjs.org/link/react-devtools') ||
+        message.includes('AudioContext was not allowed') ||
+        message.includes('autoplay') ||
+        message.includes('user gesture')) {
       return;
     }
-    if (import.meta.env.PROD || window.location.hostname !== 'localhost') {
-      return;
-    }
-    originalInfo(...args);
+    return; // Silence everything for professional website
   };
   
   console.warn = (...args: any[]) => {
     const message = args.join(' ');
     if (message.includes('Download the React DevTools') || 
         message.includes('react-devtools') ||
-        message.includes('development experience')) {
+        message.includes('development experience') ||
+        message.includes('ReactDevTools') ||
+        message.includes('https://reactjs.org/link/react-devtools') ||
+        message.includes('AudioContext was not allowed') ||
+        message.includes('autoplay') ||
+        message.includes('user gesture')) {
       return;
     }
-    if (import.meta.env.PROD || window.location.hostname !== 'localhost') {
-      return;
-    }
-    originalWarn(...args);
+    return; // Silence everything for professional website
   };
   
   console.error = (...args: any[]) => {
     const message = args.join(' ');
     if (message.includes('Download the React DevTools') || 
         message.includes('react-devtools') ||
-        message.includes('development experience')) {
+        message.includes('development experience') ||
+        message.includes('ReactDevTools') ||
+        message.includes('https://reactjs.org/link/react-devtools') ||
+        message.includes('AudioContext was not allowed') ||
+        message.includes('autoplay') ||
+        message.includes('user gesture')) {
       return;
     }
-    if (import.meta.env.PROD || window.location.hostname !== 'localhost') {
-      return;
-    }
-    originalError(...args);
+    return; // Silence everything for professional website
   };
   
   console.debug = noop;

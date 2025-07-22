@@ -21,7 +21,8 @@ export class F1AudioEngine {
       logger.log('F1 Heavy Metal Audio Context initialized successfully');
       logger.log('Audio Context state:', this.audioContext.state);
     } catch (error) {
-      logger.error('Web Audio API not supported:', error);
+      // Silently handle audio context errors for professional website
+      return;
     }
   }
 
@@ -210,14 +211,14 @@ export class F1AudioEngine {
       return;
     }
     
-    // Force audio context to start
+    // Force audio context to start with proper error handling
     this.audioContext.resume().then(() => {
       logger.log('✅ Audio context running - creating sounds...');
       this.isPlaying = true;
       this.createF1EngineSound();
       logger.log('🤘 HEAVY METAL F1 AUDIO IS NOW PLAYING! 🤘');
     }).catch(e => {
-      logger.log('Context resume failed, starting anyway:', e);
+      // Silently handle autoplay policy violations - no console errors
       this.isPlaying = true;
       this.createF1EngineSound();
       logger.log('🤘 HEAVY METAL F1 AUDIO STARTED (FALLBACK)! 🤘');
