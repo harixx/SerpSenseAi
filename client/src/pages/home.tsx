@@ -114,15 +114,20 @@ export default function Home() {
 
   // Initialize F1 Audio System
   useEffect(() => {
-    console.log('Initializing F1 Audio System...');
+    if (process.env.NODE_ENV === "development") {
+      console.log('Initializing F1 Audio System...');
+    }
     f1AudioEngine.current = new F1AudioEngine();
     
     // Try real F1 audio first
     const startRealAudio = () => {
-      if (audioRef.current) {
+      if (audioRef.current && process.env.NODE_ENV === "development") {
         console.log('Attempting to start real F1 audio...');
         console.log('Audio element readyState:', audioRef.current.readyState);
         console.log('Audio element src:', audioRef.current.src);
+      }
+      
+      if (audioRef.current) {
         
         audioRef.current.volume = 0.6;
         audioRef.current.currentTime = 0;
@@ -132,10 +137,14 @@ export default function Home() {
           playPromise.then(() => {
             setAudioEnabled(true);
             setUsingSyntheticAudio(false);
-            console.log('✅ Real F1 audio started successfully!');
+            if (process.env.NODE_ENV === "development") {
+              console.log('✅ Real F1 audio started successfully!');
+            }
           }).catch((e) => {
-            console.log('❌ Real F1 audio blocked:', e.message);
-            console.log('Falling back to synthetic audio...');
+            if (process.env.NODE_ENV === "development") {
+              console.log('❌ Real F1 audio blocked:', e.message);
+              console.log('Falling back to synthetic audio...');
+            }
             if (f1AudioEngine.current) {
               f1AudioEngine.current.setVolume(0.3);
               f1AudioEngine.current.start();
@@ -144,14 +153,16 @@ export default function Home() {
             }
           });
         }
-      } else {
+      } else if (process.env.NODE_ENV === "development") {
         console.log('❌ Audio element not found');
       }
     };
     
     // Note: Modern browsers block autoplay without user interaction
     // Audio will start on first user interaction (click, scroll, etc.)
-    console.log('Audio system ready - waiting for user interaction to start');
+    if (process.env.NODE_ENV === "development") {
+      console.log('Audio system ready - waiting for user interaction to start');
+    }
     
     return () => {
       if (f1AudioEngine.current) {
@@ -167,26 +178,36 @@ export default function Home() {
   useEffect(() => {
     const startAudioOnInteraction = () => {
       if (!audioEnabled) {
-        console.log('User interaction detected - starting F1 audio!');
+        if (process.env.NODE_ENV === "development") {
+          console.log('User interaction detected - starting F1 audio!');
+        }
         
         // Try real audio first
         if (audioRef.current) {
-          console.log('User interaction - attempting audio start...');
+          if (process.env.NODE_ENV === "development") {
+            console.log('User interaction - attempting audio start...');
+          }
           audioRef.current.volume = 0.6;
           audioRef.current.currentTime = 0;
           audioRef.current.play().then(() => {
             setAudioEnabled(true);
             setUsingSyntheticAudio(false);
-            console.log('✅ Real F1 audio started on interaction!');
+            if (process.env.NODE_ENV === "development") {
+              console.log('✅ Real F1 audio started on interaction!');
+            }
           }).catch((e) => {
-            console.log('❌ Real audio failed on interaction:', e.message);
+            if (process.env.NODE_ENV === "development") {
+              console.log('❌ Real audio failed on interaction:', e.message);
+            }
             // Fallback to synthetic
             if (f1AudioEngine.current) {
               f1AudioEngine.current.setVolume(0.3);
               f1AudioEngine.current.start();
               setAudioEnabled(true);
               setUsingSyntheticAudio(true);
-              console.log('✅ Synthetic F1 audio started on interaction!');
+              if (process.env.NODE_ENV === "development") {
+                console.log('✅ Synthetic F1 audio started on interaction!');
+              }
             }
           });
         }
@@ -216,7 +237,9 @@ export default function Home() {
         audioRef.current.pause();
       }
       setAudioEnabled(false);
-      console.log('F1 audio stopped');
+      if (process.env.NODE_ENV === "development") {
+        console.log('F1 audio stopped');
+      }
     } else {
       // Start F1 audio - try real first, then synthetic
       if (audioRef.current) {
@@ -224,14 +247,18 @@ export default function Home() {
         audioRef.current.play().then(() => {
           setAudioEnabled(true);
           setUsingSyntheticAudio(false);
-          console.log('Real F1 audio started via toggle');
+          if (process.env.NODE_ENV === "development") {
+            console.log('Real F1 audio started via toggle');
+          }
         }).catch(() => {
           if (f1AudioEngine.current) {
             f1AudioEngine.current.setVolume(0.3);
             f1AudioEngine.current.start();
             setAudioEnabled(true);
             setUsingSyntheticAudio(true);
-            console.log('Synthetic F1 audio started via toggle');
+            if (process.env.NODE_ENV === "development") {
+              console.log('Synthetic F1 audio started via toggle');
+            }
           }
         });
       }
@@ -248,8 +275,10 @@ export default function Home() {
         preload="auto"
         className="hidden"
         onError={(e) => {
-          console.log('F1 audio failed to load:', e);
-          console.log('Using synthetic fallback...');
+          if (process.env.NODE_ENV === "development") {
+            console.log('F1 audio failed to load:', e);
+            console.log('Using synthetic fallback...');
+          }
           if (f1AudioEngine.current && !usingSyntheticAudio) {
             f1AudioEngine.current.setVolume(0.3);
             f1AudioEngine.current.start();
@@ -258,18 +287,26 @@ export default function Home() {
           }
         }}
         onCanPlay={() => {
-          console.log('F1 racing audio ready to play');
+          if (process.env.NODE_ENV === "development") {
+            console.log('F1 racing audio ready to play');
+          }
         }}
         onPlay={() => {
-          console.log('F1 racing audio started playing');
+          if (process.env.NODE_ENV === "development") {
+            console.log('F1 racing audio started playing');
+          }
           setAudioEnabled(true);
           setUsingSyntheticAudio(false);
         }}
         onLoadStart={() => {
-          console.log('F1 audio loading started...');
+          if (process.env.NODE_ENV === "development") {
+            console.log('F1 audio loading started...');
+          }
         }}
         onLoadedData={() => {
-          console.log('F1 audio data loaded successfully');
+          if (process.env.NODE_ENV === "development") {
+            console.log('F1 audio data loaded successfully');
+          }
         }}
       >
         <source src="/attached_assets/13464_1459539280_1753112009861.mp3" type="audio/mpeg" />
@@ -298,20 +335,28 @@ export default function Home() {
             mixBlendMode: 'normal'
           }}
           onError={(e) => {
-            console.error('F1 racing video failed to load:', e);
-            console.log('Video source attempted:', e.currentTarget.currentSrc);
+            if (process.env.NODE_ENV === "development") {
+              console.error('F1 racing video failed to load:', e);
+              console.log('Video source attempted:', e.currentTarget.currentSrc);
+            }
             e.currentTarget.style.display = 'none';
             const fallback = e.currentTarget.nextElementSibling as HTMLElement;
             if (fallback) fallback.style.display = 'block';
           }}
           onLoadedData={(e) => {
-            console.log('F1 racing video loaded successfully from:', e.currentTarget.currentSrc);
+            if (process.env.NODE_ENV === "development") {
+              console.log('F1 racing video loaded successfully from:', e.currentTarget.currentSrc);
+            }
           }}
           onCanPlay={() => {
-            console.log('F1 racing video can start playing');
+            if (process.env.NODE_ENV === "development") {
+              console.log('F1 racing video can start playing');
+            }
           }}
           onLoadStart={() => {
-            console.log('F1 racing video started loading');
+            if (process.env.NODE_ENV === "development") {
+              console.log('F1 racing video started loading');
+            }
           }}
         >
           <source src="/attached_assets/5cf22b7b7ee772d0a22fefbd4da43ab3-720p-preview_1753110183979.mp4" type="video/mp4" />
@@ -332,13 +377,17 @@ export default function Home() {
             mixBlendMode: 'normal'
           }}
           onError={(e) => {
-            console.log('Backup video failed to load, using animated background');
+            if (process.env.NODE_ENV === "development") {
+              console.log('Backup video failed to load, using animated background');
+            }
             e.currentTarget.style.display = 'none';
             const fallback = e.currentTarget.nextElementSibling as HTMLElement;
             if (fallback) fallback.style.display = 'block';
           }}
           onLoadedData={() => {
-            console.log('Backup racing video loaded successfully');
+            if (process.env.NODE_ENV === "development") {
+              console.log('Backup racing video loaded successfully');
+            }
           }}
         >
           <source src="https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4" type="video/mp4" />
