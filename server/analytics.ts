@@ -165,10 +165,10 @@ export class AnalyticsService {
         .from(leadActions)
         .where(eq(leadActions.sessionId, sessionId));
 
-      const totalScore = scoreData?.totalScore || 0;
+      const totalScore = Math.round(scoreData?.totalScore || 0);
       const engagementScore = Math.min(totalScore, 100); // Cap at 100
-      const intentScore = await this.calculateIntentScoreAsync(sessionId);
-      const qualityScore = await this.calculateQualityScore(sessionId);
+      const intentScore = Math.round(await this.calculateIntentScoreAsync(sessionId));
+      const qualityScore = Math.round(await this.calculateQualityScore(sessionId));
 
       // Upsert lead score
       const existingScore = await db
