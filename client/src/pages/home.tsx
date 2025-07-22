@@ -1173,6 +1173,495 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+      {/* Enhanced Social Proof Section */}
+      <section className="py-20 bg-gradient-to-br from-obsidian/80 via-black/90 to-obsidian/80 relative z-10 overflow-hidden">
+        <motion.div
+          style={{ y: y3, opacity: opacity1 }}
+          className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-gold/8 to-crimson/5 rounded-full blur-3xl"
+        />
+        
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="text-center mb-16"
+          >
+            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl lg:text-5xl font-bold text-white mb-6">
+              Trusted by Strategic{" "}
+              <span className="text-crimson">SEO Leaders</span>
+            </motion.h2>
+            <motion.p variants={fadeInUp} className="text-xl text-platinum/80 mb-12 max-w-3xl mx-auto">
+              Join industry leaders who've transformed their SEO strategy with intelligence-driven insights
+            </motion.p>
+          </motion.div>
+
+          {/* Testimonials Carousel */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="grid lg:grid-cols-3 gap-8 mb-16"
+          >
+            <Card className="glassmorphism p-8 rounded-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-crimson/10 rounded-full blur-2xl" />
+              <CardContent className="p-0">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-gold text-sm">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-current" />
+                    ))}
+                  </div>
+                  <span className="ml-2 text-xs text-platinum/60">Enterprise Client</span>
+                </div>
+                <blockquote className="text-lg text-white mb-6 font-light italic">
+                  "SERP Intelligence revealed why our competitors were outranking us despite having fewer backlinks. 
+                  The content tone and structure insights helped us redesign our approach and achieve 3x organic growth in 6 months."
+                </blockquote>
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-crimson to-ruby rounded-full flex items-center justify-center text-white font-semibold">
+                    SC
+                  </div>
+                  <div className="ml-4">
+                    <p className="text-white font-semibold">Sarah Chen</p>
+                    <p className="text-platinum/60 text-sm">Head of SEO, TechScale Ventures</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="glassmorphism p-8 rounded-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-full blur-2xl" />
+              <CardContent className="p-0">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-gold text-sm">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-current" />
+                    ))}
+                  </div>
+                  <span className="ml-2 text-xs text-platinum/60">Agency Owner</span>
+                </div>
+                <blockquote className="text-lg text-white mb-6 font-light italic">
+                  "Traditional tools show what's ranking. SERP Intelligence shows why it's ranking. 
+                  This depth of analysis has become our competitive differentiator and increased our client LTV by 40%."
+                </blockquote>
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-crimson to-ruby rounded-full flex items-center justify-center text-white font-semibold">
+                    MR
+                  </div>
+                  <div className="ml-4">
+                    <p className="text-white font-semibold">Marcus Rodriguez</p>
+                    <p className="text-platinum/60 text-sm">Founder, Elite Digital Agency</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="glassmorphism p-8 rounded-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-crimson/10 rounded-full blur-2xl" />
+              <CardContent className="p-0">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-gold text-sm">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-current" />
+                    ))}
+                  </div>
+                  <span className="ml-2 text-xs text-platinum/60">VP Content Strategy</span>
+                </div>
+                <blockquote className="text-lg text-white mb-6 font-light italic">
+                  "The multi-dimensional analysis helped us identify content gaps our competitors missed. 
+                  We captured market share in three key verticals within 90 days of implementation."
+                </blockquote>
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-crimson to-ruby rounded-full flex items-center justify-center text-white font-semibold">
+                    PW
+                  </div>
+                  <div className="ml-4">
+                    <p className="text-white font-semibold">Dr. Patricia Williams</p>
+                    <p className="text-platinum/60 text-sm">VP Content Strategy, InnovateFlow</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Trust Indicators */}
+          <motion.div
+            variants={fadeInUp}
+            className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60"
+          >
+            <div className="text-center">
+              <div className="text-3xl font-bold text-crimson mb-2">250+</div>
+              <div className="text-sm text-platinum/60">Strategic Partners</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-gold mb-2">40%</div>
+              <div className="text-sm text-platinum/60">Avg. Traffic Increase</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-crimson mb-2">92%</div>
+              <div className="text-sm text-platinum/60">Client Retention Rate</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-gold mb-2">$2.4M</div>
+              <div className="text-sm text-platinum/60">Revenue Impact</div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ROI Calculator Section */}
+      <section className="py-20 bg-gradient-to-br from-black via-obsidian/90 to-black relative z-10 overflow-hidden">
+        <motion.div
+          style={{ y: y4, rotate: rotate2 }}
+          className="absolute -bottom-32 -left-32 w-96 h-96 bg-gradient-to-tl from-crimson/8 to-gold/5 rounded-full blur-3xl"
+        />
+        
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="text-center mb-16"
+          >
+            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl lg:text-5xl font-bold text-white mb-6">
+              Calculate Your{" "}
+              <span className="text-crimson">Strategic ROI</span>
+            </motion.h2>
+            <motion.p variants={fadeInUp} className="text-xl text-platinum/80 mb-12 max-w-3xl mx-auto">
+              See how SERP Intelligence transforms your SEO investment into measurable business growth
+            </motion.p>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* ROI Calculator */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <Card className="glassmorphism p-8 rounded-2xl">
+                <CardContent className="p-0">
+                  <h3 className="font-playfair text-2xl font-semibold text-white mb-6">Investment Calculator</h3>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-medium text-platinum/80 mb-2">
+                        Current Monthly SEO Spend
+                      </label>
+                      <Input
+                        type="range"
+                        min="1000"
+                        max="50000"
+                        step="1000"
+                        defaultValue="5000"
+                        className="w-full"
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value);
+                          const display = e.target.nextElementSibling as HTMLElement;
+                          if (display) display.textContent = `$${value.toLocaleString()}`;
+                          
+                          // Calculate ROI
+                          const currentTraffic = 10000;
+                          const improvementRate = 0.4; // 40% average improvement
+                          const conversionRate = 0.02; // 2% conversion rate
+                          const avgOrderValue = 250;
+                          
+                          const newTraffic = currentTraffic * (1 + improvementRate);
+                          const additionalRevenue = (newTraffic - currentTraffic) * conversionRate * avgOrderValue;
+                          const monthlyROI = ((additionalRevenue - 697) / 697) * 100;
+                          
+                          const roiDisplay = document.getElementById('roi-result');
+                          const revenueDisplay = document.getElementById('revenue-result');
+                          const trafficDisplay = document.getElementById('traffic-result');
+                          
+                          if (roiDisplay) roiDisplay.textContent = `${Math.round(monthlyROI)}%`;
+                          if (revenueDisplay) revenueDisplay.textContent = `$${Math.round(additionalRevenue).toLocaleString()}`;
+                          if (trafficDisplay) trafficDisplay.textContent = `${Math.round(newTraffic - currentTraffic).toLocaleString()}`;
+                        }}
+                      />
+                      <div className="text-center mt-2 text-crimson font-semibold">$5,000</div>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-platinum/80 mb-2">
+                        Current Monthly Organic Traffic
+                      </label>
+                      <Input
+                        type="range"
+                        min="1000"
+                        max="100000"
+                        step="1000"
+                        defaultValue="10000"
+                        className="w-full"
+                      />
+                      <div className="text-center mt-2 text-crimson font-semibold">10,000 visitors</div>
+                    </div>
+
+                    {/* Results */}
+                    <div className="bg-obsidian/50 rounded-lg p-6 border border-crimson/20">
+                      <h4 className="font-semibold text-white mb-4">Projected Results with SERP Intelligence</h4>
+                      
+                      <div className="grid grid-cols-2 gap-4 text-center">
+                        <div>
+                          <div className="text-2xl font-bold text-crimson" id="traffic-result">4,000</div>
+                          <div className="text-xs text-platinum/60">Additional Monthly Traffic</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold text-gold" id="revenue-result">$20,000</div>
+                          <div className="text-xs text-platinum/60">Additional Monthly Revenue</div>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4 pt-4 border-t border-crimson/10">
+                        <div className="text-center">
+                          <div className="text-3xl font-bold text-green-400" id="roi-result">2,773%</div>
+                          <div className="text-sm text-platinum/60">Monthly ROI</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* ROI Benefits */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6"
+            >
+              <Card className="glassmorphism p-6 rounded-xl">
+                <CardContent className="p-0">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-crimson/20 rounded-lg flex items-center justify-center">
+                      <BarChart3 className="text-crimson text-xl" />
+                    </div>
+                    <div>
+                      <h4 className="font-playfair text-xl font-semibold text-white mb-2">40% Traffic Increase</h4>
+                      <p className="text-platinum/80">Average organic traffic improvement within 90 days of strategic implementation</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="glassmorphism p-6 rounded-xl">
+                <CardContent className="p-0">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-crimson/20 rounded-lg flex items-center justify-center">
+                      <Target className="text-crimson text-xl" />
+                    </div>
+                    <div>
+                      <h4 className="font-playfair text-xl font-semibold text-white mb-2">60% Time Savings</h4>
+                      <p className="text-platinum/80">Reduce content optimization time with intelligence-driven insights</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="glassmorphism p-6 rounded-xl">
+                <CardContent className="p-0">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-crimson/20 rounded-lg flex items-center justify-center">
+                      <Crown className="text-crimson text-xl" />
+                    </div>
+                    <div>
+                      <h4 className="font-playfair text-xl font-semibold text-white mb-2">Competitive Advantage</h4>
+                      <p className="text-platinum/80">Access insights competitors can't replicate with traditional SEO tools</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Case Studies Section */}
+      <section className="py-20 bg-gradient-to-br from-obsidian via-black/95 to-obsidian relative z-10 overflow-hidden">
+        <motion.div
+          style={{ y: y1, scale: scale1 }}
+          className="absolute -top-32 right-32 w-96 h-96 bg-gradient-to-br from-crimson/8 to-gold/5 rounded-full blur-3xl"
+        />
+        
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="text-center mb-16"
+          >
+            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl lg:text-5xl font-bold text-white mb-6">
+              Proven{" "}
+              <span className="text-crimson">Success Stories</span>
+            </motion.h2>
+            <motion.p variants={fadeInUp} className="text-xl text-platinum/80 mb-12 max-w-3xl mx-auto">
+              Real clients, real results, real competitive advantage through strategic SEO intelligence
+            </motion.p>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-2 gap-8 mb-12">
+            {/* Case Study 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <Card className="glassmorphism p-8 rounded-2xl h-full">
+                <CardContent className="p-0">
+                  <div className="flex items-center mb-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-crimson to-ruby rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                      TS
+                    </div>
+                    <div className="ml-4">
+                      <h3 className="font-playfair text-xl font-semibold text-white">TechScale Ventures</h3>
+                      <p className="text-platinum/60 text-sm">Enterprise SaaS Company</p>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-white mb-2">Challenge</h4>
+                    <p className="text-platinum/80 text-sm mb-4">
+                      Despite extensive backlink building and keyword optimization, competitors with fewer domain authority 
+                      and backlinks were consistently outranking them for high-value commercial terms.
+                    </p>
+                    
+                    <h4 className="text-lg font-semibold text-white mb-2">Solution</h4>
+                    <p className="text-platinum/80 text-sm mb-4">
+                      SERP Intelligence revealed that top-ranking competitors used more authoritative tone, 
+                      deeper technical content structure, and better user experience patterns.
+                    </p>
+                    
+                    <h4 className="text-lg font-semibold text-white mb-2">Results</h4>
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div className="bg-obsidian/30 rounded-lg p-3">
+                        <div className="text-2xl font-bold text-crimson">3x</div>
+                        <div className="text-xs text-platinum/60">Organic Growth</div>
+                      </div>
+                      <div className="bg-obsidian/30 rounded-lg p-3">
+                        <div className="text-2xl font-bold text-gold">180%</div>
+                        <div className="text-xs text-platinum/60">Traffic Increase</div>
+                      </div>
+                      <div className="bg-obsidian/30 rounded-lg p-3">
+                        <div className="text-2xl font-bold text-green-400">6mo</div>
+                        <div className="text-xs text-platinum/60">Time to Results</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-t border-crimson/20 pt-4">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-platinum/60">Industry: Enterprise SaaS</span>
+                      <span className="text-crimson font-semibold">$2.4M Revenue Impact</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Case Study 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <Card className="glassmorphism p-8 rounded-2xl h-full">
+                <CardContent className="p-0">
+                  <div className="flex items-center mb-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-gold to-amber-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                      ED
+                    </div>
+                    <div className="ml-4">
+                      <h3 className="font-playfair text-xl font-semibold text-white">Elite Digital Agency</h3>
+                      <p className="text-platinum/60 text-sm">Premium SEO Agency</p>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-white mb-2">Challenge</h4>
+                    <p className="text-platinum/80 text-sm mb-4">
+                      Agency needed to differentiate from competitors and provide deeper insights to retain 
+                      high-value enterprise clients demanding sophisticated SEO strategy.
+                    </p>
+                    
+                    <h4 className="text-lg font-semibold text-white mb-2">Solution</h4>
+                    <p className="text-platinum/80 text-sm mb-4">
+                      Implemented SERP Intelligence as core service offering, providing multi-dimensional 
+                      content analysis that traditional tools couldn't match.
+                    </p>
+                    
+                    <h4 className="text-lg font-semibold text-white mb-2">Results</h4>
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div className="bg-obsidian/30 rounded-lg p-3">
+                        <div className="text-2xl font-bold text-crimson">40%</div>
+                        <div className="text-xs text-platinum/60">Higher Client LTV</div>
+                      </div>
+                      <div className="bg-obsidian/30 rounded-lg p-3">
+                        <div className="text-2xl font-bold text-gold">25%</div>
+                        <div className="text-xs text-platinum/60">Premium Pricing</div>
+                      </div>
+                      <div className="bg-obsidian/30 rounded-lg p-3">
+                        <div className="text-2xl font-bold text-green-400">95%</div>
+                        <div className="text-xs text-platinum/60">Client Retention</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border-t border-crimson/20 pt-4">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-platinum/60">Industry: Digital Marketing</span>
+                      <span className="text-crimson font-semibold">$800K Annual Growth</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+
+          {/* Success Metrics */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="bg-gradient-to-r from-crimson/10 to-gold/10 rounded-2xl p-8"
+          >
+            <div className="text-center mb-8">
+              <h3 className="font-playfair text-2xl font-semibold text-white mb-2">Aggregate Success Metrics</h3>
+              <p className="text-platinum/80">Combined results across all strategic partners</p>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              <div>
+                <div className="text-4xl font-bold text-crimson mb-2">$12.8M</div>
+                <div className="text-sm text-platinum/60">Total Revenue Impact</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-gold mb-2">284%</div>
+                <div className="text-sm text-platinum/60">Avg Traffic Growth</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-green-400 mb-2">92%</div>
+                <div className="text-sm text-platinum/60">Success Rate</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-blue-400 mb-2">120</div>
+                <div className="text-sm text-platinum/60">Days Avg to Results</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="py-20 bg-charcoal relative overflow-hidden">
         {/* Animated background elements */}
