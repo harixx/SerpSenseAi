@@ -164,10 +164,14 @@ export default function Home() {
     };
   }, []);
 
-  // Start audio on user interaction
+  // Start audio on user interaction (only if not manually disabled)
   useEffect(() => {
-    const startAudioOnInteraction = () => {
-      if (!audioEnabled) {
+    const startAudioOnInteraction = (e: Event) => {
+      // Don't auto-start if user has manually turned off audio
+      const target = e.target as HTMLElement;
+      const isAudioToggle = target.closest('[data-audio-toggle]');
+      
+      if (!audioEnabled && !isAudioToggle) {
         logger.log('User interaction detected - starting F1 audio!');
         
         // Try real audio first
@@ -194,11 +198,13 @@ export default function Home() {
       }
     };
 
-    // Listen for user interactions
-    document.addEventListener('click', startAudioOnInteraction);
-    document.addEventListener('touchstart', startAudioOnInteraction);
-    document.addEventListener('scroll', startAudioOnInteraction);
-    document.addEventListener('keydown', startAudioOnInteraction);
+    // Only auto-start on first interaction, not after user manually toggles
+    if (!audioEnabled) {
+      document.addEventListener('click', startAudioOnInteraction);
+      document.addEventListener('touchstart', startAudioOnInteraction);
+      document.addEventListener('scroll', startAudioOnInteraction);
+      document.addEventListener('keydown', startAudioOnInteraction);
+    }
 
     return () => {
       document.removeEventListener('click', startAudioOnInteraction);
@@ -210,31 +216,50 @@ export default function Home() {
 
   const toggleAudio = () => {
     if (audioEnabled) {
-      // Stop audio
+      // Stop F1 audio completely
       if (usingSyntheticAudio && f1AudioEngine.current) {
         f1AudioEngine.current.stop();
-      } else if (audioRef.current) {
+      }
+      if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current.currentTime = 0;
       }
       setAudioEnabled(false);
-      logger.log('F1 audio stopped');
+      setUsingSyntheticAudio(false);
+      logger.log('F1 audio stopped via toggle');
     } else {
       // Start F1 audio - try real first, then synthetic
       if (audioRef.current) {
-        audioRef.current.volume = 0.5;
-        audioRef.current.play().then(() => {
-          setAudioEnabled(true);
-          setUsingSyntheticAudio(false);
-          logger.log('Real F1 audio started via toggle');
-        }).catch(() => {
-          if (f1AudioEngine.current) {
-            f1AudioEngine.current.setVolume(0.3);
-            f1AudioEngine.current.start();
+        audioRef.current.volume = 0.6;
+        audioRef.current.currentTime = 0;
+        const playPromise = audioRef.current.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
             setAudioEnabled(true);
-            setUsingSyntheticAudio(true);
-            logger.log('Synthetic F1 audio started via toggle');
-          }
-        });
+            setUsingSyntheticAudio(false);
+            logger.log('Real F1 audio started via toggle');
+          }).catch((e) => {
+            logger.log('Real audio failed via toggle, using synthetic:', e.message);
+            // Fallback to synthetic
+            if (f1AudioEngine.current) {
+              f1AudioEngine.current.setVolume(0.3);
+              f1AudioEngine.current.start();
+              setAudioEnabled(true);
+              setUsingSyntheticAudio(true);
+              logger.log('Synthetic F1 audio started via toggle');
+            }
+          });
+        }
+      } else {
+        // No real audio available, use synthetic
+        if (f1AudioEngine.current) {
+          f1AudioEngine.current.setVolume(0.3);
+          f1AudioEngine.current.start();
+          setAudioEnabled(true);
+          setUsingSyntheticAudio(true);
+          logger.log('Synthetic F1 audio started via toggle (no real audio)');
+        }
       }
     }
   };
@@ -464,6 +489,7 @@ export default function Home() {
               className={audioEnabled ? "bg-crimson hover:bg-ruby text-white" : "border-crimson text-crimson hover:bg-crimson hover:text-white"}
               onClick={toggleAudio}
               title={audioEnabled ? "Mute F1 Sound" : "Enable F1 Sound"}
+              data-audio-toggle="true"
             >
               {audioEnabled ? "🔊" : "🔇"} Audio
             </Button>
