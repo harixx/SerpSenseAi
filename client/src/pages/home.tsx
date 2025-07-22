@@ -311,6 +311,9 @@ export default function Home() {
       )}
       {/* Racing Video Background */}
       <div className="fixed inset-0 z-0">
+        {/* Professional Video Shield Overlay */}
+        <div className="video-overlay-shield"></div>
+        
         {/* Racing Video Background */}
         <video
           autoPlay
@@ -321,7 +324,8 @@ export default function Home() {
           className="w-full h-full object-cover"
           style={{ 
             backgroundAttachment: 'fixed',
-            mixBlendMode: 'normal'
+            mixBlendMode: 'normal',
+            pointerEvents: 'none'
           }}
           onError={(e) => {
             logger.error('F1 racing video failed to load:', e);
@@ -355,7 +359,8 @@ export default function Home() {
           style={{ 
             display: 'none',
             backgroundAttachment: 'fixed',
-            mixBlendMode: 'normal'
+            mixBlendMode: 'normal',
+            pointerEvents: 'none'
           }}
           onError={(e) => {
             logger.log('Backup video failed to load, using animated background');
@@ -389,7 +394,8 @@ export default function Home() {
           style={{
             background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.8) 100%)',
             backdropFilter: 'blur(1px)',
-            pointerEvents: 'none'
+            pointerEvents: 'none',
+            zIndex: 5
           }}
         ></div>
         
@@ -398,7 +404,42 @@ export default function Home() {
           className="absolute inset-0 w-full h-full"
           style={{
             background: 'radial-gradient(ellipse at center bottom, rgba(220, 38, 38, 0.08) 0%, transparent 60%)',
-            pointerEvents: 'none'
+            pointerEvents: 'none',
+            zIndex: 6
+          }}
+        ></div>
+        
+        {/* Interactive corner shields to hide any video previews */}
+        <div 
+          className="absolute top-0 left-0 w-32 h-32"
+          style={{
+            background: 'radial-gradient(circle at top left, rgba(0, 0, 0, 0.8) 0%, transparent 70%)',
+            pointerEvents: 'none',
+            zIndex: 15
+          }}
+        ></div>
+        <div 
+          className="absolute top-0 right-0 w-32 h-32"
+          style={{
+            background: 'radial-gradient(circle at top right, rgba(0, 0, 0, 0.8) 0%, transparent 70%)',
+            pointerEvents: 'none',
+            zIndex: 15
+          }}
+        ></div>
+        <div 
+          className="absolute bottom-0 left-0 w-32 h-32"
+          style={{
+            background: 'radial-gradient(circle at bottom left, rgba(0, 0, 0, 0.8) 0%, transparent 70%)',
+            pointerEvents: 'none',
+            zIndex: 15
+          }}
+        ></div>
+        <div 
+          className="absolute bottom-0 right-0 w-32 h-32"
+          style={{
+            background: 'radial-gradient(circle at bottom right, rgba(0, 0, 0, 0.8) 0%, transparent 70%)',
+            pointerEvents: 'none',
+            zIndex: 15
           }}
         ></div>
       </div>
