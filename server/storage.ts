@@ -1,31 +1,72 @@
-import { users, waitlistEntries, type User, type InsertUser, type WaitlistEntry, type InsertWaitlistEntry } from "@shared/schema";
+import { 
+  users, 
+  waitlistEntries, 
+  userSessions,
+  pageEvents,
+  abTests,
+  abTestAssignments,
+  leadActions,
+  type User, 
+  type UpsertUser, 
+  type WaitlistEntry, 
+  type InsertWaitlistEntry,
+  type UserSession,
+  type InsertUserSession,
+  type PageEvent,
+  type InsertPageEvent,
+  type ABTest,
+  type InsertABTest,
+  type ABTestAssignment,
+  type InsertABTestAssignment,
+  type LeadAction,
+  type InsertLeadAction,
+} from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 
 export interface IStorage {
-  getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // User operations (required for Replit Auth)
+  getUser(id: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
+  
+  // Waitlist operations
   addToWaitlist(entry: InsertWaitlistEntry): Promise<WaitlistEntry>;
   getWaitlistEntries(): Promise<WaitlistEntry[]>;
   isEmailInWaitlist(email: string): Promise<boolean>;
+
+  // Analytics operations
+  createUserSession(session: InsertUserSession): Promise<UserSession>;
+  getUserSession(sessionId: string): Promise<UserSession | undefined>;
+  updateUserSession(sessionId: string, updates: Partial<UserSession>): Promise<void>;
+  createPageEvent(event: InsertPageEvent): Promise<PageEvent>;
+  getPageEvents(sessionId?: string): Promise<PageEvent[]>;
+  createABTest(test: InsertABTest): Promise<ABTest>;
+  getABTests(): Promise<ABTest[]>;
+  getABTest(testName: string): Promise<ABTest | undefined>;
+  createABTestAssignment(assignment: InsertABTestAssignment): Promise<ABTestAssignment>;
+  getABTestAssignment(sessionId: string, testName: string): Promise<ABTestAssignment | undefined>;
+  createLeadAction(action: InsertLeadAction): Promise<LeadAction>;
+  getLeadActions(sessionId?: string): Promise<LeadAction[]>;
 }
 
 export class DatabaseStorage implements IStorage {
-  async getUser(id: number): Promise<User | undefined> {
+  // User operations (required for Replit Auth)
+  async getUser(id: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user || undefined;
+    return user;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
-    return user || undefined;
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
+  async upsertUser(userData: UpsertUser): Promise<User> {
     const [user] = await db
       .insert(users)
-      .values(insertUser)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
       .returning();
     return user;
   }
@@ -49,10 +90,24 @@ export class DatabaseStorage implements IStorage {
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<number, User>;
+  private users: Map<string, User>;
   private waitlist: Map<number, WaitlistEntry>;
-  private currentUserId: number;
   private currentWaitlistId: number;
+
+  // User operations (required for Replit Auth)
+  async getUser(id: string): Promise<User | undefined> {
+    return this.users.get(id);
+  }
+
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const user: User = {
+      ...userData,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.users.set(userData.id!, user);
+    return user;
+  }
 
   constructor() {
     this.users = new Map();

@@ -4,6 +4,7 @@ import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
 import { insertWaitlistEntrySchema, insertUserSessionSchema, insertPageEventSchema, insertLeadActionSchema } from "@shared/schema";
 import { AnalyticsService } from "./analytics";
+import { setupAuth, isAuthenticated } from "./replitAuth";
 import { z } from "zod";
 
 // WebSocket connection management
@@ -24,6 +25,21 @@ function broadcastUpdate(data: any) {
 const analyticsService = new AnalyticsService();
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Auth middleware
+  await setupAuth(app);
+
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
   // Waitlist endpoints
   app.post("/api/waitlist", async (req, res) => {
     try {
@@ -96,7 +112,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // Analytics endpoints
+  // Protected Analytics endpoints  
+  app.get("/api/analytics/dashboard", isAuthenticated, async (req, res) => {
+    try {
+      const dashboardData = await analyticsService.getDashboardData();
+      res.json({ success: true, data: dashboardData });
+    } catch (error) {
+      console.error('Dashboard error:', error);
+      res.status(500).json({ error: "Failed to fetch dashboard data" });
+    }
+  });
+
   app.post("/api/analytics/session", async (req, res) => {
     try {
       const sessionData = insertUserSessionSchema.parse(req.body);
