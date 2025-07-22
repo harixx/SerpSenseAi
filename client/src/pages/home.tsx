@@ -55,6 +55,30 @@ export default function Home() {
   const { scrollY } = useScroll();
   const audioRef = useRef<HTMLAudioElement>(null);
   const f1AudioEngine = useRef<F1AudioEngine | null>(null);
+  
+  // ROI Calculator State
+  const [seoSpend, setSeoSpend] = useState(5000);
+  const [monthlyTraffic, setMonthlyTraffic] = useState(10000);
+  
+  // ROI Calculation Function
+  const calculateROI = (traffic: number, spend: number) => {
+    const serpIntelligenceCost = 697; // Monthly cost
+    const trafficImprovementRate = 0.42; // 42% average improvement
+    const conversionRate = 0.021; // 2.1% industry average conversion rate
+    const avgOrderValue = 285; // Realistic B2B average order value
+    
+    const additionalTraffic = traffic * trafficImprovementRate;
+    const additionalRevenue = additionalTraffic * conversionRate * avgOrderValue;
+    const monthlyROI = ((additionalRevenue - serpIntelligenceCost) / serpIntelligenceCost) * 100;
+    
+    return {
+      additionalTraffic: Math.round(additionalTraffic),
+      additionalRevenue: Math.round(additionalRevenue),
+      monthlyROI: Math.round(monthlyROI)
+    };
+  };
+  
+  const roiResults = calculateROI(monthlyTraffic, seoSpend);
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [usingSyntheticAudio, setUsingSyntheticAudio] = useState(false);
   
@@ -1360,33 +1384,11 @@ export default function Home() {
                         min="1000"
                         max="50000"
                         step="1000"
-                        defaultValue="5000"
+                        value={seoSpend}
                         className="w-full"
-                        onChange={(e) => {
-                          const value = parseInt(e.target.value);
-                          const display = e.target.nextElementSibling as HTMLElement;
-                          if (display) display.textContent = `$${value.toLocaleString()}`;
-                          
-                          // Calculate ROI
-                          const currentTraffic = 10000;
-                          const improvementRate = 0.4; // 40% average improvement
-                          const conversionRate = 0.02; // 2% conversion rate
-                          const avgOrderValue = 250;
-                          
-                          const newTraffic = currentTraffic * (1 + improvementRate);
-                          const additionalRevenue = (newTraffic - currentTraffic) * conversionRate * avgOrderValue;
-                          const monthlyROI = ((additionalRevenue - 697) / 697) * 100;
-                          
-                          const roiDisplay = document.getElementById('roi-result');
-                          const revenueDisplay = document.getElementById('revenue-result');
-                          const trafficDisplay = document.getElementById('traffic-result');
-                          
-                          if (roiDisplay) roiDisplay.textContent = `${Math.round(monthlyROI)}%`;
-                          if (revenueDisplay) revenueDisplay.textContent = `$${Math.round(additionalRevenue).toLocaleString()}`;
-                          if (trafficDisplay) trafficDisplay.textContent = `${Math.round(newTraffic - currentTraffic).toLocaleString()}`;
-                        }}
+                        onChange={(e) => setSeoSpend(parseInt(e.target.value))}
                       />
-                      <div className="text-center mt-2 text-crimson font-semibold">$5,000</div>
+                      <div className="text-center mt-2 text-crimson font-semibold">${seoSpend.toLocaleString()}</div>
                     </div>
                     
                     <div>
@@ -1398,10 +1400,11 @@ export default function Home() {
                         min="1000"
                         max="100000"
                         step="1000"
-                        defaultValue="10000"
+                        value={monthlyTraffic}
                         className="w-full"
+                        onChange={(e) => setMonthlyTraffic(parseInt(e.target.value))}
                       />
-                      <div className="text-center mt-2 text-crimson font-semibold">10,000 visitors</div>
+                      <div className="text-center mt-2 text-crimson font-semibold">{monthlyTraffic.toLocaleString()} visitors</div>
                     </div>
 
                     {/* Results */}
@@ -1410,18 +1413,18 @@ export default function Home() {
                       
                       <div className="grid grid-cols-2 gap-4 text-center">
                         <div>
-                          <div className="text-2xl font-bold text-crimson" id="traffic-result">4,000</div>
+                          <div className="text-2xl font-bold text-crimson">{roiResults.additionalTraffic.toLocaleString()}</div>
                           <div className="text-xs text-platinum/60">Additional Monthly Traffic</div>
                         </div>
                         <div>
-                          <div className="text-2xl font-bold text-gold" id="revenue-result">$20,000</div>
+                          <div className="text-2xl font-bold text-gold">${roiResults.additionalRevenue.toLocaleString()}</div>
                           <div className="text-xs text-platinum/60">Additional Monthly Revenue</div>
                         </div>
                       </div>
                       
                       <div className="mt-4 pt-4 border-t border-crimson/10">
                         <div className="text-center">
-                          <div className="text-3xl font-bold text-green-400" id="roi-result">2,773%</div>
+                          <div className="text-3xl font-bold text-green-400">{roiResults.monthlyROI}%</div>
                           <div className="text-sm text-platinum/60">Monthly ROI</div>
                         </div>
                       </div>
