@@ -169,7 +169,7 @@ export default function Home() {
     const startAudioOnInteraction = (e: Event) => {
       // Don't auto-start if user has manually turned off audio
       const target = e.target as HTMLElement;
-      const isAudioToggle = target.closest('[data-audio-toggle]');
+      const isAudioToggle = target && typeof target.closest === 'function' ? target.closest('[data-audio-toggle]') : false;
       
       if (!audioEnabled && !isAudioToggle) {
         logger.log('User interaction detected - starting F1 audio!');
