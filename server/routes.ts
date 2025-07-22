@@ -4,7 +4,7 @@ import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
 import { insertWaitlistEntrySchema, insertUserSessionSchema, insertPageEventSchema, insertLeadActionSchema } from "@shared/schema";
 import { AnalyticsService } from "./analytics";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAdminAuth, requireAdminAuth, createDefaultAdminUser } from "./adminAuth";
 import { z } from "zod";
 
 // WebSocket connection management
@@ -25,20 +25,11 @@ function broadcastUpdate(data: any) {
 const analyticsService = new AnalyticsService();
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth middleware
-  await setupAuth(app);
-
-  // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      res.json(user);
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      res.status(500).json({ message: "Failed to fetch user" });
-    }
-  });
+  // Setup secure admin authentication
+  setupAdminAuth(app);
+  
+  // Create default admin user if none exists
+  await createDefaultAdminUser();
 
   // Waitlist endpoints
   app.post("/api/waitlist", async (req, res) => {
@@ -112,8 +103,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // Protected Analytics endpoints  
-  app.get("/api/analytics/dashboard", isAuthenticated, async (req, res) => {
+  // Protected Analytics endpoints (require admin authentication)
+  app.get("/api/analytics/dashboard", requireAdminAuth, async (req, res) => {
     try {
       const dashboardData = await analyticsService.getDashboardData();
       res.json({ success: true, data: dashboardData });
@@ -221,8 +212,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Analytics dashboard endpoints
-  app.get("/api/analytics/dashboard", async (req, res) => {
+  // Protected Analytics dashboard endpoints
+  app.get("/api/analytics/admin-dashboard", requireAdminAuth, async (req, res) => {
     try {
       const timeframe = req.query.timeframe as 'day' | 'week' | 'month' || 'week';
       

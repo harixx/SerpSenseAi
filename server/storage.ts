@@ -1,13 +1,13 @@
 import { 
-  users, 
+  adminUsers,
   waitlistEntries, 
   userSessions,
   pageEvents,
   abTests,
   abTestAssignments,
   leadActions,
-  type User, 
-  type UpsertUser, 
+  type AdminUser, 
+  type InsertAdminUser, 
   type WaitlistEntry, 
   type InsertWaitlistEntry,
   type UserSession,
@@ -25,9 +25,11 @@ import { db } from "./db";
 import { eq } from "drizzle-orm";
 
 export interface IStorage {
-  // User operations (required for Replit Auth)
-  getUser(id: string): Promise<User | undefined>;
-  upsertUser(user: UpsertUser): Promise<User>;
+  // Admin user operations for secure authentication
+  getAdminUser(id: number): Promise<AdminUser | undefined>;
+  getAdminUserByUsername(username: string): Promise<AdminUser | undefined>;
+  createAdminUser(user: InsertAdminUser): Promise<AdminUser>;
+  updateAdminLastLogin(id: number): Promise<void>;
   
   // Waitlist operations
   addToWaitlist(entry: InsertWaitlistEntry): Promise<WaitlistEntry>;
@@ -50,25 +52,30 @@ export interface IStorage {
 }
 
 export class DatabaseStorage implements IStorage {
-  // User operations (required for Replit Auth)
-  async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
+  // Admin user operations for secure authentication
+  async getAdminUser(id: number): Promise<AdminUser | undefined> {
+    const [user] = await db.select().from(adminUsers).where(eq(adminUsers.id, id));
     return user;
   }
 
-  async upsertUser(userData: UpsertUser): Promise<User> {
+  async getAdminUserByUsername(username: string): Promise<AdminUser | undefined> {
+    const [user] = await db.select().from(adminUsers).where(eq(adminUsers.username, username));
+    return user;
+  }
+
+  async createAdminUser(userData: InsertAdminUser): Promise<AdminUser> {
     const [user] = await db
-      .insert(users)
+      .insert(adminUsers)
       .values(userData)
-      .onConflictDoUpdate({
-        target: users.id,
-        set: {
-          ...userData,
-          updatedAt: new Date(),
-        },
-      })
       .returning();
     return user;
+  }
+
+  async updateAdminLastLogin(id: number): Promise<void> {
+    await db
+      .update(adminUsers)
+      .set({ lastLogin: new Date(), updatedAt: new Date() })
+      .where(eq(adminUsers.id, id));
   }
 
   async addToWaitlist(entry: InsertWaitlistEntry): Promise<WaitlistEntry> {
@@ -90,47 +97,51 @@ export class DatabaseStorage implements IStorage {
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<string, User>;
+  private adminUsers: Map<number, AdminUser>;
   private waitlist: Map<number, WaitlistEntry>;
+  private currentAdminUserId: number;
   private currentWaitlistId: number;
 
-  // User operations (required for Replit Auth)
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async upsertUser(userData: UpsertUser): Promise<User> {
-    const user: User = {
-      ...userData,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    this.users.set(userData.id!, user);
-    return user;
-  }
-
   constructor() {
-    this.users = new Map();
+    this.adminUsers = new Map();
     this.waitlist = new Map();
-    this.currentUserId = 1;
+    this.currentAdminUserId = 1;
     this.currentWaitlistId = 1;
   }
 
-  async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+  // Admin user operations for secure authentication
+  async getAdminUser(id: number): Promise<AdminUser | undefined> {
+    return this.adminUsers.get(id);
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
+  async getAdminUserByUsername(username: string): Promise<AdminUser | undefined> {
+    return Array.from(this.adminUsers.values()).find(
       (user) => user.username === username,
     );
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentUserId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+  async createAdminUser(userData: InsertAdminUser): Promise<AdminUser> {
+    const id = this.currentAdminUserId++;
+    const user: AdminUser = {
+      ...userData,
+      id,
+      role: userData.role || "admin",
+      isActive: userData.isActive ?? true,
+      lastLogin: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.adminUsers.set(id, user);
     return user;
+  }
+
+  async updateAdminLastLogin(id: number): Promise<void> {
+    const user = this.adminUsers.get(id);
+    if (user) {
+      user.lastLogin = new Date();
+      user.updatedAt = new Date();
+      this.adminUsers.set(id, user);
+    }
   }
 
   async addToWaitlist(entry: InsertWaitlistEntry): Promise<WaitlistEntry> {

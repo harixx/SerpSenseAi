@@ -10,6 +10,7 @@ import Home from "@/pages/home.tsx";
 import AnalyticsDashboard from "@/pages/analytics-dashboard";
 import TrackingGuide from "@/pages/tracking-guide";
 import AdminLogin from "@/pages/admin-login";
+import AdminDashboard from "@/pages/admin-dashboard";
 
 function Router() {
   return (
@@ -25,6 +26,8 @@ function Router() {
           <TrackingGuide />
         </ProtectedRoute>
       </Route>
+      <Route path="/admin/login" component={AdminLogin} />
+      <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route path="/admin" component={AdminLogin} />
       <Route component={NotFound} />
     </Switch>
