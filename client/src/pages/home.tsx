@@ -12,6 +12,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { insertWaitlistEntrySchema, type InsertWaitlistEntry } from "@shared/schema";
+import { useWebSocket } from "@/hooks/use-websocket";
 import { 
   Brain, 
   Target, 
@@ -93,10 +94,43 @@ export default function Home() {
   const opacity1 = useTransform(scrollY, [0, 300], [0.1, 0.3]);
   const opacity2 = useTransform(scrollY, [200, 800], [0.1, 0.4]);
 
+  // Real-time WebSocket connection for instant updates
+  const { isConnected, lastMessage, connectionError } = useWebSocket();
+  const [realtimeCount, setRealtimeCount] = useState<number>(0);
+  
+  // Fallback query for initial load and when WebSocket is disconnected
   const { data: waitlistCount } = useQuery<{ count: number }>({
     queryKey: ["/api/waitlist/count"],
-    refetchInterval: 30000,
+    refetchInterval: isConnected ? false : 30000, // Disable polling when WebSocket is connected
+    enabled: !isConnected, // Only fetch when WebSocket is not connected
   });
+
+  // Handle real-time WebSocket messages
+  useEffect(() => {
+    if (lastMessage) {
+      switch (lastMessage.type) {
+        case 'initial_count':
+          if (typeof lastMessage.count === 'number') {
+            setRealtimeCount(lastMessage.count);
+          }
+          break;
+        case 'waitlist_update':
+          if (typeof lastMessage.count === 'number') {
+            setRealtimeCount(lastMessage.count);
+            // Show real-time notification for new signups
+            toast({
+              title: "🚀 New Member Joined!",
+              description: `Elite waitlist growing strong: ${lastMessage.count} strategic minds`,
+              duration: 3000,
+            });
+          }
+          break;
+      }
+    }
+  }, [lastMessage, toast]);
+
+  // Use real-time count when available, fallback to API count
+  const currentCount = isConnected ? realtimeCount : (waitlistCount?.count || 0);
 
   const waitlistMutation = useMutation({
     mutationFn: async (data: InsertWaitlistEntry) => {
@@ -104,12 +138,21 @@ export default function Home() {
       return response.json();
     },
     onSuccess: (data) => {
+      // Update real-time count immediately if returned from server
+      if (data.count && isConnected) {
+        setRealtimeCount(data.count);
+      }
+      
       toast({
-        title: "Welcome to the Elite Waitlist!",
+        title: "🎯 Welcome to the Elite Waitlist!",
         description: "You'll receive priority access and strategic onboarding when we launch.",
         duration: 5000,
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/waitlist/count"] });
+      
+      // Only invalidate queries if WebSocket is not connected (fallback mode)
+      if (!isConnected) {
+        queryClient.invalidateQueries({ queryKey: ["/api/waitlist/count"] });
+      }
     },
     onError: (error: any) => {
       const message = error.message.includes("409") 
@@ -137,7 +180,8 @@ export default function Home() {
     waitlistMutation.mutate(data);
   };
 
-  const spotsRemaining = Math.max(0, 100 - (waitlistCount?.count || 0));
+  // Real-time connection status indicator
+  const connectionStatus = isConnected ? "🟢 Live" : connectionError ? "🔴 Offline" : "🟡 Connecting";
 
   // Initialize F1 Audio System
   useEffect(() => {
@@ -748,10 +792,16 @@ export default function Home() {
                 </form>
               </Form>
               
-              <p className="text-xs text-platinum/50 mt-4 flex items-center justify-center">
-                <Shield className="w-3 h-3 text-gold mr-1" />
-                No spam. Unsubscribe anytime. GDPR compliant.
-              </p>
+              <div className="mt-4 space-y-2">
+                <p className="text-xs text-platinum/50 flex items-center justify-center">
+                  <Shield className="w-3 h-3 text-gold mr-1" />
+                  No spam. Unsubscribe anytime. GDPR compliant.
+                </p>
+                <p className="text-xs text-platinum/40 flex items-center justify-center">
+                  <span className="mr-2">{connectionStatus}</span>
+                  Real-time updates active
+                </p>
+              </div>
             </motion.div>
             
             <motion.div 
@@ -760,7 +810,7 @@ export default function Home() {
             >
               <div className="flex items-center">
                 <Users className="w-4 h-4 text-gold mr-2" />
-                <span>{waitlistCount?.count || 0}+ Strategic Partners</span>
+                <span className={isConnected ? "animate-pulse" : ""}>{currentCount}+ Strategic Partners</span>
               </div>
               <div className="flex items-center">
                 <Star className="w-4 h-4 text-gold mr-2" />
@@ -1803,7 +1853,7 @@ export default function Home() {
               </div>
               <div className="flex items-center">
                 <UserPlus className="w-4 h-4 text-gold mr-2" />
-                <span>{spotsRemaining} spots remaining</span>
+                <span className={isConnected ? "animate-pulse" : ""}>{Math.max(0, 100 - currentCount)} spots remaining</span>
               </div>
             </motion.div>
           </motion.div>
