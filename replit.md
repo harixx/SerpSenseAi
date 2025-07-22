@@ -1,8 +1,8 @@
-# SERP Intelligence Landing Page
+# Imperius Landing Page
 
 ## Overview
 
-This is a premium landing page application for "SERP Intelligence" - an AI-powered SEO tool that analyzes why pages rank, not just who ranks. The application is built as a modern full-stack web application with a React frontend, Express backend, and PostgreSQL database integration.
+This is a premium landing page application for "Imperius" - an AI-powered SEO tool that analyzes why pages rank, not just who ranks. The application is built as a modern full-stack web application with a React frontend, Express backend, and PostgreSQL database integration.
 
 ## User Preferences
 
@@ -26,6 +26,7 @@ Preferred communication style: Simple, everyday language.
 - ✅ Created competency matrix and professional metrics display for client credibility
 - ✅ Professional architecture demonstrating full-stack development capabilities
 - ✅ Strategic business positioning for both customer attraction and portfolio showcase
+- ✅ Brand name changed from "SERP Intelligence" to "Imperius" throughout entire application
 
 ### December 21, 2025 - Migration Completed & Marketing Materials Created
 - ✅ Successfully migrated project from Replit Agent to Replit environment

@@ -1,4 +1,4 @@
-# LinkedIn Post for SERP Intelligence
+# LinkedIn Post for Imperius
 
 ---
 
@@ -18,7 +18,7 @@ They understand:
 
 Traditional SEO tools show you WHAT is ranking.
 
-**SERP Intelligence shows you WHY it's ranking.**
+**Imperius shows you WHY it's ranking.**
 
 Our AI analyzes the strategic elements most tools miss:
 • Content tone and sentiment alignment

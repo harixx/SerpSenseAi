@@ -1,8 +1,8 @@
-# SERP Intelligence: Product Overview for Potential Clients
+# Imperius: Product Overview for Potential Clients
 
 ## 🎯 Executive Summary
 
-**SERP Intelligence** is a next-generation, AI-powered SEO intelligence platform that goes beyond traditional keyword tracking to reveal the strategic "why" behind search rankings. Built for elite SEO professionals, digital agencies, and strategic content teams who demand deeper insights than surface-level metrics.
+**Imperius** is a next-generation, AI-powered SEO intelligence platform that goes beyond traditional keyword tracking to reveal the strategic "why" behind search rankings. Built for elite SEO professionals, digital agencies, and strategic content teams who demand deeper insights than surface-level metrics.
 
 ---
 
@@ -26,7 +26,7 @@
 
 ### AI-Powered Multi-Dimensional SERP Analysis
 
-**SERP Intelligence** leverages advanced Large Language Models to decode the complete ranking picture:
+**Imperius** leverages advanced Large Language Models to decode the complete ranking picture:
 
 #### 🧠 **Intelligence Layers We Analyze:**
 - **Content Tone & Sentiment** - How messaging resonates with searchers
@@ -78,7 +78,7 @@
 ### **1. Competitive Intelligence That Actually Works**
 *"Finally understand why your competitors rank #1"*
 - **Traditional Approach:** Count their backlinks and keywords
-- **SERP Intelligence:** Decode their content strategy, UX patterns, and intent alignment
+- **Imperius:** Decode their content strategy, UX patterns, and intent alignment
 - **Business Impact:** Build better content strategies based on proven success factors
 
 ### **2. Content Strategy That Outperforms**
@@ -105,7 +105,7 @@
 
 ### **What Sets Us Apart:**
 
-| Traditional SEO Tools | SERP Intelligence |
+| Traditional SEO Tools | Imperius |
 |----------------------|-------------------|
 | Keyword-focused analysis | Multi-dimensional strategic intelligence |
 | Surface-level metrics | Deep content and UX insights |

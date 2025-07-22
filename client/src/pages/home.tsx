@@ -62,14 +62,14 @@ export default function Home() {
   
   // ROI Calculation Function
   const calculateROI = (traffic: number, spend: number) => {
-    const serpIntelligenceCost = 697; // Monthly cost
+    const imperiusCost = 697; // Monthly cost
     const trafficImprovementRate = 0.42; // 42% average improvement
     const conversionRate = 0.021; // 2.1% industry average conversion rate
     const avgOrderValue = 285; // Realistic B2B average order value
     
     const additionalTraffic = traffic * trafficImprovementRate;
     const additionalRevenue = additionalTraffic * conversionRate * avgOrderValue;
-    const monthlyROI = ((additionalRevenue - serpIntelligenceCost) / serpIntelligenceCost) * 100;
+    const monthlyROI = ((additionalRevenue - imperiusCost) / imperiusCost) * 100;
     
     return {
       additionalTraffic: Math.round(additionalTraffic),
@@ -635,7 +635,7 @@ export default function Home() {
       <nav className="fixed top-0 w-full z-50 glassmorphism border-b border-crimson/20">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="font-playfair text-2xl font-bold text-crimson">
-            SERP Intelligence
+            Imperius
           </div>
           <div className="flex items-center space-x-4">
             <Button 
@@ -1001,7 +1001,7 @@ export default function Home() {
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-xl text-platinum/70 max-w-3xl mx-auto">
               Strategic SEO teams demand more than surface-level data.
-              Here's how elite professionals leverage SERP Intelligence.
+              Here's how elite professionals leverage Imperius.
             </motion.p>
           </motion.div>
           
@@ -1134,7 +1134,7 @@ export default function Home() {
                     </div>
                   </div>
                   <blockquote className="italic mb-4 text-[#e5e7eb]">
-                    "Our client retention increased 40% after implementing insights from SERP Intelligence. The strategic depth is unmatched."
+                    "Our client retention increased 40% after implementing insights from Imperius. The strategic depth is unmatched."
                   </blockquote>
                   <div className="flex items-center text-gold text-sm">
                     {[...Array(5)].map((_, i) => (
@@ -1243,7 +1243,7 @@ export default function Home() {
                   <span className="ml-2 text-xs text-platinum/60">Enterprise Client</span>
                 </div>
                 <blockquote className="text-lg text-white mb-6 font-light italic">
-                  "SERP Intelligence revealed why our competitors were outranking us despite having fewer backlinks. 
+                  "Imperius revealed why our competitors were outranking us despite having fewer backlinks. 
                   The content tone and structure insights helped us redesign our approach and achieve 3x organic growth in 6 months."
                 </blockquote>
                 <div className="flex items-center">
@@ -1270,7 +1270,7 @@ export default function Home() {
                   <span className="ml-2 text-xs text-platinum/60">Agency Owner</span>
                 </div>
                 <blockquote className="text-lg text-white mb-6 font-light italic">
-                  "Traditional tools show what's ranking. SERP Intelligence shows why it's ranking. 
+                  "Traditional tools show what's ranking. Imperius shows why it's ranking. 
                   This depth of analysis has become our competitive differentiator and increased our client LTV by 40%."
                 </blockquote>
                 <div className="flex items-center">
@@ -1358,7 +1358,7 @@ export default function Home() {
               <span className="text-crimson">Strategic ROI</span>
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-xl text-platinum/80 mb-12 max-w-3xl mx-auto">
-              See how SERP Intelligence transforms your SEO investment into measurable business growth
+              See how Imperius transforms your SEO investment into measurable business growth
             </motion.p>
           </motion.div>
 
@@ -1409,7 +1409,7 @@ export default function Home() {
 
                     {/* Results */}
                     <div className="bg-obsidian/50 rounded-lg p-6 border border-crimson/20">
-                      <h4 className="font-semibold text-white mb-4">Projected Results with SERP Intelligence</h4>
+                      <h4 className="font-semibold text-white mb-4">Projected Results with Imperius</h4>
                       
                       <div className="grid grid-cols-2 gap-4 text-center">
                         <div>
@@ -1541,7 +1541,7 @@ export default function Home() {
                     
                     <h4 className="text-lg font-semibold text-white mb-2">Solution</h4>
                     <p className="text-platinum/80 text-sm mb-4">
-                      SERP Intelligence revealed that top-ranking competitors used more authoritative tone, 
+                      Imperius revealed that top-ranking competitors used more authoritative tone, 
                       deeper technical content structure, and better user experience patterns.
                     </p>
                     
@@ -1600,7 +1600,7 @@ export default function Home() {
                     
                     <h4 className="text-lg font-semibold text-white mb-2">Solution</h4>
                     <p className="text-platinum/80 text-sm mb-4">
-                      Implemented SERP Intelligence as core service offering, providing multi-dimensional 
+                      Implemented Imperius as core service offering, providing multi-dimensional 
                       content analysis that traditional tools couldn't match.
                     </p>
                     
@@ -1814,7 +1814,7 @@ export default function Home() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="font-playfair text-2xl font-bold text-crimson mb-4 md:mb-0">
-              SERP Intelligence
+              Imperius
             </div>
             <div className="flex space-x-6 text-platinum/60 text-sm">
               <a href="#" className="hover:text-crimson transition-colors">Privacy Policy</a>
@@ -1823,7 +1823,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-crimson/10 text-center text-platinum/40 text-sm">
-            <p>&copy; 2024 SERP Intelligence. Built for strategic advantage.</p>
+            <p>&copy; 2024 Imperius. Built for strategic advantage.</p>
           </div>
         </div>
       </footer>

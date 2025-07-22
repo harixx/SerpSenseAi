@@ -1,11 +1,11 @@
-# SERP Intelligence: AI-Powered SEO Strategy Platform
+# Imperius: AI-Powered SEO Strategy Platform
 ## Product Documentation for Client Acquisition
 
 ---
 
 ## 🎯 **Executive Summary**
 
-**SERP Intelligence** is a next-generation AI-powered SEO analysis platform that revolutionizes competitive research for elite SEO professionals, digital agencies, and enterprise content teams. Unlike traditional keyword-focused tools, SERP Intelligence uses advanced LLM technology to decode *why* pages rank, not just *who* ranks.
+**Imperius** is a next-generation AI-powered SEO analysis platform that revolutionizes competitive research for elite SEO professionals, digital agencies, and enterprise content teams. Unlike traditional keyword-focused tools, Imperius uses advanced LLM technology to decode *why* pages rank, not just *who* ranks.
 
 **Market Position:** Premium B2B SaaS tool for sophisticated SEO practitioners seeking strategic competitive advantage over surface-level optimization.
 
