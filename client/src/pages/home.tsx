@@ -383,6 +383,28 @@ export default function Home() {
             <div className="racing-particle"></div>
           </div>
         </div>
+        
+        {/* Anti-Preview Overlay - Blocks browser-generated video previews */}
+        <div className="absolute inset-0 pointer-events-none z-10">
+          {/* Corner overlays where video previews typically appear */}
+          <div className="absolute top-0 left-0 w-40 h-32 bg-gradient-to-br from-black via-black/80 to-transparent"></div>
+          <div className="absolute top-0 right-0 w-40 h-32 bg-gradient-to-bl from-black via-black/80 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 w-40 h-32 bg-gradient-to-tr from-black via-black/80 to-transparent"></div>
+          <div className="absolute bottom-0 right-0 w-40 h-32 bg-gradient-to-tl from-black via-black/80 to-transparent"></div>
+          
+          {/* Edge overlays to hide any browser video controls or previews */}
+          <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-black/95 via-black/70 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/95 via-black/70 to-transparent"></div>
+          <div className="absolute top-0 bottom-0 left-0 w-12 bg-gradient-to-r from-black/95 via-black/70 to-transparent"></div>
+          <div className="absolute top-0 bottom-0 right-0 w-12 bg-gradient-to-l from-black/95 via-black/70 to-transparent"></div>
+          
+          {/* Strategic overlays for picture-in-picture previews */}
+          <div className="absolute top-1/4 left-1/4 w-32 h-24 bg-black/95 rounded-lg shadow-2xl"></div>
+          <div className="absolute top-1/3 right-1/4 w-32 h-24 bg-black/95 rounded-lg shadow-2xl"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-32 h-24 bg-black/95 rounded-lg shadow-2xl"></div>
+          <div className="absolute bottom-1/3 right-1/3 w-32 h-24 bg-black/95 rounded-lg shadow-2xl"></div>
+        </div>
+        
         {/* Professional dark overlay for readability */}
         <div 
           className="absolute inset-0 w-full h-full"
