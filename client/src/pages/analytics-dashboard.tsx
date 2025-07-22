@@ -13,8 +13,16 @@ import {
   Trophy,
   Zap,
   BarChart3,
-  PieChart
+  PieChart,
+  Activity,
+  Eye,
+  Layers,
+  Sparkles,
+  ArrowUp,
+  ArrowDown,
+  Gauge
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface AnalyticsDashboard {
   sessions: {
@@ -45,14 +53,50 @@ export default function AnalyticsDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-obsidian p-8">
+      <div className="min-h-screen bg-gradient-to-br from-obsidian via-charcoal to-obsidian p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="animate-pulse">
-            <div className="h-8 bg-slate-700 rounded w-64 mb-8"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-32 bg-slate-700 rounded"></div>
+          <div className="relative">
+            {/* Animated background elements */}
+            <div className="absolute inset-0 overflow-hidden">
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-64 h-64 rounded-full opacity-5"
+                  style={{
+                    background: `linear-gradient(45deg, ${i % 2 === 0 ? '#DAA520' : '#DC143C'}, transparent)`,
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                  }}
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    rotate: [0, 180, 360],
+                  }}
+                  transition={{
+                    duration: 8 + i,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
+                />
               ))}
+            </div>
+            
+            {/* Loading skeleton */}
+            <div className="relative z-10">
+              <motion.div 
+                className="h-12 bg-gradient-to-r from-gold/20 to-crimson/20 rounded-lg w-80 mb-8"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {[...Array(4)].map((_, i) => (
+                  <motion.div 
+                    key={i} 
+                    className="h-32 bg-gradient-to-br from-charcoal/50 to-obsidian/50 rounded-xl backdrop-blur-sm border border-gold/10"
+                    animate={{ opacity: [0.3, 0.7, 0.3] }}
+                    transition={{ duration: 2, delay: i * 0.2, repeat: Infinity }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -63,69 +107,279 @@ export default function AnalyticsDashboard() {
   const data = analytics?.data;
 
   return (
-    <div className="min-h-screen bg-obsidian text-platinum p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gold mb-2">Imperius Analytics</h1>
-          <p className="text-platinum/60">Real-time insights into user behavior, A/B tests, and lead qualification</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-obsidian via-charcoal to-obsidian text-platinum relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-96 h-96 rounded-full opacity-5 blur-3xl"
+            style={{
+              background: `radial-gradient(circle, ${i % 3 === 0 ? '#DAA520' : i % 3 === 1 ? '#DC143C' : '#C0C0C0'} 0%, transparent 70%)`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              x: [0, 50, -50, 0],
+              y: [0, -30, 30, 0],
+              scale: [1, 1.1, 0.9, 1],
+            }}
+            transition={{
+              duration: 15 + i * 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+      </div>
 
-        {/* Key Metrics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-charcoal border-gold/20">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-platinum/70">Total Sessions</CardTitle>
-              <Users className="h-4 w-4 text-gold" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-platinum">{data?.sessions?.totalSessions || 0}</div>
-              <p className="text-xs text-platinum/50">Unique visitors: {data?.sessions?.uniqueUsers || 0}</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-charcoal border-gold/20">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-platinum/70">Conversion Rate</CardTitle>
-              <Target className="h-4 w-4 text-crimson" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-crimson">
-                {data?.conversions?.conversionRate || 0}%
+      {/* Content */}
+      <div className="relative z-10 p-8">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            className="mb-12"
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="relative">
+              <motion.h1 
+                className="text-6xl font-bold bg-gradient-to-r from-gold via-platinum to-crimson bg-clip-text text-transparent mb-4"
+                animate={{ 
+                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                style={{ backgroundSize: "200% 200%" }}
+              >
+                Imperius Analytics
+              </motion.h1>
+              <div className="flex items-center space-x-4 mb-4">
+                <motion.div 
+                  className="w-3 h-3 bg-green-400 rounded-full"
+                  animate={{ opacity: [1, 0.3, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                <p className="text-platinum/70 text-lg">Real-time intelligence • Enterprise-grade insights • Advanced lead qualification</p>
               </div>
-              <p className="text-xs text-platinum/50">
-                {data?.conversions?.signups || 0} of {data?.conversions?.totalVisitors || 0} visitors
-              </p>
-            </CardContent>
-          </Card>
+              
+              {/* Floating particles */}
+              {[...Array(12)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-1 h-1 bg-gold rounded-full opacity-60"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                  }}
+                  animate={{
+                    y: [0, -20, 0],
+                    opacity: [0.6, 1, 0.6],
+                  }}
+                  transition={{
+                    duration: 3 + Math.random() * 2,
+                    repeat: Infinity,
+                    delay: Math.random() * 2,
+                  }}
+                />
+              ))}
+            </div>
+          </motion.div>
 
-          <Card className="bg-charcoal border-gold/20">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-platinum/70">Avg Time on Site</CardTitle>
-              <Timer className="h-4 w-4 text-blue-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-400">
-                {Math.round((data?.sessions?.avgTimeOnSite || 0) / 60)}m
-              </div>
-              <p className="text-xs text-platinum/50">
-                Bounce rate: {data?.sessions?.bounceRate || 0}%
-              </p>
-            </CardContent>
-          </Card>
+          {/* Key Metrics Cards */}
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            {/* Total Sessions Card */}
+            <motion.div
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <Card className="bg-gradient-to-br from-charcoal/80 to-obsidian/80 border border-gold/30 backdrop-blur-xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+                  <CardTitle className="text-sm font-medium text-platinum/70">Total Sessions</CardTitle>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                  >
+                    <Users className="h-5 w-5 text-gold drop-shadow-lg" />
+                  </motion.div>
+                </CardHeader>
+                <CardContent className="relative z-10">
+                  <motion.div 
+                    className="text-3xl font-bold bg-gradient-to-r from-platinum to-gold bg-clip-text text-transparent"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.5, type: "spring" }}
+                  >
+                    {data?.sessions?.totalSessions || 0}
+                  </motion.div>
+                  <div className="flex items-center mt-2">
+                    <ArrowUp className="h-3 w-3 text-green-400 mr-1" />
+                    <p className="text-xs text-platinum/50">Unique visitors: {data?.sessions?.uniqueUsers || 0}</p>
+                  </div>
+                </CardContent>
+                
+                {/* Animated border */}
+                <div className="absolute inset-0 rounded-lg opacity-50">
+                  <div className="absolute inset-0 rounded-lg border border-gold/20 animate-pulse" />
+                </div>
+              </Card>
+            </motion.div>
 
-          <Card className="bg-charcoal border-gold/20">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-platinum/70">Time to Convert</CardTitle>
-              <Zap className="h-4 w-4 text-green-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-400">
-                {Math.round((data?.conversions?.avgTimeToConvert || 0) / 60)}m
-              </div>
-              <p className="text-xs text-platinum/50">Average conversion time</p>
-            </CardContent>
-          </Card>
-        </div>
+            {/* Conversion Rate Card */}
+            <motion.div
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <Card className="bg-gradient-to-br from-crimson/10 to-charcoal/80 border border-crimson/30 backdrop-blur-xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-crimson/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+                  <CardTitle className="text-sm font-medium text-platinum/70">Conversion Rate</CardTitle>
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <Target className="h-5 w-5 text-crimson drop-shadow-lg" />
+                  </motion.div>
+                </CardHeader>
+                <CardContent className="relative z-10">
+                  <motion.div 
+                    className="text-3xl font-bold text-crimson"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.6, type: "spring" }}
+                  >
+                    {data?.conversions?.conversionRate || 0}%
+                  </motion.div>
+                  <div className="flex items-center mt-2">
+                    <TrendingUp className="h-3 w-3 text-green-400 mr-1" />
+                    <p className="text-xs text-platinum/50">
+                      {data?.conversions?.signups || 0} of {data?.conversions?.totalVisitors || 0} visitors
+                    </p>
+                  </div>
+                </CardContent>
+                
+                {/* Progress ring */}
+                <div className="absolute bottom-2 right-2">
+                  <svg className="w-8 h-8" viewBox="0 0 32 32">
+                    <motion.circle
+                      cx="16" cy="16" r="12"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      className="text-crimson/20"
+                    />
+                    <motion.circle
+                      cx="16" cy="16" r="12"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      className="text-crimson"
+                      strokeDasharray={75.4}
+                      strokeDashoffset={75.4 - (75.4 * (data?.conversions?.conversionRate || 0)) / 100}
+                      initial={{ strokeDashoffset: 75.4 }}
+                      animate={{ strokeDashoffset: 75.4 - (75.4 * (data?.conversions?.conversionRate || 0)) / 100 }}
+                      transition={{ duration: 1.5, delay: 0.8 }}
+                    />
+                  </svg>
+                </div>
+              </Card>
+            </motion.div>
+
+            {/* Time on Site Card */}
+            <motion.div
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <Card className="bg-gradient-to-br from-blue-500/10 to-charcoal/80 border border-blue-400/30 backdrop-blur-xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+                  <CardTitle className="text-sm font-medium text-platinum/70">Avg Time on Site</CardTitle>
+                  <motion.div
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                  >
+                    <Timer className="h-5 w-5 text-blue-400 drop-shadow-lg" />
+                  </motion.div>
+                </CardHeader>
+                <CardContent className="relative z-10">
+                  <motion.div 
+                    className="text-3xl font-bold text-blue-400"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.7, type: "spring" }}
+                  >
+                    {Math.round((data?.sessions?.avgTimeOnSite || 0) / 60)}m
+                  </motion.div>
+                  <div className="flex items-center mt-2">
+                    <ArrowDown className="h-3 w-3 text-red-400 mr-1" />
+                    <p className="text-xs text-platinum/50">
+                      Bounce rate: {data?.sessions?.bounceRate || 0}%
+                    </p>
+                  </div>
+                </CardContent>
+                
+                {/* Time indicator */}
+                <div className="absolute top-2 right-2">
+                  <motion.div
+                    className="w-2 h-2 bg-blue-400 rounded-full"
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                </div>
+              </Card>
+            </motion.div>
+
+            {/* Time to Convert Card */}
+            <motion.div
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <Card className="bg-gradient-to-br from-green-500/10 to-charcoal/80 border border-green-400/30 backdrop-blur-xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+                  <CardTitle className="text-sm font-medium text-platinum/70">Time to Convert</CardTitle>
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.3, 1],
+                      filter: ["hue-rotate(0deg)", "hue-rotate(90deg)", "hue-rotate(0deg)"]
+                    }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    <Zap className="h-5 w-5 text-green-400 drop-shadow-lg" />
+                  </motion.div>
+                </CardHeader>
+                <CardContent className="relative z-10">
+                  <motion.div 
+                    className="text-3xl font-bold text-green-400"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.8, type: "spring" }}
+                  >
+                    {Math.round((data?.conversions?.avgTimeToConvert || 0) / 60)}m
+                  </motion.div>
+                  <div className="flex items-center mt-2">
+                    <Sparkles className="h-3 w-3 text-gold mr-1" />
+                    <p className="text-xs text-platinum/50">Average conversion time</p>
+                  </div>
+                </CardContent>
+                
+                {/* Lightning effect */}
+                <div className="absolute inset-0 overflow-hidden">
+                  <motion.div
+                    className="absolute w-full h-0.5 bg-gradient-to-r from-transparent via-green-400 to-transparent"
+                    style={{ top: "60%" }}
+                    animate={{ x: ["-100%", "200%"] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                </div>
+              </Card>
+            </motion.div>
+          </motion.div>
 
         <Tabs defaultValue="performance" className="space-y-6">
           <TabsList className="bg-charcoal border border-gold/20">
@@ -349,6 +603,7 @@ export default function AnalyticsDashboard() {
             </div>
           </TabsContent>
         </Tabs>
+        </div>
       </div>
     </div>
   );
