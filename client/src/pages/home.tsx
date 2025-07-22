@@ -13,6 +13,8 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { insertWaitlistEntrySchema, type InsertWaitlistEntry } from "@shared/schema";
 import { useWebSocket } from "@/hooks/use-websocket";
+import { useAnalytics } from "@/hooks/use-analytics";
+import { useHeroCTATest, useHeroHeadlineTest, useSocialProofTest } from "@/hooks/use-ab-test";
 import { 
   Brain, 
   Target, 
@@ -177,11 +179,31 @@ export default function Home() {
   });
 
   const onSubmit = (data: InsertWaitlistEntry) => {
+    // Track lead action for conversion
+    trackLeadAction('form_submit', data.source);
+    
+    // Track A/B test conversion
+    heroCTA.trackConversion();
+    
     waitlistMutation.mutate(data);
   };
 
   // Real-time connection status indicator
   const connectionStatus = isConnected ? "🟢 Live" : connectionError ? "🔴 Offline" : "🟡 Connecting";
+
+  // Generate session ID for analytics and A/B testing
+  const sessionId = useRef(`session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  
+  // Initialize analytics tracking
+  const { trackEvent, trackLeadAction } = useAnalytics({
+    sessionId: sessionId.current,
+    enableTracking: true,
+  });
+
+  // Initialize A/B tests
+  const heroCTA = useHeroCTATest(sessionId.current);
+  const heroHeadline = useHeroHeadlineTest(sessionId.current);
+  const socialProof = useSocialProofTest(sessionId.current);
 
   // Initialize F1 Audio System
   useEffect(() => {
@@ -785,9 +807,9 @@ export default function Home() {
                   <Button
                     type="submit"
                     disabled={waitlistMutation.isPending}
-                    className="w-full bg-crimson hover:bg-ruby text-white py-3 px-6 rounded-lg font-semibold cta-hover animate-glow-pulse"
+                    className={`w-full text-white py-3 px-6 rounded-lg font-semibold cta-hover ${heroCTA.config?.style || 'bg-crimson hover:bg-ruby'} ${heroCTA.config?.urgency ? 'animate-glow-pulse' : ''}`}
                   >
-                    {waitlistMutation.isPending ? "Processing..." : "Request Exclusive Access"}
+                    {waitlistMutation.isPending ? "Processing..." : (heroCTA.config?.text || "Request Exclusive Access")}
                   </Button>
                 </form>
               </Form>

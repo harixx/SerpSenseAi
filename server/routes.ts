@@ -2,7 +2,8 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
-import { insertWaitlistEntrySchema } from "@shared/schema";
+import { insertWaitlistEntrySchema, insertUserSessionSchema, insertPageEventSchema, insertLeadActionSchema } from "@shared/schema";
+import { AnalyticsService } from "./analytics";
 import { z } from "zod";
 
 // WebSocket connection management
@@ -18,6 +19,9 @@ function broadcastUpdate(data: any) {
     }
   });
 }
+
+// Initialize analytics service
+const analyticsService = new AnalyticsService();
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Waitlist endpoints
@@ -90,6 +94,130 @@ export async function registerRoutes(app: Express): Promise<Server> {
       connections: connectedClients.size,
       websocket: wss ? "active" : "inactive"
     });
+  });
+
+  // Analytics endpoints
+  app.post("/api/analytics/session", async (req, res) => {
+    try {
+      const sessionData = insertUserSessionSchema.parse(req.body);
+      // Add IP address from request
+      sessionData.ipAddress = req.ip || req.connection.remoteAddress || '';
+      
+      const session = await analyticsService.createSession(sessionData);
+      res.json({ success: true, session });
+    } catch (error) {
+      console.error('Analytics session error:', error);
+      res.status(400).json({ error: "Invalid session data" });
+    }
+  });
+
+  app.post("/api/analytics/events", async (req, res) => {
+    try {
+      const { events } = req.body;
+      if (!Array.isArray(events)) {
+        return res.status(400).json({ error: "Events must be an array" });
+      }
+
+      const results = [];
+      for (const eventData of events) {
+        const validatedEvent = insertPageEventSchema.parse(eventData);
+        const event = await analyticsService.trackEvent(validatedEvent);
+        results.push(event);
+      }
+
+      res.json({ success: true, count: results.length });
+    } catch (error) {
+      console.error('Analytics events error:', error);
+      res.status(400).json({ error: "Invalid event data" });
+    }
+  });
+
+  app.post("/api/analytics/lead-action", async (req, res) => {
+    try {
+      const actionData = insertLeadActionSchema.parse(req.body);
+      const action = await analyticsService.trackLeadAction(actionData);
+      res.json({ success: true, action });
+    } catch (error) {
+      console.error('Lead action error:', error);
+      res.status(400).json({ error: "Invalid action data" });
+    }
+  });
+
+  // A/B Testing endpoints
+  app.post("/api/analytics/ab-tests/initialize", async (req, res) => {
+    try {
+      const { sessionId } = req.body;
+      if (!sessionId) {
+        return res.status(400).json({ error: "Session ID required" });
+      }
+
+      const activeTests = await analyticsService.getActiveTests();
+      const variants: Record<string, string> = {};
+
+      for (const test of activeTests) {
+        // Check if already assigned
+        const existingVariant = await analyticsService.getTestAssignment(sessionId, test.testName);
+        
+        if (existingVariant) {
+          variants[test.testName] = existingVariant;
+        } else {
+          // Assign random variant (A, B, C)
+          const availableVariants = ['A', 'B', 'C'];
+          const randomVariant = availableVariants[Math.floor(Math.random() * availableVariants.length)];
+          
+          await analyticsService.assignToTest(sessionId, test.id, randomVariant);
+          variants[test.testName] = randomVariant;
+        }
+      }
+
+      res.json({ success: true, variants });
+    } catch (error) {
+      console.error('A/B test initialization error:', error);
+      res.status(500).json({ error: "Failed to initialize tests" });
+    }
+  });
+
+  app.post("/api/analytics/ab-tests/conversion", async (req, res) => {
+    try {
+      const { sessionId, testName, conversionType, variant } = req.body;
+      
+      // Track conversion as a special lead action
+      await analyticsService.trackLeadAction({
+        sessionId,
+        actionType: `ab_conversion_${testName}`,
+        actionValue: `${variant}_${conversionType}`,
+      });
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error('A/B conversion tracking error:', error);
+      res.status(400).json({ error: "Failed to track conversion" });
+    }
+  });
+
+  // Analytics dashboard endpoints
+  app.get("/api/analytics/dashboard", async (req, res) => {
+    try {
+      const timeframe = req.query.timeframe as 'day' | 'week' | 'month' || 'week';
+      
+      const [sessionAnalytics, conversionAnalytics, topElements] = await Promise.all([
+        analyticsService.getSessionAnalytics(timeframe),
+        analyticsService.getConversionAnalytics(),
+        analyticsService.getTopPerformingElements(),
+      ]);
+
+      res.json({
+        success: true,
+        data: {
+          sessions: sessionAnalytics,
+          conversions: conversionAnalytics,
+          topElements,
+        }
+      });
+    } catch (error) {
+      console.error('Dashboard analytics error:', error);
+      res.status(500).json({ error: "Failed to fetch analytics" });
+    }
   });
 
   const httpServer = createServer(app);
