@@ -557,3 +557,74 @@ video {
     transform: scale(1.05) rotate(-0.3deg);
   }
 }
+
+/* Hide all video controls and picture-in-picture preview */
+video::-webkit-media-controls-panel {
+  display: none !important;
+}
+
+video::-webkit-media-controls-play-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls-volume-slider {
+  display: none !important;
+}
+
+video::-webkit-media-controls-timeline {
+  display: none !important;
+}
+
+video::-webkit-media-controls-current-time-display {
+  display: none !important;
+}
+
+video::-webkit-media-controls-time-remaining-display {
+  display: none !important;
+}
+
+video::-webkit-media-controls-fullscreen-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls-toggle-closed-captions-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls-picture-in-picture-button {
+  display: none !important;
+}
+
+/* Hide all media controls completely */
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+/* Hide video poster and loading states */
+video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+/* Remove any video overlays or previews */
+video {
+  outline: none !important;
+  -webkit-appearance: none !important;
+}
+
+/* Hide scrollbars */
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
