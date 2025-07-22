@@ -1,3 +1,5 @@
+import { logger } from './logger';
+
 // F1 Racing Audio Generator using Web Audio API
 export class F1AudioEngine {
   private audioContext: AudioContext | null = null;
@@ -6,9 +8,7 @@ export class F1AudioEngine {
   private isPlaying = false;
 
   constructor() {
-    if (process.env.NODE_ENV === "development") {
-      console.log('Initializing F1 Heavy Metal Audio Engine...');
-    }
+    logger.log('Initializing F1 Heavy Metal Audio Engine...');
     this.initAudioContext();
   }
 
@@ -18,12 +18,10 @@ export class F1AudioEngine {
       this.gainNode = this.audioContext.createGain();
       this.gainNode.connect(this.audioContext.destination);
       this.gainNode.gain.value = 0.1; // Start with low volume
-      if (process.env.NODE_ENV === "development") {
-        console.log('F1 Heavy Metal Audio Context initialized successfully');
-        console.log('Audio Context state:', this.audioContext.state);
-      }
+      logger.log('F1 Heavy Metal Audio Context initialized successfully');
+      logger.log('Audio Context state:', this.audioContext.state);
     } catch (error) {
-      console.error('Web Audio API not supported:', error);
+      logger.error('Web Audio API not supported:', error);
     }
   }
 
@@ -33,9 +31,7 @@ export class F1AudioEngine {
       return;
     }
 
-    if (process.env.NODE_ENV === "development") {
-      console.log('Creating heavy metal F1 engine sound...');
-    }
+    logger.log('Creating heavy metal F1 engine sound...');
     
     // Stop any existing oscillators
     this.stop();
@@ -91,17 +87,13 @@ export class F1AudioEngine {
       this.oscillators.push(oscillator, lfo);
     });
 
-    if (process.env.NODE_ENV === "development") {
-      console.log(`Created ${frequencies.length} heavy metal F1 oscillators`);
-    }
+    logger.log(`Created ${frequencies.length} heavy metal F1 oscillators`);
     
     // Add engine rev variations and heavy metal beat
     this.addEngineRevs();
     this.addHeavyMetalBeat();
     
-    if (process.env.NODE_ENV === "development") {
-      console.log('Heavy metal F1 engine sound created successfully!');
-    }
+    logger.log('Heavy metal F1 engine sound created successfully!');
   }
 
   private createDistortionCurve(amount: number): Float32Array {
@@ -206,41 +198,29 @@ export class F1AudioEngine {
 
   public start() {
     if (this.isPlaying) {
-      if (process.env.NODE_ENV === "development") {
-        console.log('F1 audio engine already playing');
-      }
+      logger.log('F1 audio engine already playing');
       return;
     }
     
-    if (process.env.NODE_ENV === "development") {
-      console.log('🔥 STARTING F1 HEAVY METAL AUDIO ENGINE 🔥');
-      console.log('AudioContext state:', this.audioContext?.state);
-    }
+    logger.log('🔥 STARTING F1 HEAVY METAL AUDIO ENGINE 🔥');
+    logger.log('AudioContext state:', this.audioContext?.state);
     
     if (!this.audioContext || !this.gainNode) {
-      console.error('Audio context or gain node missing!');
+      logger.error('Audio context or gain node missing!');
       return;
     }
     
     // Force audio context to start
     this.audioContext.resume().then(() => {
-      if (process.env.NODE_ENV === "development") {
-        console.log('✅ Audio context running - creating sounds...');
-      }
+      logger.log('✅ Audio context running - creating sounds...');
       this.isPlaying = true;
       this.createF1EngineSound();
-      if (process.env.NODE_ENV === "development") {
-        console.log('🤘 HEAVY METAL F1 AUDIO IS NOW PLAYING! 🤘');
-      }
+      logger.log('🤘 HEAVY METAL F1 AUDIO IS NOW PLAYING! 🤘');
     }).catch(e => {
-      if (process.env.NODE_ENV === "development") {
-        console.log('Context resume failed, starting anyway:', e);
-      }
+      logger.log('Context resume failed, starting anyway:', e);
       this.isPlaying = true;
       this.createF1EngineSound();
-      if (process.env.NODE_ENV === "development") {
-        console.log('🤘 HEAVY METAL F1 AUDIO STARTED (FALLBACK)! 🤘');
-      }
+      logger.log('🤘 HEAVY METAL F1 AUDIO STARTED (FALLBACK)! 🤘');
     });
   }
 
