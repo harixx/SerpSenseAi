@@ -1,0 +1,917 @@
+var __defProp = Object.defineProperty;
+var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
+  get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
+}) : x)(function(x) {
+  if (typeof require !== "undefined") return require.apply(this, arguments);
+  throw Error('Dynamic require of "' + x + '" is not supported');
+});
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+
+// server/index.ts
+import express2 from "express";
+
+// server/routes.ts
+import { createServer } from "http";
+import { WebSocketServer, WebSocket } from "ws";
+
+// shared/schema.ts
+var schema_exports = {};
+__export(schema_exports, {
+  abTestAssignments: () => abTestAssignments,
+  abTests: () => abTests,
+  adminUsers: () => adminUsers,
+  insertAdminUserSchema: () => insertAdminUserSchema,
+  insertLeadActionSchema: () => insertLeadActionSchema,
+  insertPageEventSchema: () => insertPageEventSchema,
+  insertUserSessionSchema: () => insertUserSessionSchema,
+  insertWaitlistEntrySchema: () => insertWaitlistEntrySchema,
+  leadActions: () => leadActions,
+  leadScores: () => leadScores,
+  loginAdminSchema: () => loginAdminSchema,
+  pageEvents: () => pageEvents,
+  sessions: () => sessions,
+  userSessions: () => userSessions,
+  waitlistEntries: () => waitlistEntries
+});
+import {
+  pgTable,
+  text,
+  serial,
+  integer,
+  boolean,
+  timestamp,
+  varchar,
+  jsonb,
+  index
+} from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod";
+var sessions = pgTable(
+  "sessions",
+  {
+    sid: varchar("sid").primaryKey(),
+    sess: jsonb("sess").notNull(),
+    expire: timestamp("expire").notNull()
+  },
+  (table) => [index("IDX_session_expire").on(table.expire)]
+);
+var adminUsers = pgTable("admin_users", {
+  id: serial("id").primaryKey(),
+  username: varchar("username", { length: 50 }).unique().notNull(),
+  email: varchar("email", { length: 255 }).unique().notNull(),
+  password: varchar("password", { length: 255 }).notNull(),
+  // bcrypt hashed
+  role: varchar("role", { length: 20 }).default("admin").notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  lastLogin: timestamp("last_login"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull()
+});
+var waitlistEntries = pgTable("waitlist_entries", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  source: text("source").notNull(),
+  // 'hero' or 'final_cta'
+  createdAt: timestamp("created_at").defaultNow().notNull()
+});
+var insertWaitlistEntrySchema = createInsertSchema(waitlistEntries).pick({
+  email: true,
+  source: true
+});
+var insertAdminUserSchema = createInsertSchema(adminUsers).pick({
+  username: true,
+  email: true,
+  password: true
+});
+var loginAdminSchema = z.object({
+  username: z.string().min(1),
+  password: z.string().min(1)
+});
+var userSessions = pgTable("user_sessions", {
+  id: serial("id").primaryKey(),
+  sessionId: text("session_id").notNull().unique(),
+  userId: text("user_id"),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  referrer: text("referrer"),
+  utmSource: text("utm_source"),
+  utmMedium: text("utm_medium"),
+  utmCampaign: text("utm_campaign"),
+  country: text("country"),
+  device: text("device"),
+  browser: text("browser"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  lastActivity: timestamp("last_activity").defaultNow().notNull()
+});
+var pageEvents = pgTable("page_events", {
+  id: serial("id").primaryKey(),
+  sessionId: text("session_id").notNull(),
+  eventType: text("event_type").notNull(),
+  elementId: text("element_id"),
+  elementText: text("element_text"),
+  pagePath: text("page_path").notNull(),
+  scrollDepth: integer("scroll_depth"),
+  timeOnPage: integer("time_on_page"),
+  metadata: text("metadata"),
+  // JSON string
+  timestamp: timestamp("timestamp").defaultNow().notNull()
+});
+var abTests = pgTable("ab_tests", {
+  id: serial("id").primaryKey(),
+  testName: text("test_name").notNull(),
+  variant: text("variant").notNull(),
+  description: text("description"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  endDate: timestamp("end_date")
+});
+var abTestAssignments = pgTable("ab_test_assignments", {
+  id: serial("id").primaryKey(),
+  sessionId: text("session_id").notNull(),
+  testId: integer("test_id").notNull(),
+  variant: text("variant").notNull(),
+  assignedAt: timestamp("assigned_at").defaultNow().notNull()
+});
+var leadScores = pgTable("lead_scores", {
+  id: serial("id").primaryKey(),
+  sessionId: text("session_id").notNull().unique(),
+  email: text("email"),
+  totalScore: integer("total_score").default(0),
+  engagementScore: integer("engagement_score").default(0),
+  intentScore: integer("intent_score").default(0),
+  qualityScore: integer("quality_score").default(0),
+  lastCalculated: timestamp("last_calculated").defaultNow().notNull()
+});
+var leadActions = pgTable("lead_actions", {
+  id: serial("id").primaryKey(),
+  sessionId: text("session_id").notNull(),
+  actionType: text("action_type").notNull(),
+  actionValue: text("action_value"),
+  scoreImpact: integer("score_impact").default(0),
+  timestamp: timestamp("timestamp").defaultNow().notNull()
+});
+var insertUserSessionSchema = createInsertSchema(userSessions).omit({
+  id: true,
+  createdAt: true,
+  lastActivity: true
+});
+var insertPageEventSchema = createInsertSchema(pageEvents).omit({
+  id: true,
+  timestamp: true
+});
+var insertLeadActionSchema = createInsertSchema(leadActions).omit({
+  id: true,
+  timestamp: true
+});
+
+// server/db.ts
+import { Pool, neonConfig } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-serverless";
+import ws from "ws";
+neonConfig.webSocketConstructor = ws;
+if (!process.env.DATABASE_URL) {
+  throw new Error(
+    "DATABASE_URL must be set. Did you forget to provision a database?"
+  );
+}
+var pool = new Pool({ connectionString: process.env.DATABASE_URL });
+var db = drizzle({ client: pool, schema: schema_exports });
+
+// server/storage.ts
+import { eq } from "drizzle-orm";
+var DatabaseStorage = class {
+  // Admin user operations for secure authentication
+  async getAdminUser(id) {
+    const [user] = await db.select().from(adminUsers).where(eq(adminUsers.id, id));
+    return user;
+  }
+  async getAdminUserByUsername(username) {
+    const [user] = await db.select().from(adminUsers).where(eq(adminUsers.username, username));
+    return user;
+  }
+  async createAdminUser(userData) {
+    const [user] = await db.insert(adminUsers).values(userData).returning();
+    return user;
+  }
+  async updateAdminLastLogin(id) {
+    await db.update(adminUsers).set({ lastLogin: /* @__PURE__ */ new Date(), updatedAt: /* @__PURE__ */ new Date() }).where(eq(adminUsers.id, id));
+  }
+  async addToWaitlist(entry) {
+    const [waitlistEntry] = await db.insert(waitlistEntries).values(entry).returning();
+    return waitlistEntry;
+  }
+  async getWaitlistEntries() {
+    return await db.select().from(waitlistEntries);
+  }
+  async isEmailInWaitlist(email) {
+    const [entry] = await db.select().from(waitlistEntries).where(eq(waitlistEntries.email, email));
+    return !!entry;
+  }
+};
+var MemStorage = class {
+  adminUsers;
+  waitlist;
+  currentAdminUserId;
+  currentWaitlistId;
+  constructor() {
+    this.adminUsers = /* @__PURE__ */ new Map();
+    this.waitlist = /* @__PURE__ */ new Map();
+    this.currentAdminUserId = 1;
+    this.currentWaitlistId = 1;
+  }
+  // Admin user operations for secure authentication
+  async getAdminUser(id) {
+    return this.adminUsers.get(id);
+  }
+  async getAdminUserByUsername(username) {
+    return Array.from(this.adminUsers.values()).find(
+      (user) => user.username === username
+    );
+  }
+  async createAdminUser(userData) {
+    const id = this.currentAdminUserId++;
+    const user = {
+      ...userData,
+      id,
+      role: userData.role || "admin",
+      isActive: userData.isActive ?? true,
+      lastLogin: null,
+      createdAt: /* @__PURE__ */ new Date(),
+      updatedAt: /* @__PURE__ */ new Date()
+    };
+    this.adminUsers.set(id, user);
+    return user;
+  }
+  async updateAdminLastLogin(id) {
+    const user = this.adminUsers.get(id);
+    if (user) {
+      user.lastLogin = /* @__PURE__ */ new Date();
+      user.updatedAt = /* @__PURE__ */ new Date();
+      this.adminUsers.set(id, user);
+    }
+  }
+  async addToWaitlist(entry) {
+    const id = this.currentWaitlistId++;
+    const waitlistEntry = {
+      ...entry,
+      id,
+      createdAt: /* @__PURE__ */ new Date()
+    };
+    this.waitlist.set(id, waitlistEntry);
+    return waitlistEntry;
+  }
+  async getWaitlistEntries() {
+    return Array.from(this.waitlist.values());
+  }
+  async isEmailInWaitlist(email) {
+    return Array.from(this.waitlist.values()).some((entry) => entry.email === email);
+  }
+};
+var storage;
+try {
+  if (process.env.DATABASE_URL) {
+    storage = new DatabaseStorage();
+  } else {
+    console.log("No DATABASE_URL found, using in-memory storage");
+    storage = new MemStorage();
+  }
+} catch (error) {
+  console.log("Database connection failed, using in-memory storage:", error);
+  storage = new MemStorage();
+}
+
+// server/analytics.ts
+import { eq as eq2, sql } from "drizzle-orm";
+var AnalyticsService = class {
+  // Session Management
+  async createSession(sessionData) {
+    try {
+      const [session2] = await db.insert(userSessions).values(sessionData).returning();
+      return session2;
+    } catch (error) {
+      console.error("Failed to create session:", error);
+      return null;
+    }
+  }
+  async updateSessionActivity(sessionId) {
+    try {
+      await db.update(userSessions).set({ lastActivity: /* @__PURE__ */ new Date() }).where(eq2(userSessions.sessionId, sessionId));
+    } catch (error) {
+      console.error("Failed to update session activity:", error);
+    }
+  }
+  // Event Tracking
+  async trackEvent(eventData) {
+    try {
+      const [event] = await db.insert(pageEvents).values(eventData).returning();
+      await this.updateSessionActivity(eventData.sessionId);
+      return event;
+    } catch (error) {
+      console.error("Failed to track event:", error);
+      return null;
+    }
+  }
+  // A/B Testing
+  async getActiveTests() {
+    try {
+      return await db.select().from(abTests).where(eq2(abTests.isActive, true));
+    } catch (error) {
+      console.error("Failed to get active tests:", error);
+      return [];
+    }
+  }
+  // Dashboard Data Aggregation
+  async getDashboardData() {
+    try {
+      const metrics = {
+        totalSessions: 0,
+        todaySessions: 0,
+        totalEvents: 0,
+        waitlistCount: 0,
+        activeTests: 0
+      };
+      try {
+        const [sessionCount] = await db.select({ count: sql`count(*)` }).from(userSessions);
+        metrics.totalSessions = Number(sessionCount?.count || 0);
+      } catch (e) {
+        console.log("Session count fallback");
+      }
+      try {
+        const [eventCount] = await db.select({ count: sql`count(*)` }).from(pageEvents);
+        metrics.totalEvents = Number(eventCount?.count || 0);
+      } catch (e) {
+        console.log("Event count fallback");
+      }
+      try {
+        const [waitlistCount] = await db.select({ count: sql`count(*)` }).from(waitlistEntries);
+        metrics.waitlistCount = Number(waitlistCount?.count || 0);
+      } catch (e) {
+        console.log("Waitlist count fallback");
+      }
+      return {
+        success: true,
+        metrics,
+        timestamp: (/* @__PURE__ */ new Date()).toISOString()
+      };
+    } catch (error) {
+      console.error("Failed to get dashboard data:", error);
+      return {
+        success: false,
+        metrics: {
+          totalSessions: 0,
+          todaySessions: 0,
+          totalEvents: 0,
+          waitlistCount: 0,
+          activeTests: 0
+        },
+        error: error.message
+      };
+    }
+  }
+};
+var analyticsService = new AnalyticsService();
+
+// server/adminAuth.ts
+import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local";
+import session from "express-session";
+import { compare, hash } from "bcryptjs";
+import { fromZodError } from "zod-validation-error";
+import connectPg from "connect-pg-simple";
+function setupAdminAuth(app2) {
+  const sessionTtl = 7 * 24 * 60 * 60 * 1e3;
+  const pgStore = connectPg(session);
+  const sessionStore = process.env.DATABASE_URL ? new pgStore({
+    conString: process.env.DATABASE_URL,
+    createTableIfMissing: true,
+    ttl: sessionTtl,
+    tableName: "admin_sessions"
+  }) : __require("memorystore")(session)({
+    checkPeriod: 864e5
+    // prune expired entries every 24h
+  });
+  const sessionSecret = process.env.SESSION_SECRET || "imperius-admin-secret-" + Math.random().toString(36);
+  app2.set("trust proxy", 1);
+  app2.use(session({
+    secret: sessionSecret,
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+    name: "imperius_admin_session",
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: sessionTtl
+    }
+  }));
+  app2.use(passport.initialize());
+  app2.use(passport.session());
+  passport.use(new LocalStrategy(async (username, password, done) => {
+    try {
+      const user = await storage.getAdminUserByUsername(username);
+      if (!user || !user.isActive) {
+        return done(null, false, { message: "Invalid credentials" });
+      }
+      const isValidPassword = await compare(password, user.password);
+      if (!isValidPassword) {
+        return done(null, false, { message: "Invalid credentials" });
+      }
+      await storage.updateAdminLastLogin(user.id);
+      return done(null, user);
+    } catch (error) {
+      return done(error);
+    }
+  }));
+  passport.serializeUser((user, done) => done(null, user.id));
+  passport.deserializeUser(async (id, done) => {
+    try {
+      const user = await storage.getAdminUser(id);
+      done(null, user);
+    } catch (error) {
+      done(error);
+    }
+  });
+  app2.post("/api/admin/login", async (req, res, next) => {
+    try {
+      const result = loginAdminSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({
+          message: fromZodError(result.error).toString()
+        });
+      }
+      passport.authenticate("local", (err, user, info) => {
+        if (err) return next(err);
+        if (!user) return res.status(401).json({ message: info.message || "Invalid credentials" });
+        req.logIn(user, (err2) => {
+          if (err2) return next(err2);
+          res.json({
+            success: true,
+            user: {
+              id: user.id,
+              username: user.username,
+              email: user.email,
+              role: user.role
+            }
+          });
+        });
+      })(req, res, next);
+    } catch (error) {
+      next(error);
+    }
+  });
+  app2.post("/api/admin/logout", (req, res, next) => {
+    req.logout((err) => {
+      if (err) return next(err);
+      res.json({ success: true });
+    });
+  });
+  app2.get("/api/admin/user", (req, res) => {
+    if (!req.isAuthenticated() || !req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const user = req.user;
+    res.json({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      lastLogin: user.lastLogin
+    });
+  });
+}
+function requireAdminAuth(req, res, next) {
+  if (!req.isAuthenticated() || !req.user) {
+    return res.status(401).json({ message: "Admin authentication required" });
+  }
+  const user = req.user;
+  if (!user.isActive || user.role !== "admin") {
+    return res.status(403).json({ message: "Admin access required" });
+  }
+  next();
+}
+async function createDefaultAdminUser() {
+  try {
+    const existingAdmin = await storage.getAdminUserByUsername("admin");
+    if (existingAdmin) {
+      console.log("Admin user already exists");
+      return;
+    }
+    const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD || "admin123";
+    const hashedPassword = await hash(defaultPassword, 12);
+    await storage.createAdminUser({
+      username: "admin",
+      email: "admin@imperius.local",
+      password: hashedPassword,
+      role: "admin",
+      isActive: true
+    });
+    console.log("\u2713 Created default admin user:");
+    console.log("  Username: admin");
+    console.log(`  Password: ${defaultPassword}`);
+    console.log("  \u26A0\uFE0F  Please change the password immediately after first login!");
+  } catch (error) {
+    console.error("Failed to create default admin user:", error);
+  }
+}
+
+// server/routes.ts
+import { z as z2 } from "zod";
+var wss;
+var connectedClients = /* @__PURE__ */ new Set();
+function broadcastUpdate(data) {
+  const message = JSON.stringify(data);
+  connectedClients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(message);
+    }
+  });
+}
+var analyticsService2 = new AnalyticsService();
+async function registerRoutes(app2) {
+  setupAdminAuth(app2);
+  await createDefaultAdminUser();
+  app2.post("/api/waitlist", async (req, res) => {
+    try {
+      const validatedData = insertWaitlistEntrySchema.parse(req.body);
+      const emailExists = await storage.isEmailInWaitlist(validatedData.email);
+      if (emailExists) {
+        return res.status(409).json({
+          message: "Email already registered for early access",
+          success: false
+        });
+      }
+      const waitlistEntry = await storage.addToWaitlist(validatedData);
+      const entries = await storage.getWaitlistEntries();
+      const newCount = entries.length;
+      broadcastUpdate({
+        type: "waitlist_update",
+        count: newCount,
+        newEntry: {
+          id: waitlistEntry.id,
+          source: waitlistEntry.source,
+          timestamp: waitlistEntry.createdAt
+        }
+      });
+      res.status(201).json({
+        message: "Successfully added to waitlist",
+        success: true,
+        id: waitlistEntry.id,
+        count: newCount
+      });
+    } catch (error) {
+      if (error instanceof z2.ZodError) {
+        res.status(400).json({
+          message: "Invalid email format",
+          success: false,
+          errors: error.errors
+        });
+      } else {
+        res.status(500).json({
+          message: "Failed to add to waitlist",
+          success: false
+        });
+      }
+    }
+  });
+  app2.get("/api/waitlist/count", async (req, res) => {
+    try {
+      const entries = await storage.getWaitlistEntries();
+      res.json({ count: entries.length });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to get waitlist count" });
+    }
+  });
+  app2.get("/api/health", (req, res) => {
+    res.json({
+      status: "healthy",
+      timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+      connections: connectedClients.size,
+      websocket: wss ? "active" : "inactive"
+    });
+  });
+  app2.get("/api/analytics/dashboard", requireAdminAuth, async (req, res) => {
+    try {
+      const dashboardData = await analyticsService2.getDashboardData();
+      res.json({ success: true, data: dashboardData });
+    } catch (error) {
+      console.error("Dashboard error:", error);
+      res.status(500).json({ error: "Failed to fetch dashboard data" });
+    }
+  });
+  app2.post("/api/analytics/session", async (req, res) => {
+    try {
+      const sessionData = insertUserSessionSchema.parse(req.body);
+      sessionData.ipAddress = req.ip || req.connection.remoteAddress || "";
+      const session2 = await analyticsService2.createSession(sessionData);
+      res.json({ success: true, session: session2 });
+    } catch (error) {
+      console.error("Analytics session error:", error);
+      res.status(400).json({ error: "Invalid session data" });
+    }
+  });
+  app2.post("/api/analytics/events", async (req, res) => {
+    try {
+      const { events } = req.body;
+      if (!Array.isArray(events)) {
+        return res.status(400).json({ error: "Events must be an array" });
+      }
+      const results = [];
+      for (const eventData of events) {
+        const validatedEvent = insertPageEventSchema.parse(eventData);
+        const event = await analyticsService2.trackEvent(validatedEvent);
+        results.push(event);
+      }
+      res.json({ success: true, count: results.length });
+    } catch (error) {
+      console.error("Analytics events error:", error);
+      res.status(400).json({ error: "Invalid event data" });
+    }
+  });
+  app2.post("/api/analytics/lead-action", async (req, res) => {
+    try {
+      const actionData = insertLeadActionSchema.parse(req.body);
+      const action = await analyticsService2.trackLeadAction(actionData);
+      res.json({ success: true, action });
+    } catch (error) {
+      console.error("Lead action error:", error);
+      res.status(400).json({ error: "Invalid action data" });
+    }
+  });
+  app2.post("/api/analytics/ab-tests/initialize", async (req, res) => {
+    try {
+      const { sessionId } = req.body;
+      if (!sessionId) {
+        return res.status(400).json({ error: "Session ID required" });
+      }
+      const activeTests = await analyticsService2.getActiveTests();
+      const variants = {};
+      for (const test of activeTests) {
+        const existingVariant = await analyticsService2.getTestAssignment(sessionId, test.testName);
+        if (existingVariant) {
+          variants[test.testName] = existingVariant;
+        } else {
+          const availableVariants = ["A", "B", "C"];
+          const randomVariant = availableVariants[Math.floor(Math.random() * availableVariants.length)];
+          await analyticsService2.assignToTest(sessionId, test.id, randomVariant);
+          variants[test.testName] = randomVariant;
+        }
+      }
+      res.json({ success: true, variants });
+    } catch (error) {
+      console.error("A/B test initialization error:", error);
+      res.status(500).json({ error: "Failed to initialize tests" });
+    }
+  });
+  app2.post("/api/analytics/ab-tests/conversion", async (req, res) => {
+    try {
+      const { sessionId, testName, conversionType, variant } = req.body;
+      await analyticsService2.trackLeadAction({
+        sessionId,
+        actionType: `ab_conversion_${testName}`,
+        actionValue: `${variant}_${conversionType}`
+      });
+      res.json({ success: true });
+    } catch (error) {
+      console.error("A/B conversion tracking error:", error);
+      res.status(400).json({ error: "Failed to track conversion" });
+    }
+  });
+  app2.get("/api/analytics/admin-dashboard", requireAdminAuth, async (req, res) => {
+    try {
+      const timeframe = req.query.timeframe || "week";
+      const [sessionAnalytics, conversionAnalytics, topElements] = await Promise.all([
+        analyticsService2.getSessionAnalytics(timeframe),
+        analyticsService2.getConversionAnalytics(),
+        analyticsService2.getTopPerformingElements()
+      ]);
+      res.json({
+        success: true,
+        data: {
+          sessions: sessionAnalytics,
+          conversions: conversionAnalytics,
+          topElements
+        }
+      });
+    } catch (error) {
+      console.error("Dashboard analytics error:", error);
+      res.status(500).json({ error: "Failed to fetch analytics" });
+    }
+  });
+  const httpServer = createServer(app2);
+  wss = new WebSocketServer({ server: httpServer, path: "/ws" });
+  wss.on("connection", (ws2) => {
+    console.log("New WebSocket connection established");
+    connectedClients.add(ws2);
+    storage.getWaitlistEntries().then((entries) => {
+      if (ws2.readyState === WebSocket.OPEN) {
+        ws2.send(JSON.stringify({
+          type: "initial_count",
+          count: entries.length
+        }));
+      }
+    });
+    ws2.on("close", () => {
+      console.log("WebSocket connection closed");
+      connectedClients.delete(ws2);
+    });
+    ws2.on("error", (error) => {
+      console.error("WebSocket error:", error);
+      connectedClients.delete(ws2);
+    });
+    ws2.on("message", (message) => {
+      try {
+        const data = JSON.parse(message.toString());
+        console.log("Received WebSocket message:", data);
+        if (data.type === "ping") {
+          ws2.send(JSON.stringify({ type: "pong" }));
+        }
+      } catch (error) {
+        console.error("Invalid WebSocket message:", error);
+      }
+    });
+  });
+  return httpServer;
+}
+
+// server/vite.ts
+import express from "express";
+import fs from "fs";
+import path2 from "path";
+import { createServer as createViteServer, createLogger } from "vite";
+
+// vite.config.ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
+import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+var vite_config_default = defineConfig({
+  plugins: [
+    react(),
+    runtimeErrorOverlay(),
+    ...process.env.NODE_ENV !== "production" && process.env.REPL_ID !== void 0 ? [
+      await import("@replit/vite-plugin-cartographer").then(
+        (m) => m.cartographer()
+      )
+    ] : []
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(import.meta.dirname, "client", "src"),
+      "@shared": path.resolve(import.meta.dirname, "shared"),
+      "@assets": path.resolve(import.meta.dirname, "attached_assets")
+    }
+  },
+  root: path.resolve(import.meta.dirname, "client"),
+  build: {
+    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    emptyOutDir: true
+  },
+  server: {
+    fs: {
+      strict: true,
+      deny: ["**/.*"]
+    }
+  }
+});
+
+// server/vite.ts
+import { nanoid } from "nanoid";
+var viteLogger = createLogger();
+function log(message, source = "express") {
+  const formattedTime = (/* @__PURE__ */ new Date()).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true
+  });
+  console.log(`${formattedTime} [${source}] ${message}`);
+}
+async function setupVite(app2, server) {
+  const serverOptions = {
+    middlewareMode: true,
+    hmr: { server },
+    allowedHosts: true
+  };
+  const vite = await createViteServer({
+    ...vite_config_default,
+    configFile: false,
+    customLogger: {
+      ...viteLogger,
+      error: (msg, options) => {
+        viteLogger.error(msg, options);
+        process.exit(1);
+      }
+    },
+    server: serverOptions,
+    appType: "custom"
+  });
+  app2.use(vite.middlewares);
+  app2.use("*", async (req, res, next) => {
+    const url = req.originalUrl;
+    try {
+      const clientTemplate = path2.resolve(
+        import.meta.dirname,
+        "..",
+        "client",
+        "index.html"
+      );
+      let template = await fs.promises.readFile(clientTemplate, "utf-8");
+      template = template.replace(
+        `src="/src/main.tsx"`,
+        `src="/src/main.tsx?v=${nanoid()}"`
+      );
+      const page = await vite.transformIndexHtml(url, template);
+      res.status(200).set({ "Content-Type": "text/html" }).end(page);
+    } catch (e) {
+      vite.ssrFixStacktrace(e);
+      next(e);
+    }
+  });
+}
+function serveStatic(app2) {
+  const distPath = path2.resolve(import.meta.dirname, "public");
+  if (!fs.existsSync(distPath)) {
+    throw new Error(
+      `Could not find the build directory: ${distPath}, make sure to build the client first`
+    );
+  }
+  app2.use(express.static(distPath));
+  app2.use("*", (_req, res) => {
+    res.sendFile(path2.resolve(distPath, "index.html"));
+  });
+}
+
+// server/index.ts
+var app = express2();
+app.use(express2.json());
+app.use(express2.urlencoded({ extended: false }));
+app.use("/attached_assets", express2.static("attached_assets", {
+  setHeaders: (res, path3) => {
+    if (path3.endsWith(".mp4")) {
+      res.setHeader("Content-Type", "video/mp4");
+      res.setHeader("Accept-Ranges", "bytes");
+      res.setHeader("Cache-Control", "public, max-age=86400");
+      res.setHeader("Access-Control-Allow-Origin", "*");
+    } else if (path3.endsWith(".mp3")) {
+      res.setHeader("Content-Type", "audio/mpeg");
+      res.setHeader("Accept-Ranges", "bytes");
+      res.setHeader("Cache-Control", "public, max-age=3600");
+      res.setHeader("Access-Control-Allow-Origin", "*");
+    }
+  }
+}));
+app.use((req, res, next) => {
+  const start = Date.now();
+  const path3 = req.path;
+  let capturedJsonResponse = void 0;
+  const originalResJson = res.json;
+  res.json = function(bodyJson, ...args) {
+    capturedJsonResponse = bodyJson;
+    return originalResJson.apply(res, [bodyJson, ...args]);
+  };
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    if (path3.startsWith("/api")) {
+      let logLine = `${req.method} ${path3} ${res.statusCode} in ${duration}ms`;
+      if (capturedJsonResponse) {
+        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+      }
+      if (logLine.length > 80) {
+        logLine = logLine.slice(0, 79) + "\u2026";
+      }
+      log(logLine);
+    }
+  });
+  next();
+});
+(async () => {
+  const server = await registerRoutes(app);
+  app.use((err, req, res, next) => {
+    const status = err.status || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+    if (!res.headersSent) {
+      res.status(status).json({ message });
+    }
+    if (process.env.NODE_ENV === "development") {
+      console.error(`Error ${status}: ${message}`, err);
+    } else {
+      console.error(`Error ${status}: ${message}`);
+    }
+  });
+  if (app.get("env") === "development") {
+    await setupVite(app, server);
+  } else {
+    serveStatic(app);
+  }
+  const port = parseInt(process.env.PORT || "5000", 10);
+  server.listen({
+    port,
+    host: "0.0.0.0",
+    reusePort: true
+  }, () => {
+    log(`serving on port ${port}`);
+  });
+})();
