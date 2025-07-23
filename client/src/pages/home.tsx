@@ -376,7 +376,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen text-white overflow-x-hidden relative">
+    <div className="min-h-screen text-white overflow-x-hidden relative safe-area-top safe-area-bottom">
       {/* F1 Racing Audio */}
       <audio
         ref={audioRef}
@@ -414,10 +414,11 @@ export default function Home() {
 
 
       
-      {/* Audio Status */}
+      {/* Audio Status - Mobile Optimized */}
       {!audioEnabled && (
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-crimson/90 text-white px-4 py-2 rounded-lg text-sm font-bold animate-pulse">
-          Click anywhere to start F1 Audio
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-crimson/90 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-bold animate-pulse touch-target">
+          <span className="hidden sm:inline">Click anywhere to start F1 Audio</span>
+          <span className="sm:hidden">Tap to start F1 Audio</span>
         </div>
       )}
       {/* Racing Video Background */}
@@ -716,35 +717,37 @@ export default function Home() {
         })}
       </div>
 
-      {/* Sticky Navigation */}
+      {/* Sticky Navigation - Mobile Responsive */}
       <nav className="fixed top-0 w-full z-50 glassmorphism border-b border-crimson/20">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="font-playfair text-2xl font-bold text-crimson">
+        <div className="responsive-container py-3 sm:py-4 flex justify-between items-center">
+          <div className="font-playfair text-xl sm:text-2xl font-bold text-crimson">
             Imperius
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <Button 
               variant="default" 
-              className="bg-crimson hover:bg-ruby text-white px-6 py-2 cta-hover"
+              className="bg-crimson hover:bg-ruby text-white px-3 py-2 sm:px-6 sm:py-2 cta-hover text-xs sm:text-sm touch-target"
               onClick={() => document.getElementById('hero-form')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              Request Access
+              <span className="hidden sm:inline">Request Access</span>
+              <span className="sm:hidden">Join</span>
             </Button>
             <Button
               variant={audioEnabled ? "default" : "outline"}
               size="sm"
-              className={audioEnabled ? "bg-crimson hover:bg-ruby text-white" : "border-crimson text-crimson hover:bg-crimson hover:text-white"}
+              className={`${audioEnabled ? "bg-crimson hover:bg-ruby text-white" : "border-crimson text-crimson hover:bg-crimson hover:text-white"} touch-target px-2 sm:px-3`}
               onClick={toggleAudio}
               title={audioEnabled ? "Mute F1 Sound" : "Enable F1 Sound"}
               data-audio-toggle="true"
             >
-              {audioEnabled ? "🔊" : "🔇"} Audio
+              <span className="text-base sm:text-sm">{audioEnabled ? "🔊" : "🔇"}</span>
+              <span className="hidden sm:inline ml-1">Audio</span>
             </Button>
           </div>
         </div>
       </nav>
-      {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden z-10">
+      {/* Hero Section - Mobile Responsive */}
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden z-10 px-4 sm:px-6 lg:px-8">
         {/* Professional hero animated elements */}
         <motion.div
           style={{ y: y1, scale: scale1 }}
@@ -774,7 +777,7 @@ export default function Home() {
           }}
         />
         
-        <div className="container mx-auto px-6 text-center relative z-20">
+        <div className="responsive-container text-center relative z-20">
           <motion.div
             initial="initial"
             animate="animate"
@@ -783,26 +786,29 @@ export default function Home() {
           >
             <motion.h1 
               variants={fadeInUp}
-              className="font-playfair text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+              className="font-playfair text-responsive-3xl font-bold mb-6 leading-tight"
             >
               <span className="text-white">Beyond</span>{" "}
-              <span className="text-crimson text-shadow-glow">Keywords.</span><br />
+              <span className="text-crimson text-shadow-glow">Keywords.</span>
+              <br className="hidden sm:block" />
+              <span className="sm:hidden"> </span>
               <span className="text-white">Beyond</span>{" "}
               <span className="text-crimson text-shadow-glow">Rankings.</span>
             </motion.h1>
             
             <motion.p 
               variants={fadeInUp}
-              className="text-xl lg:text-2xl text-white/90 mb-8 max-w-4xl mx-auto font-light leading-relaxed"
+              className="text-responsive-lg text-white/90 mb-8 max-w-4xl mx-auto font-light leading-relaxed"
             >
               The first AI-powered SERP intelligence platform that reveals{" "}
               <em className="text-crimson font-medium">why</em> pages rank—not just who ranks.
+              <span className="block sm:inline"> </span>
               Uncover the hidden signals: tone, sentiment, UX patterns, and content depth.
             </motion.p>
             
-            <motion.div variants={fadeInUp} className="glassmorphism p-8 rounded-2xl max-w-lg mx-auto mb-8">
-              <h3 className="font-playfair text-2xl font-semibold mb-4 text-white">Join the Elite Waitlist</h3>
-              <p className="text-white/70 mb-6">Limited access. Strategic advantage.</p>
+            <motion.div variants={fadeInUp} className="glassmorphism p-4 sm:p-6 lg:p-8 rounded-2xl max-w-lg mx-auto mb-8">
+              <h3 className="font-playfair text-responsive-xl font-semibold mb-4 text-white">Join the Elite Waitlist</h3>
+              <p className="text-white/70 mb-6 text-responsive-sm">Limited access. Strategic advantage.</p>
               
               <Form {...heroForm}>
                 <form ref={heroFormRef} onSubmit={heroForm.handleSubmit(onSubmit)} className="space-y-4" id="hero-form">
@@ -816,7 +822,7 @@ export default function Home() {
                             {...field}
                             type="email"
                             placeholder="Enter your professional email"
-                            className="w-full px-4 py-3 bg-black/30 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20"
+                            className="w-full px-3 py-3 sm:px-4 sm:py-3 bg-black/30 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20 touch-target text-responsive-sm"
                           />
                         </FormControl>
                         <FormMessage className="text-crimson" />
@@ -826,7 +832,7 @@ export default function Home() {
                   <Button
                     type="submit"
                     disabled={waitlistMutation.isPending}
-                    className={`w-full text-white py-3 px-6 rounded-lg font-semibold cta-hover ${heroCTA.config?.style || 'bg-crimson hover:bg-ruby'} ${heroCTA.config?.urgency ? 'animate-glow-pulse' : ''}`}
+                    className={`w-full text-white btn-responsive rounded-lg font-semibold cta-hover touch-target ${heroCTA.config?.style || 'bg-crimson hover:bg-ruby'} ${heroCTA.config?.urgency ? 'animate-glow-pulse' : ''}`}
                   >
                     {waitlistMutation.isPending ? "Processing..." : (heroCTA.config?.text || "Request Exclusive Access")}
                   </Button>
@@ -847,26 +853,28 @@ export default function Home() {
             
             <motion.div 
               variants={fadeInUp}
-              className="flex items-center justify-center space-x-8 text-sm text-platinum/60"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 text-center sm:text-left"
             >
-              <div className="flex items-center">
-                <Users className="w-4 h-4 text-gold mr-2" />
-                <span className={isConnected ? "animate-pulse" : ""}>{currentCount}+ Strategic Partners</span>
+              <div className="flex items-center justify-center sm:justify-start">
+                <Users className="w-4 h-4 text-gold mr-2 flex-shrink-0" />
+                <span className={`text-responsive-xs text-platinum/60 ${isConnected ? "animate-pulse" : ""}`}>
+                  {currentCount}+ Strategic Partners
+                </span>
               </div>
-              <div className="flex items-center">
-                <Star className="w-4 h-4 text-gold mr-2" />
-                <span>Invitation Only</span>
+              <div className="flex items-center justify-center sm:justify-start">
+                <Star className="w-4 h-4 text-gold mr-2 flex-shrink-0" />
+                <span className="text-responsive-xs text-platinum/60">Invitation Only</span>
               </div>
-              <div className="flex items-center">
-                <Timer className="w-4 h-4 text-gold mr-2" />
-                <span>30-Day Risk Free</span>
+              <div className="flex items-center justify-center sm:justify-start">
+                <Timer className="w-4 h-4 text-gold mr-2 flex-shrink-0" />
+                <span className="text-responsive-xs text-platinum/60">30-Day Risk Free</span>
               </div>
             </motion.div>
           </motion.div>
         </div>
       </section>
-      {/* Feature Explainer */}
-      <section className="py-20 bg-obsidian/50 relative z-10 overflow-hidden">
+      {/* Feature Explainer - Mobile Responsive */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-obsidian/50 relative z-10 overflow-hidden">
         {/* Section-specific animated background */}
         <motion.div
           style={{ y: y3, opacity: opacity1 }}
@@ -876,15 +884,15 @@ export default function Home() {
           style={{ y: y4, rotate: rotate2 }}
           className="absolute -bottom-32 -right-32 w-80 h-80 bg-gradient-to-tl from-ruby/15 to-gold/10 rounded-full blur-2xl"
         />
-        <div className="container mx-auto px-6">
+        <div className="responsive-container">
           <motion.div
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
             variants={staggerContainer}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16"
           >
-            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl lg:text-5xl font-bold text-white mb-6">
+            <motion.h2 variants={fadeInUp} className="font-playfair text-responsive-2xl font-bold text-white mb-6">
               The AI Brain Behind{" "}
               <span className="text-crimson">SERP Domination</span>
             </motion.h2>
@@ -913,7 +921,7 @@ export default function Home() {
             </motion.div>
           </motion.div>
           
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="responsive-grid lg:grid-cols-2 items-center">
             {/* 3D SERP Visualization */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -1436,24 +1444,24 @@ export default function Home() {
           className="absolute -bottom-32 -left-32 w-96 h-96 bg-gradient-to-tl from-crimson/8 to-gold/5 rounded-full blur-3xl"
         />
         
-        <div className="container mx-auto px-6">
+        <div className="responsive-container">
           <motion.div
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
             variants={staggerContainer}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16"
           >
-            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl lg:text-5xl font-bold text-white mb-6">
+            <motion.h2 variants={fadeInUp} className="font-playfair text-responsive-2xl font-bold text-white mb-6">
               Calculate Your{" "}
               <span className="text-crimson">Strategic ROI</span>
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-xl text-platinum/80 mb-12 max-w-3xl mx-auto">
+            <motion.p variants={fadeInUp} className="text-responsive-lg text-platinum/80 mb-8 sm:mb-12 max-w-3xl mx-auto">
               See how Imperius transforms your SEO investment into measurable business growth
             </motion.p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="responsive-grid lg:grid-cols-2 items-center">
             {/* ROI Calculator */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -1461,13 +1469,13 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <Card className="glassmorphism p-8 rounded-2xl">
+              <Card className="glassmorphism p-4 sm:p-6 lg:p-8 rounded-2xl">
                 <CardContent className="p-0">
-                  <h3 className="font-playfair text-2xl font-semibold text-white mb-6">Investment Calculator</h3>
+                  <h3 className="font-playfair text-responsive-xl font-semibold text-white mb-6">Investment Calculator</h3>
                   
                   <div className="space-y-6">
                     <div>
-                      <label className="block text-sm font-medium text-platinum/80 mb-2">
+                      <label className="block text-responsive-sm font-medium text-platinum/80 mb-2">
                         Current Monthly SEO Spend
                       </label>
                       <Input
@@ -1476,14 +1484,14 @@ export default function Home() {
                         max="50000"
                         step="1000"
                         value={seoSpend}
-                        className="w-full"
+                        className="w-full touch-target"
                         onChange={(e) => setSeoSpend(parseInt(e.target.value))}
                       />
-                      <div className="text-center mt-2 text-crimson font-semibold">${seoSpend.toLocaleString()}</div>
+                      <div className="text-center mt-2 text-crimson font-semibold text-responsive-base">${seoSpend.toLocaleString()}</div>
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-platinum/80 mb-2">
+                      <label className="block text-responsive-sm font-medium text-platinum/80 mb-2">
                         Current Monthly Organic Traffic
                       </label>
                       <Input
@@ -1492,31 +1500,31 @@ export default function Home() {
                         max="100000"
                         step="1000"
                         value={monthlyTraffic}
-                        className="w-full"
+                        className="w-full touch-target"
                         onChange={(e) => setMonthlyTraffic(parseInt(e.target.value))}
                       />
-                      <div className="text-center mt-2 text-crimson font-semibold">{monthlyTraffic.toLocaleString()} visitors</div>
+                      <div className="text-center mt-2 text-crimson font-semibold text-responsive-base">{monthlyTraffic.toLocaleString()} visitors</div>
                     </div>
 
                     {/* Results */}
-                    <div className="bg-obsidian/50 rounded-lg p-6 border border-crimson/20">
-                      <h4 className="font-semibold text-white mb-4">Projected Results with Imperius</h4>
+                    <div className="bg-obsidian/50 rounded-lg p-4 sm:p-6 border border-crimson/20">
+                      <h4 className="font-semibold text-white mb-4 text-responsive-base">Projected Results with Imperius</h4>
                       
-                      <div className="grid grid-cols-2 gap-4 text-center">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
                         <div>
-                          <div className="text-2xl font-bold text-crimson">{roiResults.additionalTraffic.toLocaleString()}</div>
-                          <div className="text-xs text-platinum/60">Additional Monthly Traffic</div>
+                          <div className="text-responsive-xl font-bold text-crimson">{roiResults.additionalTraffic.toLocaleString()}</div>
+                          <div className="text-responsive-xs text-platinum/60">Additional Monthly Traffic</div>
                         </div>
                         <div>
-                          <div className="text-2xl font-bold text-gold">${roiResults.additionalRevenue.toLocaleString()}</div>
-                          <div className="text-xs text-platinum/60">Additional Monthly Revenue</div>
+                          <div className="text-responsive-xl font-bold text-gold">${roiResults.additionalRevenue.toLocaleString()}</div>
+                          <div className="text-responsive-xs text-platinum/60">Additional Monthly Revenue</div>
                         </div>
                       </div>
                       
                       <div className="mt-4 pt-4 border-t border-crimson/10">
                         <div className="text-center">
-                          <div className="text-3xl font-bold text-green-400">{roiResults.monthlyROI}%</div>
-                          <div className="text-sm text-platinum/60">Monthly ROI</div>
+                          <div className="text-responsive-2xl font-bold text-green-400">{roiResults.monthlyROI}%</div>
+                          <div className="text-responsive-sm text-platinum/60">Monthly ROI</div>
                         </div>
                       </div>
                     </div>
@@ -1533,43 +1541,43 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="space-y-6"
             >
-              <Card className="glassmorphism p-6 rounded-xl">
+              <Card className="glassmorphism p-4 sm:p-6 rounded-xl">
                 <CardContent className="p-0">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-crimson/20 rounded-lg flex items-center justify-center">
-                      <BarChart3 className="text-crimson text-xl" />
+                  <div className="flex items-start space-x-3 sm:space-x-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-crimson/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <BarChart3 className="text-crimson text-lg sm:text-xl" />
                     </div>
                     <div>
-                      <h4 className="font-playfair text-xl font-semibold text-white mb-2">40% Traffic Increase</h4>
-                      <p className="text-platinum/80">Average organic traffic improvement within 90 days of strategic implementation</p>
+                      <h4 className="font-playfair text-responsive-lg font-semibold text-white mb-2">40% Traffic Increase</h4>
+                      <p className="text-responsive-sm text-platinum/80">Average organic traffic improvement within 90 days of strategic implementation</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="glassmorphism p-6 rounded-xl">
+              <Card className="glassmorphism p-4 sm:p-6 rounded-xl">
                 <CardContent className="p-0">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-crimson/20 rounded-lg flex items-center justify-center">
-                      <Target className="text-crimson text-xl" />
+                  <div className="flex items-start space-x-3 sm:space-x-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-crimson/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Target className="text-crimson text-lg sm:text-xl" />
                     </div>
                     <div>
-                      <h4 className="font-playfair text-xl font-semibold text-white mb-2">60% Time Savings</h4>
-                      <p className="text-platinum/80">Reduce content optimization time with intelligence-driven insights</p>
+                      <h4 className="font-playfair text-responsive-lg font-semibold text-white mb-2">60% Time Savings</h4>
+                      <p className="text-responsive-sm text-platinum/80">Reduce content optimization time with intelligence-driven insights</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="glassmorphism p-6 rounded-xl">
+              <Card className="glassmorphism p-4 sm:p-6 rounded-xl">
                 <CardContent className="p-0">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-crimson/20 rounded-lg flex items-center justify-center">
-                      <Crown className="text-crimson text-xl" />
+                  <div className="flex items-start space-x-3 sm:space-x-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-crimson/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Crown className="text-crimson text-lg sm:text-xl" />
                     </div>
                     <div>
-                      <h4 className="font-playfair text-xl font-semibold text-white mb-2">Competitive Advantage</h4>
-                      <p className="text-platinum/80">Access insights competitors can't replicate with traditional SEO tools</p>
+                      <h4 className="font-playfair text-responsive-lg font-semibold text-white mb-2">Competitive Advantage</h4>
+                      <p className="text-responsive-sm text-platinum/80">Access insights competitors can't replicate with traditional SEO tools</p>
                     </div>
                   </div>
                 </CardContent>
@@ -1579,31 +1587,31 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Case Studies Section */}
-      <section className="py-20 bg-gradient-to-br from-obsidian via-black/95 to-obsidian relative z-10 overflow-hidden">
+      {/* Case Studies Section - Mobile Responsive */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-obsidian via-black/95 to-obsidian relative z-10 overflow-hidden">
         <motion.div
           style={{ y: y1, scale: scale1 }}
           className="absolute -top-32 right-32 w-96 h-96 bg-gradient-to-br from-crimson/8 to-gold/5 rounded-full blur-3xl"
         />
         
-        <div className="container mx-auto px-6">
+        <div className="responsive-container">
           <motion.div
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
             variants={staggerContainer}
-            className="text-center mb-16"
+            className="text-center mb-12 sm:mb-16"
           >
-            <motion.h2 variants={fadeInUp} className="font-playfair text-4xl lg:text-5xl font-bold text-white mb-6">
+            <motion.h2 variants={fadeInUp} className="font-playfair text-responsive-2xl font-bold text-white mb-6">
               Proven{" "}
               <span className="text-crimson">Success Stories</span>
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-xl text-platinum/80 mb-12 max-w-3xl mx-auto">
+            <motion.p variants={fadeInUp} className="text-responsive-lg text-platinum/80 mb-8 sm:mb-12 max-w-3xl mx-auto">
               Real clients, real results, real competitive advantage through strategic SEO intelligence
             </motion.p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-8 mb-12">
+          <div className="responsive-grid lg:grid-cols-2 mb-8 sm:mb-12">
             {/* Case Study 1 */}
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -1611,50 +1619,50 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <Card className="glassmorphism p-8 rounded-2xl h-full">
+              <Card className="glassmorphism p-4 sm:p-6 lg:p-8 rounded-2xl h-full">
                 <CardContent className="p-0">
                   <div className="flex items-center mb-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-crimson to-ruby rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-crimson to-ruby rounded-lg flex items-center justify-center text-white font-bold text-lg sm:text-xl flex-shrink-0">
                       TS
                     </div>
-                    <div className="ml-4">
-                      <h3 className="font-playfair text-xl font-semibold text-white">TechScale Ventures</h3>
-                      <p className="text-platinum/60 text-sm">Enterprise SaaS Company</p>
+                    <div className="ml-3 sm:ml-4">
+                      <h3 className="font-playfair text-responsive-lg font-semibold text-white">TechScale Ventures</h3>
+                      <p className="text-platinum/60 text-responsive-xs">Enterprise SaaS Company</p>
                     </div>
                   </div>
                   
                   <div className="mb-6">
-                    <h4 className="text-lg font-semibold text-white mb-2">Challenge</h4>
-                    <p className="text-platinum/80 text-sm mb-4">
+                    <h4 className="text-responsive-base font-semibold text-white mb-2">Challenge</h4>
+                    <p className="text-platinum/80 text-responsive-sm mb-4">
                       Despite extensive backlink building and keyword optimization, competitors with fewer domain authority 
                       and backlinks were consistently outranking them for high-value commercial terms.
                     </p>
                     
-                    <h4 className="text-lg font-semibold text-white mb-2">Solution</h4>
-                    <p className="text-platinum/80 text-sm mb-4">
+                    <h4 className="text-responsive-base font-semibold text-white mb-2">Solution</h4>
+                    <p className="text-platinum/80 text-responsive-sm mb-4">
                       Imperius revealed that top-ranking competitors used more authoritative tone, 
                       deeper technical content structure, and better user experience patterns.
                     </p>
                     
-                    <h4 className="text-lg font-semibold text-white mb-2">Results</h4>
-                    <div className="grid grid-cols-3 gap-4 text-center">
-                      <div className="bg-obsidian/30 rounded-lg p-3">
-                        <div className="text-2xl font-bold text-crimson">3x</div>
-                        <div className="text-xs text-platinum/60">Organic Growth</div>
+                    <h4 className="text-responsive-base font-semibold text-white mb-2">Results</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 text-center">
+                      <div className="bg-obsidian/30 rounded-lg p-2 sm:p-3">
+                        <div className="text-responsive-xl font-bold text-crimson">3x</div>
+                        <div className="text-responsive-xs text-platinum/60">Organic Growth</div>
                       </div>
-                      <div className="bg-obsidian/30 rounded-lg p-3">
-                        <div className="text-2xl font-bold text-gold">180%</div>
-                        <div className="text-xs text-platinum/60">Traffic Increase</div>
+                      <div className="bg-obsidian/30 rounded-lg p-2 sm:p-3">
+                        <div className="text-responsive-xl font-bold text-gold">180%</div>
+                        <div className="text-responsive-xs text-platinum/60">Traffic Increase</div>
                       </div>
-                      <div className="bg-obsidian/30 rounded-lg p-3">
-                        <div className="text-2xl font-bold text-green-400">6mo</div>
-                        <div className="text-xs text-platinum/60">Time to Results</div>
+                      <div className="bg-obsidian/30 rounded-lg p-2 sm:p-3">
+                        <div className="text-responsive-xl font-bold text-green-400">6mo</div>
+                        <div className="text-responsive-xs text-platinum/60">Time to Results</div>
                       </div>
                     </div>
                   </div>
                   
                   <div className="border-t border-crimson/20 pt-4">
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-responsive-sm">
                       <span className="text-platinum/60">Industry: Enterprise SaaS</span>
                       <span className="text-crimson font-semibold">$2.4M Revenue Impact</span>
                     </div>
@@ -1670,15 +1678,15 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <Card className="glassmorphism p-8 rounded-2xl h-full">
+              <Card className="glassmorphism p-4 sm:p-6 lg:p-8 rounded-2xl h-full">
                 <CardContent className="p-0">
                   <div className="flex items-center mb-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-gold to-amber-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-gold to-amber-600 rounded-lg flex items-center justify-center text-white font-bold text-lg sm:text-xl flex-shrink-0">
                       ED
                     </div>
-                    <div className="ml-4">
-                      <h3 className="font-playfair text-xl font-semibold text-white">Elite Digital Agency</h3>
-                      <p className="text-platinum/60 text-sm">Premium SEO Agency</p>
+                    <div className="ml-3 sm:ml-4">
+                      <h3 className="font-playfair text-responsive-lg font-semibold text-white">Elite Digital Agency</h3>
+                      <p className="text-platinum/60 text-responsive-xs">Premium SEO Agency</p>
                     </div>
                   </div>
                   
@@ -1802,8 +1810,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 bg-charcoal relative overflow-hidden">
+      {/* Final CTA - Mobile Responsive */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-charcoal relative overflow-hidden">
         {/* Animated background elements */}
         <motion.div
           style={{ y: y1 }}
@@ -1814,7 +1822,7 @@ export default function Home() {
           className="absolute bottom-0 right-1/4 w-72 h-72 bg-ruby rounded-full blur-3xl opacity-5"
         />
         
-        <div className="container mx-auto px-6 text-center relative z-10">
+        <div className="responsive-container text-center relative z-10">
           <motion.div
             initial="initial"
             whileInView="animate"
@@ -1822,29 +1830,29 @@ export default function Home() {
             variants={staggerContainer}
             className="max-w-4xl mx-auto"
           >
-            <motion.h2 variants={fadeInUp} className="font-playfair text-5xl lg:text-6xl font-bold text-white mb-6">
+            <motion.h2 variants={fadeInUp} className="font-playfair text-responsive-3xl font-bold text-white mb-6">
               Stop Guessing.{" "}
               <span className="text-crimson text-shadow-glow">Start Dominating.</span>
             </motion.h2>
             
-            <motion.p variants={fadeInUp} className="text-xl text-platinum/80 mb-8 max-w-3xl mx-auto">
+            <motion.p variants={fadeInUp} className="text-responsive-lg text-platinum/80 mb-8 max-w-3xl mx-auto">
               Join an exclusive cohort of strategic SEO professionals who've moved beyond keyword tracking
               to true competitive intelligence.
             </motion.p>
             
-            <motion.div variants={fadeInUp} className="glassmorphism p-8 rounded-2xl max-w-lg mx-auto mb-8">
+            <motion.div variants={fadeInUp} className="glassmorphism p-4 sm:p-6 lg:p-8 rounded-2xl max-w-lg mx-auto mb-8">
               <div className="mb-6">
-                <div className="flex items-center justify-center space-x-4 mb-4">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-4">
                   <div className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
-                    <span className="text-sm">30-Day Risk-Free Trial</span>
+                    <CheckCircle className="w-4 h-4 text-green-400 mr-2 flex-shrink-0" />
+                    <span className="text-responsive-sm">30-Day Risk-Free Trial</span>
                   </div>
                   <div className="flex items-center">
-                    <UserPlus className="w-4 h-4 text-gold mr-2" />
-                    <span className="text-sm">Limited Cohort</span>
+                    <UserPlus className="w-4 h-4 text-gold mr-2 flex-shrink-0" />
+                    <span className="text-responsive-sm">Limited Cohort</span>
                   </div>
                 </div>
-                <p className="text-platinum/60 text-sm">
+                <p className="text-platinum/60 text-responsive-sm">
                   Early access includes 1:1 strategic onboarding and priority support.
                 </p>
               </div>
@@ -1861,7 +1869,7 @@ export default function Home() {
                             {...field}
                             type="email"
                             placeholder="Your professional email"
-                            className="w-full px-4 py-3 bg-obsidian/50 border border-crimson/30 rounded-lg text-white placeholder-platinum/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20"
+                            className="w-full px-3 py-3 sm:px-4 sm:py-3 bg-obsidian/50 border border-crimson/30 rounded-lg text-white placeholder-platinum/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20 touch-target text-responsive-sm"
                           />
                         </FormControl>
                         <FormMessage className="text-crimson" />
@@ -1871,49 +1879,52 @@ export default function Home() {
                   <Button
                     type="submit"
                     disabled={waitlistMutation.isPending}
-                    className="w-full bg-crimson hover:bg-ruby text-white py-4 px-8 rounded-lg font-bold text-lg cta-hover animate-glow-pulse"
+                    className="w-full bg-crimson hover:bg-ruby text-white btn-responsive rounded-lg font-bold cta-hover animate-glow-pulse touch-target"
                   >
-                    {waitlistMutation.isPending ? "Processing..." : "Secure Your Strategic Advantage"}
+                    <span className="hidden sm:inline">{waitlistMutation.isPending ? "Processing..." : "Secure Your Strategic Advantage"}</span>
+                    <span className="sm:hidden">{waitlistMutation.isPending ? "Processing..." : "Secure Advantage"}</span>
                   </Button>
                 </form>
               </Form>
               
-              <div className="flex items-center justify-center mt-4 text-xs text-platinum/50">
-                <Lock className="w-3 h-3 mr-1" />
+              <div className="flex items-center justify-center mt-4 text-responsive-xs text-platinum/50">
+                <Lock className="w-3 h-3 mr-1 flex-shrink-0" />
                 <span>Your data is protected and never shared</span>
               </div>
             </motion.div>
             
             <motion.div 
               variants={fadeInUp}
-              className="flex items-center justify-center space-x-8 text-sm text-platinum/60"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 text-center sm:text-left"
             >
-              <div className="flex items-center">
-                <Timer className="w-4 h-4 text-gold mr-2" />
-                <span>Applications close in 72 hours</span>
+              <div className="flex items-center justify-center sm:justify-start">
+                <Timer className="w-4 h-4 text-gold mr-2 flex-shrink-0" />
+                <span className="text-responsive-sm text-platinum/60">Applications close in 72 hours</span>
               </div>
-              <div className="flex items-center">
-                <UserPlus className="w-4 h-4 text-gold mr-2" />
-                <span className={isConnected ? "animate-pulse" : ""}>{Math.max(0, 100 - currentCount)} spots remaining</span>
+              <div className="flex items-center justify-center sm:justify-start">
+                <UserPlus className="w-4 h-4 text-gold mr-2 flex-shrink-0" />
+                <span className={`text-responsive-sm text-platinum/60 ${isConnected ? "animate-pulse" : ""}`}>
+                  {Math.max(0, 100 - currentCount)} spots remaining
+                </span>
               </div>
             </motion.div>
           </motion.div>
         </div>
       </section>
-      {/* Footer */}
-      <footer className="bg-obsidian py-12 border-t border-crimson/20">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="font-playfair text-2xl font-bold text-crimson mb-4 md:mb-0">
+      {/* Footer - Mobile Responsive */}
+      <footer className="bg-obsidian py-8 sm:py-12 border-t border-crimson/20">
+        <div className="responsive-container">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="font-playfair text-responsive-xl font-bold text-crimson">
               Imperius
             </div>
-            <div className="flex space-x-6 text-platinum/60 text-sm">
-              <a href="#" className="hover:text-crimson transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-crimson transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-crimson transition-colors">Contact</a>
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-platinum/60 text-responsive-sm">
+              <a href="#" className="hover:text-crimson transition-colors touch-target">Privacy Policy</a>
+              <a href="#" className="hover:text-crimson transition-colors touch-target">Terms of Service</a>
+              <a href="#" className="hover:text-crimson transition-colors touch-target">Contact</a>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-crimson/10 text-center text-platinum/40 text-sm">
+          <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-crimson/10 text-center text-platinum/40 text-responsive-sm">
             <p>&copy; 2024 Imperius. Built for strategic advantage.</p>
           </div>
         </div>
