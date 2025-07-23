@@ -66,18 +66,19 @@ app.get("/", (req, res) => {
   res.send("✅ App is working and responding from Railway! 🚀");
 });
 
-// ✅ Serve static frontend files (dist or build folder)
-// Use different path resolution for production vs development
-const staticPath = process.env.NODE_ENV === "production" 
-  ? path.resolve(process.cwd(), "dist/public")
-  : path.resolve(__dirname, "../dist/public");
-
+// Production-only static file serving (Railway deployment)
 if (process.env.NODE_ENV === "production") {
+  // More robust path resolution for production
+  const workingDir = process.cwd() || "/app";
+  const staticPath = path.join(workingDir, "dist", "public");
+  
+  console.log("Production mode - serving static files from:", staticPath);
   app.use(express.static(staticPath));
   
   // ✅ Catch-all to serve index.html for frontend routing
   app.get("*", (req, res) => {
     const indexPath = path.join(staticPath, "index.html");
+    console.log("Serving index.html from:", indexPath);
     res.sendFile(indexPath);
   });
 }
@@ -113,7 +114,7 @@ if (process.env.NODE_ENV === "production") {
       serveStatic(app); // Already serving dist above, still useful
     }
 
-    const port = parseInt(process.env.PORT || "3000", 10);
+    const port = parseInt(process.env.PORT || "5000", 10);
     console.log("Port is:", port);
     server.listen({ port, host: "0.0.0.0" }, () => {
       log(`✅ Server is running and listening on port ${port}`);
