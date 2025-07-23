@@ -3,6 +3,11 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { createServer } from "http";
 import path from "path"; // ✅ Required for static/catch-all paths
+import { fileURLToPath } from "url";
+
+// ES module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
@@ -62,13 +67,20 @@ app.get("/", (req, res) => {
 });
 
 // ✅ Serve static frontend files (dist or build folder)
-const staticPath = path.resolve(__dirname, "../dist/public"); // Adjust if needed
-app.use(express.static(staticPath));
+// Use different path resolution for production vs development
+const staticPath = process.env.NODE_ENV === "production" 
+  ? path.resolve(process.cwd(), "dist/public")
+  : path.resolve(__dirname, "../dist/public");
 
-// ✅ Catch-all to serve index.html for frontend routing
-app.get("*", (req, res) => {
-  res.sendFile(path.join(staticPath, "index.html"));
-});
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(staticPath));
+  
+  // ✅ Catch-all to serve index.html for frontend routing
+  app.get("*", (req, res) => {
+    const indexPath = path.join(staticPath, "index.html");
+    res.sendFile(indexPath);
+  });
+}
 
 (async () => {
   try {
