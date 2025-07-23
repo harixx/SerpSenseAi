@@ -7,21 +7,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Serve static assets including video files with proper headers for video streaming
-app.use('/attached_assets', express.static('attached_assets', {
-  setHeaders: (res, path) => {
-    if (path.endsWith('.mp4')) {
-      res.setHeader('Content-Type', 'video/mp4');
-      res.setHeader('Accept-Ranges', 'bytes');
-      res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache for 24 hours
-      res.setHeader('Access-Control-Allow-Origin', '*');
-    } else if (path.endsWith('.mp3')) {
-      res.setHeader('Content-Type', 'audio/mpeg');
-      res.setHeader('Accept-Ranges', 'bytes');
-      res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
-      res.setHeader('Access-Control-Allow-Origin', '*');
-    }
-  }
-}));
+app.use(
+  "/attached_assets",
+  express.static("attached_assets", {
+    setHeaders: (res, path) => {
+      if (path.endsWith(".mp4")) {
+        res.setHeader("Content-Type", "video/mp4");
+        res.setHeader("Accept-Ranges", "bytes");
+        res.setHeader("Cache-Control", "public, max-age=86400"); // Cache for 24 hours
+        res.setHeader("Access-Control-Allow-Origin", "*");
+      } else if (path.endsWith(".mp3")) {
+        res.setHeader("Content-Type", "audio/mpeg");
+        res.setHeader("Accept-Ranges", "bytes");
+        res.setHeader("Cache-Control", "public, max-age=3600"); // Cache for 1 hour
+        res.setHeader("Access-Control-Allow-Origin", "*");
+      }
+    },
+  }),
+);
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -53,6 +56,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/", (req, res) => {
+  res.send("✅ App is working and responding from Railway! 🚀");
+});
+
 (async () => {
   const server = await registerRoutes(app);
 
@@ -64,7 +71,7 @@ app.use((req, res, next) => {
     if (!res.headersSent) {
       res.status(status).json({ message });
     }
-    
+
     // Log error for debugging but don't throw in production
     if (process.env.NODE_ENV === "development") {
       console.error(`Error ${status}: ${message}`, err);
@@ -86,12 +93,15 @@ app.use((req, res, next) => {
   // Other ports are firewalled. Default to 5000 if not specified.
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
-  });
+  const port = parseInt(process.env.PORT || "5000", 10);
+  server.listen(
+    {
+      port,
+      host: "0.0.0.0",
+      reusePort: true,
+    },
+    () => {
+      log(`serving on port ${port}`);
+    },
+  );
 })();
