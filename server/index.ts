@@ -1,13 +1,40 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
 import { createServer } from "http";
-import path from "path"; // ✅ Required for static/catch-all paths
+import path from "path";
 import { fileURLToPath } from "url";
 
 // ES module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Production-safe logger
+const log = (message: string, source = "express") => {
+  const formattedTime = new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit", 
+    second: "2-digit",
+    hour12: true,
+  });
+  console.log(`${formattedTime} [${source}] ${message}`);
+};
+
+// Conditional vite imports for development only
+let setupVite: any, serveStatic: any;
+
+const initializeDevDependencies = async () => {
+  if (process.env.NODE_ENV === "development") {
+    try {
+      const { setupVite: devSetupVite, serveStatic: devServeStatic } = await import("./vite.js");
+      setupVite = devSetupVite;
+      serveStatic = devServeStatic;
+    } catch (error) {
+      console.warn("Development dependencies not available:", error);
+    }
+  }
+};
+
+
 
 const app = express();
 app.use(express.json());
@@ -68,24 +95,61 @@ app.get("/", (req, res) => {
 
 // Production-only static file serving (Railway deployment)
 if (process.env.NODE_ENV === "production") {
-  // More robust path resolution for production
-  const workingDir = process.cwd() || "/app";
-  const staticPath = path.join(workingDir, "dist", "public");
+  // Bulletproof path resolution for production environments
+  const getProductionPaths = () => {
+    try {
+      // Multiple fallback strategies for different deployment environments
+      const workingDirectory = process.cwd() || process.env.PWD || "/app" || __dirname;
+      const staticPath = path.resolve(workingDirectory, "dist", "public");
+      const indexPath = path.resolve(staticPath, "index.html");
+      
+      console.log("🔍 Production Path Resolution:");
+      console.log("  - Working Directory:", workingDirectory);
+      console.log("  - Static Path:", staticPath);
+      console.log("  - Index Path:", indexPath);
+      
+      return { staticPath, indexPath };
+    } catch (error) {
+      console.error("❌ Path resolution failed:", error);
+      // Ultimate fallback for extreme edge cases
+      const fallbackStatic = "/app/dist/public";
+      const fallbackIndex = "/app/dist/public/index.html";
+      console.log("🆘 Using fallback paths:", { fallbackStatic, fallbackIndex });
+      return { staticPath: fallbackStatic, indexPath: fallbackIndex };
+    }
+  };
+
+  const { staticPath, indexPath } = getProductionPaths();
   
-  console.log("Production mode - serving static files from:", staticPath);
-  app.use(express.static(staticPath));
+  app.use(express.static(staticPath, {
+    // Add robust error handling for static file serving
+    fallthrough: true,
+    index: false, // We'll handle index.html separately
+  }));
   
-  // ✅ Catch-all to serve index.html for frontend routing
-  app.get("*", (req, res) => {
-    const indexPath = path.join(staticPath, "index.html");
-    console.log("Serving index.html from:", indexPath);
-    res.sendFile(indexPath);
+  // ✅ Catch-all to serve index.html for frontend routing with error handling
+  app.get("*", (req, res, next) => {
+    try {
+      res.sendFile(indexPath, (err) => {
+        if (err) {
+          console.error("❌ Error serving index.html:", err);
+          res.status(500).send("Server configuration error - please contact support");
+        }
+      });
+    } catch (error) {
+      console.error("❌ Critical error in route handler:", error);
+      res.status(500).send("Server configuration error - please contact support");
+      next(error);
+    }
   });
 }
 
 (async () => {
   try {
     console.log("🚀 Starting server setup...");
+    
+    // Initialize development dependencies if needed
+    await initializeDevDependencies();
 
     await registerRoutes(app);
     console.log("✅ Routes registered successfully.");
@@ -111,7 +175,8 @@ if (process.env.NODE_ENV === "production") {
       console.log("⚙️ Setting up Vite dev server...");
       await setupVite(app, server);
     } else {
-      serveStatic(app); // Already serving dist above, still useful
+      // Skip serveStatic in production to avoid vite config issues
+      console.log("✅ Production mode - static serving configured above");
     }
 
     const port = parseInt(process.env.PORT || "5000", 10);
