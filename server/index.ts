@@ -94,6 +94,7 @@ app.get("/", (req, res) => {
 
     // Start
     const port = parseInt(process.env.PORT || "3000", 10);
+    console.log("Port is:", port);
     server.listen({ port, host: "0.0.0.0" }, () => {
       log(`✅ Server is running and listening on port ${port}`);
     });
