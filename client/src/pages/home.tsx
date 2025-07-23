@@ -1796,11 +1796,6 @@ export default function Home() {
       </section>
       {/* Business Development Capabilities Section */}
       <section className="py-20 bg-gradient-to-br from-black via-obsidian/95 to-black relative z-10 overflow-hidden">
-        <motion.div
-          style={{ y: y2, rotate: rotate1 }}
-          className="absolute top-32 left-32 w-96 h-96 bg-gradient-to-br from-gold/8 to-crimson/5 rounded-full blur-3xl"
-        />
-        
         <div className="container mx-auto px-6">
           <motion.div
             initial="initial"
