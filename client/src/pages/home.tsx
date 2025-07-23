@@ -58,6 +58,25 @@ export default function Home() {
   const { scrollY } = useScroll();
   const audioRef = useRef<HTMLAudioElement>(null);
   const f1AudioEngine = useRef<F1AudioEngine | null>(null);
+
+  const heroFormRef = useRef<HTMLFormElement>(null); // 👈 ref ban gaya
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        window.gtag?.("event", "form_view", {
+          form_id: "hero-form",
+        });
+        observer.disconnect(); // sirf ek baar fire hoga
+      }
+    }, { threshold: 0.5 }); // half screen pe aaye to count
+
+    if (heroFormRef.current) {
+      observer.observe(heroFormRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   
   // ROI Calculator State
   const [seoSpend, setSeoSpend] = useState(5000);
@@ -786,7 +805,7 @@ export default function Home() {
               <p className="text-white/70 mb-6">Limited access. Strategic advantage.</p>
               
               <Form {...heroForm}>
-                <form onSubmit={heroForm.handleSubmit(onSubmit)} className="space-y-4" id="hero-form">
+                <form ref={heroFormRef} onSubmit={heroForm.handleSubmit(onSubmit)} className="space-y-4" id="hero-form">
                   <FormField
                     control={heroForm.control}
                     name="email"
