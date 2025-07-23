@@ -33,6 +33,9 @@
   --platinum: #e5e7eb;
   --gold: hsl(45, 93%, 47%);
   --obsidian: hsl(0, 0%, 11%);
+  
+  /* Custom red background */
+  --custom-red-bg: rgba(191, 0, 0, 0.4);
 }
 
 .dark {
@@ -524,6 +527,11 @@ html {
 body {
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Custom red background card */
+.bg-custom-red {
+  background-color: rgba(191, 0, 0, 0.4) !important;
 }
 
 /* Smooth blend mode transitions */
