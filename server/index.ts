@@ -62,7 +62,7 @@ app.get("/", (req, res) => {
 });
 
 // ✅ Serve static frontend files (dist or build folder)
-const staticPath = path.resolve(__dirname, "../dist"); // Adjust if needed
+const staticPath = path.resolve(__dirname, "../dist/public"); // Adjust if needed
 app.use(express.static(staticPath));
 
 // ✅ Catch-all to serve index.html for frontend routing
