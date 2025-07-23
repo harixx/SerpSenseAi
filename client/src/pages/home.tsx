@@ -1134,7 +1134,7 @@ export default function Home() {
                     <Building className="text-crimson text-lg xs:text-xl sm:text-2xl" />
                   </div>
                   <h3 className="font-playfair text-responsive-xl font-semibold mb-3 sm:mb-4 text-[#e7b008] text-center">
-                    <span className="hidden xs:inline">Enterprise SEO Leads</span>
+                    <span className="hidden xs:inline text-[24px]">Enterprise SEO Leads</span>
                     <span className="xs:hidden">SEO Leaders</span>
                   </h3>
                   <p className="mb-4 sm:mb-6 text-[#e5e7eb] text-responsive-sm leading-relaxed">
