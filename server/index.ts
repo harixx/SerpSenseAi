@@ -24,7 +24,7 @@ app.use(
         res.setHeader("Access-Control-Allow-Origin", "*");
       }
     },
-  })
+  }),
 );
 
 // Logging middleware
@@ -93,7 +93,7 @@ app.get("/", (req, res) => {
     }
 
     // Start
-    const port = parseInt(process.env.PORT || "5000", 10);
+    const port = parseInt(process.env.PORT || "3000", 10);
     server.listen({ port, host: "0.0.0.0" }, () => {
       log(`✅ Server is running and listening on port ${port}`);
     });
