@@ -424,9 +424,6 @@ export default function Home() {
       >
         <source src="/attached_assets/13464_1459539280_1753112009861.mp3" type="audio/mpeg" />
       </audio>
-
-
-      
       {/* Audio Status - Mobile Optimized */}
       {!audioEnabled && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-crimson/90 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-bold animate-pulse touch-target">
@@ -663,7 +660,6 @@ export default function Home() {
           }}
         ></div>
       </div>
-
       {/* Floating Background Elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Elegant floating shapes with professional colors */}
@@ -729,7 +725,6 @@ export default function Home() {
           );
         })}
       </div>
-
       {/* Mobile-First Navigation */}
       <nav className="fixed top-0 w-full z-mobile-nav glassmorphism border-b border-crimson/20 safe-area-top">
         <div className="responsive-container py-2 xs:py-3 sm:py-4 flex justify-between items-center">
@@ -819,7 +814,7 @@ export default function Home() {
               Uncover the hidden signals: tone, sentiment, UX patterns, and content depth.
             </motion.p>
             
-            <motion.div variants={fadeInUp} className="glassmorphism card-responsive max-w-sm xs:max-w-md sm:max-w-lg mx-auto mb-6 sm:mb-8">
+            <motion.div variants={fadeInUp} className="glassmorphism card-responsive max-w-sm xs:max-w-md sm:max-w-lg mx-auto mb-6 sm:mb-8 bg-[#bf000066]">
               <h3 className="font-playfair text-responsive-xl font-semibold mb-3 sm:mb-4 text-white">Join the Elite Waitlist</h3>
               <p className="text-white/70 mb-4 sm:mb-6 text-responsive-sm">Limited access. Strategic advantage.</p>
               
@@ -1472,7 +1467,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* ROI Calculator Section */}
       <section className="py-20 bg-gradient-to-br from-black via-obsidian/90 to-black relative z-10 overflow-hidden">
         <motion.div
@@ -1622,7 +1616,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Case Studies Section - Mobile Responsive */}
       <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-obsidian via-black/95 to-obsidian relative z-10 overflow-hidden">
         <motion.div
@@ -1801,7 +1794,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Business Development Capabilities Section */}
       <section className="py-20 bg-gradient-to-br from-black via-obsidian/95 to-black relative z-10 overflow-hidden">
         <motion.div
@@ -1845,7 +1837,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Final CTA - Mobile Responsive */}
       <section className="py-12 sm:py-16 lg:py-20 bg-charcoal relative overflow-hidden">
         {/* Animated background elements */}
