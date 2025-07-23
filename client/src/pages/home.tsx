@@ -1684,119 +1684,233 @@ export default function Home() {
             </motion.p>
           </motion.div>
 
-          <div className="responsive-grid lg:grid-cols-2 mb-8 sm:mb-12">
-            {/* Case Study 1 */}
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 mb-8 sm:mb-12">
+            {/* Case Study 1 - Enhanced Visual Design */}
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
+              className="group"
             >
-              <Card className="glassmorphism p-4 sm:p-6 lg:p-8 rounded-2xl h-full">
-                <CardContent className="p-0">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-crimson to-ruby rounded-lg flex items-center justify-center text-white font-bold text-lg sm:text-xl flex-shrink-0">
-                      TS
+              <Card className="glassmorphism rounded-2xl h-full overflow-hidden relative border border-white/10 hover:border-crimson/30 transition-all duration-500 group-hover:transform group-hover:scale-[1.02]">
+                {/* Premium gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-crimson/5 via-transparent to-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                
+                <CardContent className="p-6 lg:p-8 relative z-10">
+                  {/* Enhanced Company Header */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center">
+                      <div className="relative">
+                        <div className="w-16 h-16 bg-gradient-to-br from-crimson via-ruby to-red-600 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+                          TS
+                        </div>
+                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-400 rounded-full border-2 border-obsidian flex items-center justify-center">
+                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                        </div>
+                      </div>
+                      <div className="ml-4">
+                        <h3 className="font-playfair text-xl lg:text-2xl font-bold text-white mb-1">TechScale Ventures</h3>
+                        <div className="flex items-center">
+                          <div className="w-2 h-2 bg-crimson rounded-full mr-2"></div>
+                          <p className="text-platinum/70 text-sm font-medium">Enterprise SaaS Company</p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="ml-3 sm:ml-4">
-                      <h3 className="font-playfair text-responsive-lg font-semibold text-white">TechScale Ventures</h3>
-                      <p className="text-platinum/60 text-responsive-xs">Enterprise SaaS Company</p>
-                    </div>
-                  </div>
-                  
-                  <div className="mb-6">
-                    <h4 className="text-responsive-base font-semibold text-white mb-2">Challenge</h4>
-                    <p className="text-platinum/80 text-responsive-sm mb-4">
-                      Despite extensive backlink building and keyword optimization, competitors with fewer domain authority 
-                      and backlinks were consistently outranking them for high-value commercial terms.
-                    </p>
-                    
-                    <h4 className="text-responsive-base font-semibold text-white mb-2">Solution</h4>
-                    <p className="text-platinum/80 text-responsive-sm mb-4">
-                      Imperius revealed that top-ranking competitors used more authoritative tone, 
-                      deeper technical content structure, and better user experience patterns.
-                    </p>
-                    
-                    <h4 className="text-responsive-base font-semibold text-white mb-2">Results</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 text-center">
-                      <div className="bg-obsidian/30 rounded-lg p-2 sm:p-3">
-                        <div className="text-responsive-xl font-bold text-crimson">3x</div>
-                        <div className="text-responsive-xs text-platinum/60">Organic Growth</div>
-                      </div>
-                      <div className="bg-obsidian/30 rounded-lg p-2 sm:p-3">
-                        <div className="text-responsive-xl font-bold text-gold">180%</div>
-                        <div className="text-responsive-xs text-platinum/60">Traffic Increase</div>
-                      </div>
-                      <div className="bg-obsidian/30 rounded-lg p-2 sm:p-3">
-                        <div className="text-responsive-xl font-bold text-green-400">6mo</div>
-                        <div className="text-responsive-xs text-platinum/60">Time to Results</div>
-                      </div>
+                    <div className="text-right">
+                      <div className="text-xs text-platinum/50 mb-1">Success Rate</div>
+                      <div className="text-2xl font-bold text-gold">98%</div>
                     </div>
                   </div>
                   
-                  <div className="border-t border-crimson/20 pt-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-responsive-sm">
-                      <span className="text-platinum/60">Industry: Enterprise SaaS</span>
-                      <span className="text-crimson font-semibold">$2.4M Revenue Impact</span>
+                  {/* Enhanced Challenge-Solution-Results Flow */}
+                  <div className="space-y-6">
+                    {/* Challenge Section */}
+                    <div className="relative">
+                      <div className="flex items-center mb-3">
+                        <div className="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center mr-3">
+                          <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+                        </div>
+                        <h4 className="text-lg font-bold text-white">Challenge</h4>
+                      </div>
+                      <div className="ml-11">
+                        <p className="text-platinum/80 leading-relaxed">
+                          Despite extensive backlink building and keyword optimization, competitors with fewer domain authority 
+                          and backlinks were consistently outranking them for high-value commercial terms.
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Solution Section */}
+                    <div className="relative">
+                      <div className="flex items-center mb-3">
+                        <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center mr-3">
+                          <div className="w-4 h-4 bg-blue-400 rounded-full"></div>
+                        </div>
+                        <h4 className="text-lg font-bold text-white">Solution</h4>
+                      </div>
+                      <div className="ml-11">
+                        <p className="text-platinum/80 leading-relaxed">
+                          Imperius revealed that top-ranking competitors used more <span className="text-crimson font-medium">authoritative tone</span>, 
+                          deeper technical content structure, and better user experience patterns.
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Enhanced Results Section */}
+                    <div className="relative">
+                      <div className="flex items-center mb-4">
+                        <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center mr-3">
+                          <div className="w-4 h-4 bg-green-400 rounded-full"></div>
+                        </div>
+                        <h4 className="text-lg font-bold text-white">Results</h4>
+                      </div>
+                      <div className="ml-11">
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="bg-gradient-to-br from-crimson/10 to-crimson/5 rounded-xl p-4 text-center border border-crimson/20 hover:border-crimson/40 transition-colors duration-300">
+                            <div className="text-3xl font-bold text-crimson mb-1">3x</div>
+                            <div className="text-xs text-platinum/60 font-medium">Organic Growth</div>
+                          </div>
+                          <div className="bg-gradient-to-br from-gold/10 to-gold/5 rounded-xl p-4 text-center border border-gold/20 hover:border-gold/40 transition-colors duration-300">
+                            <div className="text-3xl font-bold text-gold mb-1">180%</div>
+                            <div className="text-xs text-platinum/60 font-medium">Traffic Increase</div>
+                          </div>
+                          <div className="bg-gradient-to-br from-green-400/10 to-green-400/5 rounded-xl p-4 text-center border border-green-400/20 hover:border-green-400/40 transition-colors duration-300">
+                            <div className="text-3xl font-bold text-green-400 mb-1">6mo</div>
+                            <div className="text-xs text-platinum/60 font-medium">Time to Results</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Enhanced Footer with Premium Styling */}
+                  <div className="mt-8 pt-6 border-t border-gradient-to-r from-crimson/20 via-white/10 to-gold/20">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 bg-crimson rounded-full mr-2"></div>
+                        <span className="text-platinum/70 text-sm font-medium">Enterprise SaaS</span>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xs text-platinum/50 mb-1">Revenue Impact</div>
+                        <div className="text-xl font-bold text-gold">$2.4M</div>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
 
-            {/* Case Study 2 */}
+            {/* Case Study 2 - Enhanced Visual Design */}
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              className="group"
             >
-              <Card className="glassmorphism p-4 sm:p-6 lg:p-8 rounded-2xl h-full">
-                <CardContent className="p-0">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-gold to-amber-600 rounded-lg flex items-center justify-center text-white font-bold text-lg sm:text-xl flex-shrink-0">
-                      ED
+              <Card className="glassmorphism rounded-2xl h-full overflow-hidden relative border border-white/10 hover:border-gold/30 transition-all duration-500 group-hover:transform group-hover:scale-[1.02]">
+                {/* Premium gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-yellow-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                
+                <CardContent className="p-6 lg:p-8 relative z-10">
+                  {/* Enhanced Company Header */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center">
+                      <div className="relative">
+                        <div className="w-16 h-16 bg-gradient-to-br from-gold via-yellow-500 to-orange-400 rounded-xl flex items-center justify-center text-black font-bold text-2xl shadow-lg">
+                          ED
+                        </div>
+                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-blue-400 rounded-full border-2 border-obsidian flex items-center justify-center">
+                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                        </div>
+                      </div>
+                      <div className="ml-4">
+                        <h3 className="font-playfair text-xl lg:text-2xl font-bold text-white mb-1">Elite Digital Agency</h3>
+                        <div className="flex items-center">
+                          <div className="w-2 h-2 bg-gold rounded-full mr-2"></div>
+                          <p className="text-platinum/70 text-sm font-medium">Premium SEO Agency</p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="ml-3 sm:ml-4">
-                      <h3 className="font-playfair text-responsive-lg font-semibold text-white">Elite Digital Agency</h3>
-                      <p className="text-platinum/60 text-responsive-xs">Premium SEO Agency</p>
-                    </div>
-                  </div>
-                  
-                  <div className="mb-6">
-                    <h4 className="text-lg font-semibold text-white mb-2">Challenge</h4>
-                    <p className="text-platinum/80 text-sm mb-4">
-                      Agency needed to differentiate from competitors and provide deeper insights to retain 
-                      high-value enterprise clients demanding sophisticated SEO strategy.
-                    </p>
-                    
-                    <h4 className="text-lg font-semibold text-white mb-2">Solution</h4>
-                    <p className="text-platinum/80 text-sm mb-4">
-                      Implemented Imperius as core service offering, providing multi-dimensional 
-                      content analysis that traditional tools couldn't match.
-                    </p>
-                    
-                    <h4 className="text-lg font-semibold text-white mb-2">Results</h4>
-                    <div className="grid grid-cols-3 gap-4 text-center">
-                      <div className="bg-obsidian/30 rounded-lg p-3">
-                        <div className="text-2xl font-bold text-crimson">40%</div>
-                        <div className="text-xs text-platinum/60">Higher Client LTV</div>
-                      </div>
-                      <div className="bg-obsidian/30 rounded-lg p-3">
-                        <div className="text-2xl font-bold text-gold">25%</div>
-                        <div className="text-xs text-platinum/60">Premium Pricing</div>
-                      </div>
-                      <div className="bg-obsidian/30 rounded-lg p-3">
-                        <div className="text-2xl font-bold text-green-400">95%</div>
-                        <div className="text-xs text-platinum/60">Client Retention</div>
-                      </div>
+                    <div className="text-right">
+                      <div className="text-xs text-platinum/50 mb-1">Success Rate</div>
+                      <div className="text-2xl font-bold text-crimson">95%</div>
                     </div>
                   </div>
                   
-                  <div className="border-t border-crimson/20 pt-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-platinum/60">Industry: Digital Marketing</span>
-                      <span className="text-crimson font-semibold">$800K Annual Growth</span>
+                  {/* Enhanced Challenge-Solution-Results Flow */}
+                  <div className="space-y-6">
+                    {/* Challenge Section */}
+                    <div className="relative">
+                      <div className="flex items-center mb-3">
+                        <div className="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center mr-3">
+                          <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+                        </div>
+                        <h4 className="text-lg font-bold text-white">Challenge</h4>
+                      </div>
+                      <div className="ml-11">
+                        <p className="text-platinum/80 leading-relaxed">
+                          Agency needed to differentiate from competitors and provide deeper insights to retain 
+                          high-value enterprise clients demanding sophisticated SEO strategy.
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Solution Section */}
+                    <div className="relative">
+                      <div className="flex items-center mb-3">
+                        <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center mr-3">
+                          <div className="w-4 h-4 bg-blue-400 rounded-full"></div>
+                        </div>
+                        <h4 className="text-lg font-bold text-white">Solution</h4>
+                      </div>
+                      <div className="ml-11">
+                        <p className="text-platinum/80 leading-relaxed">
+                          Implemented Imperius as core service offering, providing <span className="text-gold font-medium">multi-dimensional content analysis</span> 
+                          that traditional tools couldn't match.
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Enhanced Results Section */}
+                    <div className="relative">
+                      <div className="flex items-center mb-4">
+                        <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center mr-3">
+                          <div className="w-4 h-4 bg-green-400 rounded-full"></div>
+                        </div>
+                        <h4 className="text-lg font-bold text-white">Results</h4>
+                      </div>
+                      <div className="ml-11">
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="bg-gradient-to-br from-crimson/10 to-crimson/5 rounded-xl p-4 text-center border border-crimson/20 hover:border-crimson/40 transition-colors duration-300">
+                            <div className="text-3xl font-bold text-crimson mb-1">40%</div>
+                            <div className="text-xs text-platinum/60 font-medium">Higher Client LTV</div>
+                          </div>
+                          <div className="bg-gradient-to-br from-gold/10 to-gold/5 rounded-xl p-4 text-center border border-gold/20 hover:border-gold/40 transition-colors duration-300">
+                            <div className="text-3xl font-bold text-gold mb-1">25%</div>
+                            <div className="text-xs text-platinum/60 font-medium">Premium Pricing</div>
+                          </div>
+                          <div className="bg-gradient-to-br from-green-400/10 to-green-400/5 rounded-xl p-4 text-center border border-green-400/20 hover:border-green-400/40 transition-colors duration-300">
+                            <div className="text-3xl font-bold text-green-400 mb-1">95%</div>
+                            <div className="text-xs text-platinum/60 font-medium">Client Retention</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Enhanced Footer with Premium Styling */}
+                  <div className="mt-8 pt-6 border-t border-gradient-to-r from-gold/20 via-white/10 to-crimson/20">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 bg-gold rounded-full mr-2"></div>
+                        <span className="text-platinum/70 text-sm font-medium">Digital Marketing</span>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xs text-platinum/50 mb-1">Annual Growth</div>
+                        <div className="text-xl font-bold text-crimson">$800K</div>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
