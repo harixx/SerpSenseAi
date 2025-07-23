@@ -103,11 +103,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// ✅ Root route for direct check (optional)
-app.get("/", (req, res) => {
-  console.log("📩 GET / hit");
-  res.send("✅ App is working and responding from Railway! 🚀");
-});
+// Remove the conflicting root route - let static serving handle the frontend
 
 // Production-only static file serving (Railway deployment)
 if (process.env.NODE_ENV === "production") {
