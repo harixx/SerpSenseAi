@@ -57,51 +57,56 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
+  console.log("📩 GET / hit");
   res.send("✅ App is working and responding from Railway! 🚀");
 });
 
 (async () => {
-  const server = await registerRoutes(app);
+  try {
+    console.log("🚀 Starting server setup...");
 
-  app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+    // Register your routes (including API and WebSocket)
+    const server = await registerRoutes(app);
+    console.log("✅ Routes registered successfully.");
 
-    // Only send response if it hasn't been sent yet
-    if (!res.headersSent) {
-      res.status(status).json({ message });
-    }
+    // Error handler middleware
+    app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+      const status = err.status || err.statusCode || 500;
+      const message = err.message || "Internal Server Error";
 
-    // Log error for debugging but don't throw in production
-    if (process.env.NODE_ENV === "development") {
-      console.error(`Error ${status}: ${message}`, err);
+      if (!res.headersSent) {
+        res.status(status).json({ message });
+      }
+
+      if (process.env.NODE_ENV === "development") {
+        console.error(`❌ Error ${status}: ${message}`, err);
+      } else {
+        console.error(`❌ Error ${status}: ${message}`);
+      }
+    });
+
+    // Dev only: Setup Vite
+    if (app.get("env") === "development") {
+      console.log("⚙️  Setting up Vite (dev mode)...");
+      await setupVite(app, server);
     } else {
-      console.error(`Error ${status}: ${message}`);
+      serveStatic(app);
     }
-  });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
+    // Start the server and listen on Railway-provided port
+    const port = parseInt(process.env.PORT || "5000", 10);
+    server.listen(
+      {
+        port,
+        host: "0.0.0.0", // Required for Railway
+        reusePort: true,
+      },
+      () => {
+        log(`✅ Server is running and listening on port ${port}`);
+      },
+    );
+  } catch (error) {
+    console.error("❌ Fatal error during app startup:", error);
+    process.exit(1);
   }
-
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || "5000", 10);
-  server.listen(
-    {
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    },
-    () => {
-      log(`serving on port ${port}`);
-    },
-  );
 })();
