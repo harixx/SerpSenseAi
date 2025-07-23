@@ -669,15 +669,15 @@ export default function Home() {
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Elegant floating shapes with professional colors */}
         <motion.div
-          style={{ transform: `${parallaxTransforms.y1} ${parallaxTransforms.rotate1} ${parallaxTransforms.scale1}`, opacity: parallaxTransforms.opacity1 }}
+          style={{ transform: `${parallaxTransforms.y1} ${parallaxTransforms.rotate1} ${parallaxTransforms.scale1}`, opacity: parallaxTransforms.opacity1 as any }}
           className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-crimson/10 to-white/5 rounded-full blur-3xl gpu-accelerated"
         />
         <motion.div
-          style={{ transform: `${parallaxTransforms.y2} ${parallaxTransforms.rotate2}`, opacity: parallaxTransforms.opacity2 }}
+          style={{ transform: `${parallaxTransforms.y2} ${parallaxTransforms.rotate2}`, opacity: parallaxTransforms.opacity2 as any }}
           className="absolute top-1/4 right-10 w-80 h-80 bg-gradient-to-tl from-white/8 to-crimson/6 rounded-full blur-3xl gpu-accelerated"
         />
         <motion.div
-          style={{ transform: parallaxTransforms.y3, opacity: parallaxTransforms.opacity1 }}
+          style={{ transform: parallaxTransforms.y3, opacity: parallaxTransforms.opacity1 as any }}
           className="absolute bottom-1/3 left-1/4 w-64 h-64 bg-gradient-to-tr from-crimson/8 to-white/4 rounded-full blur-2xl gpu-accelerated"
         />
         <motion.div
@@ -736,10 +736,20 @@ export default function Home() {
             Imperius
           </div>
           <div className="flex items-center gap-2 xs:gap-3 sm:gap-4">
+            {/* Skip-to-Main Navigation for WCAG Compliance */}
+            <a 
+              href="#hero-form" 
+              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-crimson text-white px-4 py-2 rounded z-50"
+              tabIndex={1}
+            >
+              Skip to main content
+            </a>
+            
             <Button 
               variant="default" 
-              className="bg-crimson hover:bg-ruby text-white btn-responsive cta-hover touch-target nav-responsive"
+              className="bg-crimson hover:bg-ruby text-white btn-responsive cta-hover touch-target nav-responsive focus:ring-2 focus:ring-crimson focus:ring-offset-2"
               onClick={() => document.getElementById('hero-form')?.scrollIntoView({ behavior: 'smooth' })}
+              aria-label="Request access to Imperius platform"
             >
               <span className="hidden xs:inline">Request Access</span>
               <span className="xs:hidden">Join</span>
@@ -799,6 +809,8 @@ export default function Home() {
             <motion.h1 
               variants={fadeInUp}
               className="font-playfair text-responsive-3xl font-bold mb-6 leading-tight"
+              role="banner"
+              aria-level="1"
             >
               <span className="text-white">Beyond</span>{" "}
               <span className="text-crimson text-shadow-glow">Keywords.</span>
@@ -819,6 +831,22 @@ export default function Home() {
             </motion.p>
             
             <motion.div variants={fadeInUp} className="glassmorphism card-responsive max-w-sm xs:max-w-md sm:max-w-lg mx-auto mb-6 sm:mb-8 bg-[#bf000066]">
+              {/* Enterprise Trust Signal Integration - Above Fold */}
+              <div className="flex items-center justify-center mb-4 space-x-4 opacity-90">
+                <div className="flex items-center space-x-1">
+                  <Shield className="w-3 h-3 text-gold" />
+                  <span className="text-xs text-platinum/80 font-medium">SOC 2</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Globe className="w-3 h-3 text-gold" />
+                  <span className="text-xs text-platinum/80 font-medium">GDPR</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Users className="w-3 h-3 text-gold" />
+                  <span className="text-xs text-platinum/80 font-medium">Enterprise</span>
+                </div>
+              </div>
+              
               <h3 className="font-playfair text-responsive-xl font-semibold mb-3 sm:mb-4 text-white">Join the Elite Waitlist</h3>
               <p className="text-white/70 mb-4 sm:mb-6 text-responsive-sm">Limited access. Strategic advantage.</p>
               
@@ -835,6 +863,9 @@ export default function Home() {
                             type="email"
                             placeholder="Enter your professional email"
                             className="w-full input-responsive prevent-zoom bg-black/30 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20 text-responsive-sm"
+                            aria-label="Professional email address for waitlist access"
+                            aria-describedby="email-help"
+                            autoComplete="email"
                           />
                         </FormControl>
                         <FormMessage className="text-crimson text-sm" />
@@ -844,7 +875,9 @@ export default function Home() {
                   <Button
                     type="submit"
                     disabled={waitlistMutation.isPending}
-                    className={`w-full text-white btn-responsive rounded-lg font-semibold cta-hover touch-target ${heroCTA.config?.style || 'bg-crimson hover:bg-ruby'} ${heroCTA.config?.urgency ? 'animate-glow-pulse' : ''}`}
+                    className={`w-full text-white btn-responsive rounded-lg font-semibold cta-hover touch-target focus:ring-2 focus:ring-crimson focus:ring-offset-2 ${heroCTA.config?.style || 'bg-crimson hover:bg-ruby'} ${heroCTA.config?.urgency ? 'animate-glow-pulse' : ''}`}
+                    aria-label="Submit email to join exclusive waitlist"
+                    id="hero-submit-btn"
                   >
                     <span className="hidden xs:inline">{waitlistMutation.isPending ? "Processing..." : (heroCTA.config?.text || "Request Exclusive Access")}</span>
                     <span className="xs:hidden">{waitlistMutation.isPending ? "Processing..." : "Join Waitlist"}</span>
@@ -852,11 +885,18 @@ export default function Home() {
                 </form>
               </Form>
               
+              {/* Enhanced Trust & Privacy Signals */}
               <div className="mt-4 space-y-2">
-                <p className="text-xs text-platinum/50 flex items-center justify-center">
-                  <Shield className="w-3 h-3 text-gold mr-1" />
-                  No spam. Unsubscribe anytime. GDPR compliant.
-                </p>
+                <div className="flex items-center justify-center space-x-4 text-xs text-platinum/50">
+                  <div className="flex items-center">
+                    <Shield className="w-3 h-3 text-gold mr-1" />
+                    <span>GDPR Compliant</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="w-3 h-3 text-green-400 mr-1" />
+                    <span>No Spam</span>
+                  </div>
+                </div>
                 <p className="text-xs text-platinum/40 flex items-center justify-center">
                   <span className="mr-2">{connectionStatus}</span>
                   Real-time updates active
@@ -897,7 +937,7 @@ export default function Home() {
       <section className="py-12 sm:py-16 lg:py-20 bg-obsidian/50 relative z-10 overflow-hidden">
         {/* Section-specific animated background */}
         <motion.div
-          style={{ transform: parallaxTransforms.y3, opacity: parallaxTransforms.opacity1 }}
+          style={{ transform: parallaxTransforms.y3, opacity: parallaxTransforms.opacity1 as any }}
           className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-gold/10 to-crimson/5 rounded-full blur-3xl gpu-accelerated"
         />
         <motion.div
@@ -1100,7 +1140,7 @@ export default function Home() {
       <section className="py-20 bg-charcoal relative z-10 overflow-hidden">
         {/* Use case section animated elements */}
         <motion.div
-          style={{ transform: `${parallaxTransforms.y1} ${parallaxTransforms.scale1}`, opacity: parallaxTransforms.opacity2 }}
+          style={{ transform: `${parallaxTransforms.y1} ${parallaxTransforms.scale1}`, opacity: parallaxTransforms.opacity2 as any }}
           className="absolute top-1/4 left-10 w-64 h-64 bg-gradient-to-r from-crimson/10 to-transparent rounded-full blur-2xl gpu-accelerated"
         />
         <motion.div
@@ -1324,7 +1364,7 @@ export default function Home() {
       {/* Enhanced Social Proof Section */}
       <section className="py-20 bg-gradient-to-br from-obsidian/80 via-black/90 to-obsidian/80 relative z-10 overflow-hidden">
         <motion.div
-          style={{ transform: parallaxTransforms.y3, opacity: parallaxTransforms.opacity1 }}
+          style={{ transform: parallaxTransforms.y3, opacity: parallaxTransforms.opacity1 as any }}
           className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-gold/8 to-crimson/5 rounded-full blur-3xl gpu-accelerated"
         />
         
@@ -1840,11 +1880,11 @@ export default function Home() {
       <section className="py-12 sm:py-16 lg:py-20 bg-charcoal relative overflow-hidden">
         {/* Animated background elements */}
         <motion.div
-          style={{ transform: parallaxTransforms.y1 }}
+          style={{ transform: parallaxTransforms.y1 as any }}
           className="absolute top-0 left-1/4 w-96 h-96 bg-crimson rounded-full blur-3xl opacity-5 gpu-accelerated"
         />
         <motion.div
-          style={{ transform: parallaxTransforms.y2 }}
+          style={{ transform: parallaxTransforms.y2 as any }}
           className="absolute bottom-0 right-1/4 w-72 h-72 bg-ruby rounded-full blur-3xl opacity-5 gpu-accelerated"
         />
         
