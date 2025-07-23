@@ -717,37 +717,37 @@ export default function Home() {
         })}
       </div>
 
-      {/* Sticky Navigation - Mobile Responsive */}
-      <nav className="fixed top-0 w-full z-50 glassmorphism border-b border-crimson/20">
-        <div className="responsive-container py-3 sm:py-4 flex justify-between items-center">
-          <div className="font-playfair text-xl sm:text-2xl font-bold text-crimson">
+      {/* Mobile-First Navigation */}
+      <nav className="fixed top-0 w-full z-mobile-nav glassmorphism border-b border-crimson/20 safe-area-top">
+        <div className="responsive-container py-2 xs:py-3 sm:py-4 flex justify-between items-center">
+          <div className="font-playfair text-lg xs:text-xl sm:text-2xl lg:text-3xl font-bold text-crimson">
             Imperius
           </div>
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center gap-2 xs:gap-3 sm:gap-4">
             <Button 
               variant="default" 
-              className="bg-crimson hover:bg-ruby text-white px-3 py-2 sm:px-6 sm:py-2 cta-hover text-xs sm:text-sm touch-target"
+              className="bg-crimson hover:bg-ruby text-white btn-responsive cta-hover touch-target nav-responsive"
               onClick={() => document.getElementById('hero-form')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              <span className="hidden sm:inline">Request Access</span>
-              <span className="sm:hidden">Join</span>
+              <span className="hidden xs:inline">Request Access</span>
+              <span className="xs:hidden">Join</span>
             </Button>
             <Button
               variant={audioEnabled ? "default" : "outline"}
               size="sm"
-              className={`${audioEnabled ? "bg-crimson hover:bg-ruby text-white" : "border-crimson text-crimson hover:bg-crimson hover:text-white"} touch-target px-2 sm:px-3`}
+              className={`${audioEnabled ? "bg-crimson hover:bg-ruby text-white" : "border-crimson text-crimson hover:bg-crimson hover:text-white"} touch-target nav-responsive min-w-[44px]`}
               onClick={toggleAudio}
               title={audioEnabled ? "Mute F1 Sound" : "Enable F1 Sound"}
               data-audio-toggle="true"
             >
-              <span className="text-base sm:text-sm">{audioEnabled ? "🔊" : "🔇"}</span>
-              <span className="hidden sm:inline ml-1">Audio</span>
+              <span className="text-sm xs:text-base">{audioEnabled ? "🔊" : "🔇"}</span>
+              <span className="hidden sm:inline ml-1 text-xs">Audio</span>
             </Button>
           </div>
         </div>
       </nav>
-      {/* Hero Section - Mobile Responsive */}
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden z-10 px-4 sm:px-6 lg:px-8">
+      {/* Hero Section - Enterprise Mobile-First Design */}
+      <section className="min-h-screen-mobile flex items-center justify-center relative overflow-hidden z-10 hero-responsive safe-area-top safe-area-bottom">
         {/* Professional hero animated elements */}
         <motion.div
           style={{ y: y1, scale: scale1 }}
@@ -806,12 +806,12 @@ export default function Home() {
               Uncover the hidden signals: tone, sentiment, UX patterns, and content depth.
             </motion.p>
             
-            <motion.div variants={fadeInUp} className="glassmorphism p-4 sm:p-6 lg:p-8 rounded-2xl max-w-lg mx-auto mb-8">
-              <h3 className="font-playfair text-responsive-xl font-semibold mb-4 text-white">Join the Elite Waitlist</h3>
-              <p className="text-white/70 mb-6 text-responsive-sm">Limited access. Strategic advantage.</p>
+            <motion.div variants={fadeInUp} className="glassmorphism card-responsive max-w-sm xs:max-w-md sm:max-w-lg mx-auto mb-6 sm:mb-8">
+              <h3 className="font-playfair text-responsive-xl font-semibold mb-3 sm:mb-4 text-white">Join the Elite Waitlist</h3>
+              <p className="text-white/70 mb-4 sm:mb-6 text-responsive-sm">Limited access. Strategic advantage.</p>
               
               <Form {...heroForm}>
-                <form ref={heroFormRef} onSubmit={heroForm.handleSubmit(onSubmit)} className="space-y-4" id="hero-form">
+                <form ref={heroFormRef} onSubmit={heroForm.handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4" id="hero-form">
                   <FormField
                     control={heroForm.control}
                     name="email"
@@ -822,10 +822,10 @@ export default function Home() {
                             {...field}
                             type="email"
                             placeholder="Enter your professional email"
-                            className="w-full px-3 py-3 sm:px-4 sm:py-3 bg-black/30 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20 touch-target text-responsive-sm"
+                            className="w-full input-responsive prevent-zoom bg-black/30 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-crimson focus:ring-2 focus:ring-crimson/20 text-responsive-sm"
                           />
                         </FormControl>
-                        <FormMessage className="text-crimson" />
+                        <FormMessage className="text-crimson text-sm" />
                       </FormItem>
                     )}
                   />
@@ -834,7 +834,8 @@ export default function Home() {
                     disabled={waitlistMutation.isPending}
                     className={`w-full text-white btn-responsive rounded-lg font-semibold cta-hover touch-target ${heroCTA.config?.style || 'bg-crimson hover:bg-ruby'} ${heroCTA.config?.urgency ? 'animate-glow-pulse' : ''}`}
                   >
-                    {waitlistMutation.isPending ? "Processing..." : (heroCTA.config?.text || "Request Exclusive Access")}
+                    <span className="hidden xs:inline">{waitlistMutation.isPending ? "Processing..." : (heroCTA.config?.text || "Request Exclusive Access")}</span>
+                    <span className="xs:hidden">{waitlistMutation.isPending ? "Processing..." : "Join Waitlist"}</span>
                   </Button>
                 </form>
               </Form>
@@ -853,21 +854,28 @@ export default function Home() {
             
             <motion.div 
               variants={fadeInUp}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 text-center sm:text-left"
+              className="grid grid-responsive-3 gap-responsive text-center sm:text-left"
             >
-              <div className="flex items-center justify-center sm:justify-start">
-                <Users className="w-4 h-4 text-gold mr-2 flex-shrink-0" />
+              <div className="flex items-center justify-center sm:justify-start space-x-2">
+                <Users className="w-3 h-3 xs:w-4 xs:h-4 text-gold flex-shrink-0" />
                 <span className={`text-responsive-xs text-platinum/60 ${isConnected ? "animate-pulse" : ""}`}>
-                  {currentCount}+ Strategic Partners
+                  <span className="hidden xs:inline">{currentCount}+ Strategic Partners</span>
+                  <span className="xs:hidden">{currentCount}+ Partners</span>
                 </span>
               </div>
-              <div className="flex items-center justify-center sm:justify-start">
-                <Star className="w-4 h-4 text-gold mr-2 flex-shrink-0" />
-                <span className="text-responsive-xs text-platinum/60">Invitation Only</span>
+              <div className="flex items-center justify-center sm:justify-start space-x-2">
+                <Star className="w-3 h-3 xs:w-4 xs:h-4 text-gold flex-shrink-0" />
+                <span className="text-responsive-xs text-platinum/60">
+                  <span className="hidden xs:inline">Invitation Only</span>
+                  <span className="xs:hidden">Exclusive</span>
+                </span>
               </div>
-              <div className="flex items-center justify-center sm:justify-start">
-                <Timer className="w-4 h-4 text-gold mr-2 flex-shrink-0" />
-                <span className="text-responsive-xs text-platinum/60">30-Day Risk Free</span>
+              <div className="flex items-center justify-center sm:justify-start space-x-2">
+                <Timer className="w-3 h-3 xs:w-4 xs:h-4 text-gold flex-shrink-0" />
+                <span className="text-responsive-xs text-platinum/60">
+                  <span className="hidden xs:inline">30-Day Risk Free</span>
+                  <span className="xs:hidden">Risk Free</span>
+                </span>
               </div>
             </motion.div>
           </motion.div>
@@ -1109,21 +1117,24 @@ export default function Home() {
             whileInView="animate"
             viewport={{ once: true }}
             variants={staggerContainer}
-            className="grid md:grid-cols-3 gap-8"
+            className="grid grid-responsive-3 gap-responsive"
           >
             <motion.div variants={fadeInUp}>
-              <Card className="glassmorphism p-8 rounded-2xl feature-card h-full">
+              <Card className="glassmorphism card-responsive rounded-2xl feature-card h-full">
                 <CardContent className="p-0">
-                  <div className="w-16 h-16 bg-crimson/20 rounded-lg flex items-center justify-center mb-6">
-                    <Building className="text-crimson text-2xl" />
+                  <div className="w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 bg-crimson/20 rounded-lg flex items-center justify-center mb-4 sm:mb-6 mx-auto sm:mx-0">
+                    <Building className="text-crimson text-lg xs:text-xl sm:text-2xl" />
                   </div>
-                  <h3 className="font-playfair text-2xl font-semibold mb-4 text-[#e7b008] text-center">Enterprise SEO Leads</h3>
-                  <p className="mb-6 text-[#e5e7eb]">
+                  <h3 className="font-playfair text-responsive-xl font-semibold mb-3 sm:mb-4 text-[#e7b008] text-center">
+                    <span className="hidden xs:inline">Enterprise SEO Leads</span>
+                    <span className="xs:hidden">SEO Leaders</span>
+                  </h3>
+                  <p className="mb-4 sm:mb-6 text-[#e5e7eb] text-responsive-sm leading-relaxed">
                     "Instead of guessing why competitors rank, I can reverse-engineer their exact content strategy—tone, depth, UX patterns—and build superior alternatives."
                   </p>
-                  <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center justify-between text-xs sm:text-sm">
                     <span className="text-crimson font-medium">Strategic Advantage</span>
-                    <ChevronRight className="w-4 h-4 text-gold" />
+                    <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-gold" />
                   </div>
                 </CardContent>
               </Card>
@@ -1190,7 +1201,7 @@ export default function Home() {
             whileInView="animate"
             viewport={{ once: true }}
             variants={staggerContainer}
-            className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto"
+            className="grid grid-responsive-3 gap-responsive max-w-6xl mx-auto"
           >
             <motion.div variants={fadeInUp}>
               <Card className="glassmorphism p-8 rounded-2xl feature-card h-full">
@@ -1415,23 +1426,35 @@ export default function Home() {
           {/* Trust Indicators */}
           <motion.div
             variants={fadeInUp}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60"
+            className="grid grid-responsive-4 gap-responsive items-center opacity-60"
           >
             <div className="text-center">
-              <div className="text-3xl font-bold text-crimson mb-2">250+</div>
-              <div className="text-sm text-platinum/60">Strategic Partners</div>
+              <div className="text-responsive-xl font-bold text-crimson mb-1 sm:mb-2">250+</div>
+              <div className="text-responsive-xs text-platinum/60">
+                <span className="hidden xs:inline">Strategic Partners</span>
+                <span className="xs:hidden">Partners</span>
+              </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-gold mb-2">40%</div>
-              <div className="text-sm text-platinum/60">Avg. Traffic Increase</div>
+              <div className="text-responsive-xl font-bold text-gold mb-1 sm:mb-2">40%</div>
+              <div className="text-responsive-xs text-platinum/60">
+                <span className="hidden xs:inline">Avg. Traffic Increase</span>
+                <span className="xs:hidden">Traffic +</span>
+              </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-crimson mb-2">92%</div>
-              <div className="text-sm text-platinum/60">Client Retention Rate</div>
+              <div className="text-responsive-xl font-bold text-crimson mb-1 sm:mb-2">92%</div>
+              <div className="text-responsive-xs text-platinum/60">
+                <span className="hidden xs:inline">Client Retention Rate</span>
+                <span className="xs:hidden">Retention</span>
+              </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-gold mb-2">$2.4M</div>
-              <div className="text-sm text-platinum/60">Revenue Impact</div>
+              <div className="text-responsive-xl font-bold text-gold mb-1 sm:mb-2">$2.4M</div>
+              <div className="text-responsive-xs text-platinum/60">
+                <span className="hidden xs:inline">Revenue Impact</span>
+                <span className="xs:hidden">Revenue</span>
+              </div>
             </div>
           </motion.div>
         </div>
