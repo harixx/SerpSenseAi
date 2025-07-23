@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { motion } from "framer-motion";
 import { F1AudioEngine } from "@/utils/f1Audio";
+import { useOptimizedScroll, useIntersectionObserver } from "@/hooks/use-optimized-scroll";
 import { logger } from "@/utils/logger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -55,7 +56,7 @@ const staggerContainer = {
 export default function Home() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { scrollY } = useScroll();
+  const { scrollY, getTransform } = useOptimizedScroll();
   const audioRef = useRef<HTMLAudioElement>(null);
   const f1AudioEngine = useRef<F1AudioEngine | null>(null);
 
@@ -105,26 +106,30 @@ export default function Home() {
   const [usingSyntheticAudio, setUsingSyntheticAudio] = useState(false);
   const [userMuted, setUserMuted] = useState(false); // Track if user manually muted
   
-  // Parallax transforms for different scroll speeds
-  const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
-  const y2 = useTransform(scrollY, [0, 1000], [0, -150]);
-  const y3 = useTransform(scrollY, [0, 1000], [0, 100]);
-  const y4 = useTransform(scrollY, [0, 1000], [0, -250]);
-  const rotate1 = useTransform(scrollY, [0, 1000], [0, 360]);
-  const rotate2 = useTransform(scrollY, [0, 1000], [0, -180]);
-  const scale1 = useTransform(scrollY, [0, 500], [1, 1.2]);
-  const opacity1 = useTransform(scrollY, [0, 300], [0.1, 0.3]);
-  const opacity2 = useTransform(scrollY, [200, 800], [0.1, 0.4]);
+  // Performance-optimized parallax transforms with memoization
+  const parallaxTransforms = useMemo(() => ({
+    y1: getTransform([0, 1000], [0, 200]),
+    y2: getTransform([0, 1000], [0, -150]),
+    y3: getTransform([0, 1000], [0, 100]),
+    y4: getTransform([0, 1000], [0, -250]),
+    rotate1: getTransform([0, 1000], [0, 360], 'rotate'),
+    rotate2: getTransform([0, 1000], [0, -180], 'rotate'),
+    scale1: getTransform([0, 500], [1, 1.2], 'scale'),
+    opacity1: getTransform([0, 300], [0.1, 0.3], 'opacity'),
+    opacity2: getTransform([200, 800], [0.1, 0.4], 'opacity'),
+  }), [getTransform]);
 
   // Real-time WebSocket connection for instant updates
   const { isConnected, lastMessage, connectionError } = useWebSocket();
   const [realtimeCount, setRealtimeCount] = useState<number>(0);
   
-  // Fallback query for initial load and when WebSocket is disconnected
+  // Optimized query with longer intervals to reduce server load
   const { data: waitlistCount } = useQuery<{ count: number }>({
     queryKey: ["/api/waitlist/count"],
-    refetchInterval: isConnected ? false : 30000, // Disable polling when WebSocket is connected
+    refetchInterval: isConnected ? false : 60000, // Increased to 60s when WebSocket is disconnected
     enabled: !isConnected, // Only fetch when WebSocket is not connected
+    staleTime: 30000, // Consider data fresh for 30s
+    gcTime: 300000, // Keep in cache for 5 minutes
   });
 
   // Handle real-time WebSocket messages
@@ -664,48 +669,47 @@ export default function Home() {
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Elegant floating shapes with professional colors */}
         <motion.div
-          style={{ y: y1, rotate: rotate1, scale: scale1, opacity: opacity1 }}
-          className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-crimson/10 to-white/5 rounded-full blur-3xl"
+          style={{ transform: `${parallaxTransforms.y1} ${parallaxTransforms.rotate1} ${parallaxTransforms.scale1}`, opacity: parallaxTransforms.opacity1 }}
+          className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-crimson/10 to-white/5 rounded-full blur-3xl gpu-accelerated"
         />
         <motion.div
-          style={{ y: y2, rotate: rotate2, opacity: opacity2 }}
-          className="absolute top-1/4 right-10 w-80 h-80 bg-gradient-to-tl from-white/8 to-crimson/6 rounded-full blur-3xl"
+          style={{ transform: `${parallaxTransforms.y2} ${parallaxTransforms.rotate2}`, opacity: parallaxTransforms.opacity2 }}
+          className="absolute top-1/4 right-10 w-80 h-80 bg-gradient-to-tl from-white/8 to-crimson/6 rounded-full blur-3xl gpu-accelerated"
         />
         <motion.div
-          style={{ y: y3, opacity: opacity1 }}
-          className="absolute bottom-1/3 left-1/4 w-64 h-64 bg-gradient-to-tr from-crimson/8 to-white/4 rounded-full blur-2xl"
+          style={{ transform: parallaxTransforms.y3, opacity: parallaxTransforms.opacity1 }}
+          className="absolute bottom-1/3 left-1/4 w-64 h-64 bg-gradient-to-tr from-crimson/8 to-white/4 rounded-full blur-2xl gpu-accelerated"
         />
         <motion.div
-          style={{ y: y4, rotate: rotate1, opacity: opacity2 }}
-          className="absolute bottom-10 right-1/4 w-72 h-72 bg-gradient-to-bl from-white/6 to-crimson/4 rounded-full blur-3xl"
+          style={{ transform: `${parallaxTransforms.y4} ${parallaxTransforms.rotate1}`, opacity: parallaxTransforms.opacity2 }}
+          className="absolute bottom-10 right-1/4 w-72 h-72 bg-gradient-to-bl from-white/6 to-crimson/4 rounded-full blur-3xl gpu-accelerated"
         />
         
         {/* Refined geometric elements */}
         <motion.div
-          style={{ y: y1, rotate: rotate2 }}
-          className="absolute top-1/2 left-1/2 w-32 h-32 border border-white/10 rotate-45 opacity-15 animate-float-slow"
+          style={{ transform: `${parallaxTransforms.y1} ${parallaxTransforms.rotate2}` }}
+          className="absolute top-1/2 left-1/2 w-32 h-32 border border-white/10 rotate-45 opacity-15 animate-float-slow gpu-accelerated"
         />
         <motion.div
-          style={{ y: y3, rotate: rotate1 }}
-          className="absolute top-1/3 right-1/3 w-24 h-24 border border-crimson/20 rounded-full opacity-20 animate-float-medium"
+          style={{ transform: `${parallaxTransforms.y3} ${parallaxTransforms.rotate1}` }}
+          className="absolute top-1/3 right-1/3 w-24 h-24 border border-crimson/20 rounded-full opacity-20 animate-float-medium gpu-accelerated"
         />
         <motion.div
-          style={{ y: y2, rotate: rotate2 }}
-          className="absolute bottom-1/2 left-1/3 w-16 h-16 bg-white/10 rotate-45 opacity-15 animate-float-fast"
+          style={{ transform: `${parallaxTransforms.y2} ${parallaxTransforms.rotate2}` }}
+          className="absolute bottom-1/2 left-1/3 w-16 h-16 bg-white/10 rotate-45 opacity-15 animate-float-fast gpu-accelerated"
         />
         
-        {/* Floating particles */}
+        {/* Performance-optimized floating particles */}
         {[...Array(12)].map((_, i) => {
-          const particleY = useTransform(scrollY, [0, 1000], [0, (i % 3 + 1) * 100]);
-          const particleX = useTransform(scrollY, [0, 1000], [0, (i % 2 === 0 ? 50 : -50)]);
-          const particleOpacity = useTransform(scrollY, [0, 500], [0.2, 0.6]);
+          const particleY = getTransform([0, 1000], [0, (i % 3 + 1) * 100]);
+          const particleX = getTransform([0, 1000], [0, (i % 2 === 0 ? 50 : -50)]);
+          const particleOpacity = getTransform([0, 500], [0.2, 0.6], 'opacity');
           
           return (
             <motion.div
               key={i}
               style={{
-                y: particleY,
-                x: particleX,
+                transform: `${particleY} ${particleX}`,
                 opacity: particleOpacity,
                 left: `${(i * 8.33) % 100}%`,
                 top: `${(i * 12) % 100}%`,
@@ -758,8 +762,8 @@ export default function Home() {
       <section className="min-h-screen-mobile flex items-center justify-center relative overflow-hidden z-10 hero-responsive safe-area-top safe-area-bottom">
         {/* Professional hero animated elements */}
         <motion.div
-          style={{ y: y1, scale: scale1 }}
-          className="absolute top-20 left-20 w-72 h-72 bg-white/5 rounded-full blur-3xl"
+          style={{ transform: `${parallaxTransforms.y1} ${parallaxTransforms.scale1}` }}
+          className="absolute top-20 left-20 w-72 h-72 bg-white/5 rounded-full blur-3xl gpu-accelerated"
           animate={{
             scale: [1, 1.1, 1],
             opacity: [0.05, 0.1, 0.05]
@@ -771,8 +775,8 @@ export default function Home() {
           }}
         />
         <motion.div
-          style={{ y: y2, rotate: rotate1 }}
-          className="absolute bottom-20 right-20 w-96 h-96 bg-crimson/8 rounded-full blur-3xl"
+          style={{ transform: `${parallaxTransforms.y2} ${parallaxTransforms.rotate1}` }}
+          className="absolute bottom-20 right-20 w-96 h-96 bg-crimson/8 rounded-full blur-3xl gpu-accelerated"
           animate={{
             scale: [1, 1.15, 1],
             opacity: [0.05, 0.12, 0.05]
@@ -893,12 +897,12 @@ export default function Home() {
       <section className="py-12 sm:py-16 lg:py-20 bg-obsidian/50 relative z-10 overflow-hidden">
         {/* Section-specific animated background */}
         <motion.div
-          style={{ y: y3, opacity: opacity1 }}
-          className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-gold/10 to-crimson/5 rounded-full blur-3xl"
+          style={{ transform: parallaxTransforms.y3, opacity: parallaxTransforms.opacity1 }}
+          className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-gold/10 to-crimson/5 rounded-full blur-3xl gpu-accelerated"
         />
         <motion.div
-          style={{ y: y4, rotate: rotate2 }}
-          className="absolute -bottom-32 -right-32 w-80 h-80 bg-gradient-to-tl from-ruby/15 to-gold/10 rounded-full blur-2xl"
+          style={{ transform: `${parallaxTransforms.y4} ${parallaxTransforms.rotate2}` }}
+          className="absolute -bottom-32 -right-32 w-80 h-80 bg-gradient-to-tl from-ruby/15 to-gold/10 rounded-full blur-2xl gpu-accelerated"
         />
         <div className="responsive-container">
           <motion.div
@@ -1096,12 +1100,12 @@ export default function Home() {
       <section className="py-20 bg-charcoal relative z-10 overflow-hidden">
         {/* Use case section animated elements */}
         <motion.div
-          style={{ y: y1, scale: scale1, opacity: opacity2 }}
-          className="absolute top-1/4 left-10 w-64 h-64 bg-gradient-to-r from-crimson/10 to-transparent rounded-full blur-2xl"
+          style={{ transform: `${parallaxTransforms.y1} ${parallaxTransforms.scale1}`, opacity: parallaxTransforms.opacity2 }}
+          className="absolute top-1/4 left-10 w-64 h-64 bg-gradient-to-r from-crimson/10 to-transparent rounded-full blur-2xl gpu-accelerated"
         />
         <motion.div
-          style={{ y: y2, rotate: rotate1 }}
-          className="absolute bottom-1/3 right-10 w-72 h-72 bg-gradient-to-l from-gold/10 to-transparent rounded-full blur-3xl"
+          style={{ transform: `${parallaxTransforms.y2} ${parallaxTransforms.rotate1}` }}
+          className="absolute bottom-1/3 right-10 w-72 h-72 bg-gradient-to-l from-gold/10 to-transparent rounded-full blur-3xl gpu-accelerated"
         />
         <div className="container mx-auto px-6">
           <motion.div
@@ -1320,8 +1324,8 @@ export default function Home() {
       {/* Enhanced Social Proof Section */}
       <section className="py-20 bg-gradient-to-br from-obsidian/80 via-black/90 to-obsidian/80 relative z-10 overflow-hidden">
         <motion.div
-          style={{ y: y3, opacity: opacity1 }}
-          className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-gold/8 to-crimson/5 rounded-full blur-3xl"
+          style={{ transform: parallaxTransforms.y3, opacity: parallaxTransforms.opacity1 }}
+          className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-gold/8 to-crimson/5 rounded-full blur-3xl gpu-accelerated"
         />
         
         <div className="container mx-auto px-6">
@@ -1470,8 +1474,8 @@ export default function Home() {
       {/* ROI Calculator Section */}
       <section className="py-20 bg-gradient-to-br from-black via-obsidian/90 to-black relative z-10 overflow-hidden">
         <motion.div
-          style={{ y: y4, rotate: rotate2 }}
-          className="absolute -bottom-32 -left-32 w-96 h-96 bg-gradient-to-tl from-crimson/8 to-gold/5 rounded-full blur-3xl"
+          style={{ transform: `${parallaxTransforms.y4} ${parallaxTransforms.rotate2}` }}
+          className="absolute -bottom-32 -left-32 w-96 h-96 bg-gradient-to-tl from-crimson/8 to-gold/5 rounded-full blur-3xl gpu-accelerated"
         />
         
         <div className="responsive-container">
@@ -1619,8 +1623,8 @@ export default function Home() {
       {/* Case Studies Section - Mobile Responsive */}
       <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-obsidian via-black/95 to-obsidian relative z-10 overflow-hidden">
         <motion.div
-          style={{ y: y1, scale: scale1 }}
-          className="absolute -top-32 right-32 w-96 h-96 bg-gradient-to-br from-crimson/8 to-gold/5 rounded-full blur-3xl"
+          style={{ transform: `${parallaxTransforms.y1} ${parallaxTransforms.scale1}` }}
+          className="absolute -top-32 right-32 w-96 h-96 bg-gradient-to-br from-crimson/8 to-gold/5 rounded-full blur-3xl gpu-accelerated"
         />
         
         <div className="responsive-container">
@@ -1836,12 +1840,12 @@ export default function Home() {
       <section className="py-12 sm:py-16 lg:py-20 bg-charcoal relative overflow-hidden">
         {/* Animated background elements */}
         <motion.div
-          style={{ y: y1 }}
-          className="absolute top-0 left-1/4 w-96 h-96 bg-crimson rounded-full blur-3xl opacity-5"
+          style={{ transform: parallaxTransforms.y1 }}
+          className="absolute top-0 left-1/4 w-96 h-96 bg-crimson rounded-full blur-3xl opacity-5 gpu-accelerated"
         />
         <motion.div
-          style={{ y: y2 }}
-          className="absolute bottom-0 right-1/4 w-72 h-72 bg-ruby rounded-full blur-3xl opacity-5"
+          style={{ transform: parallaxTransforms.y2 }}
+          className="absolute bottom-0 right-1/4 w-72 h-72 bg-ruby rounded-full blur-3xl opacity-5 gpu-accelerated"
         />
         
         <div className="responsive-container text-center relative z-10">

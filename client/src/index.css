@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+/* Performance-optimized font loading with preconnect and font-display */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap&font-display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -73,19 +74,23 @@
     height: 200vh; /* Creates vertical scroll for effect */
     background-color: #0a0a0a; /* Deep black base */
     overflow-x: hidden;
-    /* Optimize for mobile performance */
+    /* Performance-first font rendering */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
+    text-rendering: optimizeSpeed; /* Changed from optimizeLegibility for performance */
     /* Enhanced mobile optimization */
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     touch-action: manipulation;
+    /* GPU acceleration for smooth scrolling */
     scroll-behavior: smooth;
+    will-change: scroll-position;
+    transform: translateZ(0); /* Force GPU acceleration */
   }
 
   body {
     height: 100%;
+    /* GPU-accelerated gradient with will-change */
     background: linear-gradient(
       180deg,
       rgba(10, 10, 10, 0.95) 0%,
@@ -95,13 +100,18 @@
     @apply font-sans antialiased;
     font-family: 'Inter', sans-serif;
     color: #ffffff;
-    /* Enhanced mobile performance */
+    /* Performance-optimized scrolling */
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
     /* Prevent horizontal scroll on mobile */
     overflow-x: hidden;
     width: 100%;
     max-width: 100vw;
+    /* GPU acceleration for background */
+    will-change: auto;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
   
   .font-playfair {
@@ -110,6 +120,35 @@
   
   .font-inter {
     font-family: 'Inter', sans-serif;
+  }
+}
+
+/* Performance optimization utilities */
+@layer utilities {
+  /* GPU acceleration classes */
+  .gpu-accelerated {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Optimized animations */
+  .animate-optimized {
+    animation-fill-mode: both;
+    animation-play-state: running;
+  }
+  
+  /* Prevent layout thrashing */
+  .no-layout-shift {
+    contain: layout style paint;
+  }
+  
+  /* High-performance scrolling */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
   }
 }
 

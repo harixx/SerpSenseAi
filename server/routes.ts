@@ -84,9 +84,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Optimized waitlist count endpoint with caching headers
   app.get("/api/waitlist/count", async (req, res) => {
     try {
       const entries = await storage.getWaitlistEntries();
+      
+      // Set cache headers for performance optimization (30 second cache)
+      res.set({
+        'Cache-Control': 'public, max-age=30, stale-while-revalidate=60',
+        'ETag': `"${entries.length}"`,
+      });
+      
       res.json({ count: entries.length });
     } catch (error) {
       res.status(500).json({ message: "Failed to get waitlist count" });

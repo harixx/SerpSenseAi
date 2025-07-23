@@ -47,11 +47,17 @@ export const queryClient = new QueryClient({
       queryFn: getQueryFn({ on401: "throw" }),
       refetchInterval: false,
       refetchOnWindowFocus: false,
-      staleTime: Infinity,
-      retry: false,
+      // Performance optimization: Balance between stale data and fresh data
+      staleTime: 30000, // 30 seconds for general queries
+      gcTime: 300000, // 5 minutes cache time
+      retry: 1, // Allow one retry for network resilience
+      // Batch multiple updates to reduce DOM thrashing
+      notifyOnChangeProps: 'all',
     },
     mutations: {
-      retry: false,
+      retry: 1, // Allow one retry for mutations
+      // Network mode optimization
+      networkMode: 'online',
     },
   },
 });
