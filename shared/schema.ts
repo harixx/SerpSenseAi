@@ -158,3 +158,19 @@ export type InsertPageEvent = z.infer<typeof insertPageEventSchema>;
 export type LeadAction = typeof leadActions.$inferSelect;
 export type InsertLeadAction = z.infer<typeof insertLeadActionSchema>;
 export type LeadScore = typeof leadScores.$inferSelect;
+
+// A/B Testing types
+export const insertABTestSchema = createInsertSchema(abTests).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertABTestAssignmentSchema = createInsertSchema(abTestAssignments).omit({
+  id: true,
+  assignedAt: true,
+});
+
+export type ABTest = typeof abTests.$inferSelect;
+export type InsertABTest = z.infer<typeof insertABTestSchema>;
+export type ABTestAssignment = typeof abTestAssignments.$inferSelect;
+export type InsertABTestAssignment = z.infer<typeof insertABTestAssignmentSchema>;

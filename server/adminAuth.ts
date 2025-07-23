@@ -7,6 +7,7 @@ import { storage } from "./storage";
 import { AdminUser, loginAdminSchema } from "@shared/schema";
 import { fromZodError } from "zod-validation-error";
 import connectPg from "connect-pg-simple";
+import MemoryStore from "memorystore";
 
 declare global {
   namespace Express {
@@ -27,7 +28,7 @@ export function setupAdminAuth(app: Express) {
         ttl: sessionTtl,
         tableName: "admin_sessions",
       })
-    : require('memorystore')(session)({
+    : new (MemoryStore(session))({
         checkPeriod: 86400000, // prune expired entries every 24h
       });
 
