@@ -4,6 +4,22 @@ import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 
+// Global path safety wrapper to prevent undefined path arguments
+const originalResolve = path.resolve;
+path.resolve = (...paths: string[]) => {
+  // Filter out any undefined or null values and convert to strings
+  const safePaths = paths
+    .filter(p => p != null)
+    .map(p => String(p || ''));
+  
+  if (safePaths.length === 0) {
+    console.warn("⚠️ path.resolve called with no valid paths, using current directory");
+    return originalResolve(process.cwd() || "/app");
+  }
+  
+  return originalResolve(...safePaths);
+};
+
 // ES module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -100,8 +116,18 @@ if (process.env.NODE_ENV === "production") {
     try {
       // Multiple fallback strategies for different deployment environments
       const workingDirectory = process.cwd() || process.env.PWD || "/app" || __dirname;
-      const staticPath = path.resolve(workingDirectory, "dist", "public");
+      
+      // Ensure all path variables are strings and never undefined
+      const safeWorkingDir = String(workingDirectory || "/app");
+      const staticPath = path.resolve(safeWorkingDir, "dist", "public");
       const indexPath = path.resolve(staticPath, "index.html");
+      
+      // Validation logging to catch any undefined variables
+      console.log("🔍 Path Validation:");
+      console.log("  - workingDirectory type:", typeof workingDirectory, "value:", workingDirectory);
+      console.log("  - safeWorkingDir type:", typeof safeWorkingDir, "value:", safeWorkingDir);
+      console.log("  - staticPath type:", typeof staticPath, "value:", staticPath);
+      console.log("  - indexPath type:", typeof indexPath, "value:", indexPath);
       
       console.log("🔍 Production Path Resolution:");
       console.log("  - Working Directory:", workingDirectory);
@@ -111,10 +137,16 @@ if (process.env.NODE_ENV === "production") {
       return { staticPath, indexPath };
     } catch (error) {
       console.error("❌ Path resolution failed:", error);
-      // Ultimate fallback for extreme edge cases
-      const fallbackStatic = "/app/dist/public";
-      const fallbackIndex = "/app/dist/public/index.html";
+      // Ultimate fallback for extreme edge cases - ensure strings
+      const fallbackStatic = String("/app/dist/public");
+      const fallbackIndex = String("/app/dist/public/index.html");
       console.log("🆘 Using fallback paths:", { fallbackStatic, fallbackIndex });
+      
+      // Double-check these are valid strings
+      if (typeof fallbackStatic !== "string" || typeof fallbackIndex !== "string") {
+        throw new Error("Critical: Fallback paths are not strings");
+      }
+      
       return { staticPath: fallbackStatic, indexPath: fallbackIndex };
     }
   };

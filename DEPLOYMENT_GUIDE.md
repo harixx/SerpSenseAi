@@ -7,13 +7,18 @@ This guide documents the permanent solution implemented to prevent `ERR_INVALID_
 ### Problem Analysis
 The original issue occurred because:
 1. `import.meta.dirname` was being bundled into production code
-2. `process.cwd()` could return `undefined` in some deployment environments
+2. `process.cwd()` could return `undefined` in some deployment environments  
 3. Vite configuration was being included in the production bundle unnecessarily
+4. Undefined environment variables were being passed to `path.resolve()` causing crashes
+
+**Root Cause**: `path.resolve(__dirname, undefined)` crashes with ERR_INVALID_ARG_TYPE
 
 ### Solution Implementation
 
 #### 1. Bulletproof Path Resolution
 - Multiple fallback strategies for different deployment environments
+- Global path.resolve() wrapper that filters undefined values
+- String conversion and validation for all path variables
 - Comprehensive error handling with detailed logging
 - Ultimate fallback paths for extreme edge cases
 
