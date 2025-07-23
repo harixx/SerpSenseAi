@@ -946,7 +946,7 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              <Card className="border text-card-foreground shadow-sm glassmorphism p-8 rounded-2xl relative overflow-hidden feature-card bg-custom-red">
+              <Card className="border text-card-foreground shadow-sm glassmorphism p-8 rounded-2xl relative overflow-hidden feature-card bg-custom-red" style={{ backgroundColor: 'rgba(191, 0, 0, 0.4)' }}>
                 <div className="absolute top-0 right-0 w-32 h-32 bg-crimson/20 rounded-full blur-2xl" />
                 
                 <CardContent className="p-0 space-y-4">
