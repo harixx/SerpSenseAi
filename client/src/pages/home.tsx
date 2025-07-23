@@ -101,8 +101,9 @@ export default function Home() {
   };
   
   const roiResults = calculateROI(monthlyTraffic, seoSpend);
-  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [audioEnabled, setAudioEnabled] = useState(true); // Start with audio ON by default
   const [usingSyntheticAudio, setUsingSyntheticAudio] = useState(false);
+  const [userMuted, setUserMuted] = useState(false); // Track if user manually muted
   
   // Parallax transforms for different scroll speeds
   const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
@@ -275,14 +276,14 @@ export default function Home() {
     };
   }, []);
 
-  // Start audio on user interaction (only if not manually disabled)
+  // Auto-start audio on first user interaction (only if user hasn't manually muted)
   useEffect(() => {
     const startAudioOnInteraction = (e: Event) => {
-      // Don't auto-start if user has manually turned off audio
       const target = e.target as HTMLElement;
       const isAudioToggle = target && typeof target.closest === 'function' ? target.closest('[data-audio-toggle]') : false;
       
-      if (!audioEnabled && !isAudioToggle) {
+      // Only auto-start if audio is currently enabled and user hasn't manually muted
+      if (audioEnabled && !userMuted && !isAudioToggle) {
         logger.log('User interaction detected - starting F1 audio!');
         
         // Try real audio first
@@ -291,30 +292,38 @@ export default function Home() {
           audioRef.current.volume = 0.6;
           audioRef.current.currentTime = 0;
           audioRef.current.play().then(() => {
-            setAudioEnabled(true);
             setUsingSyntheticAudio(false);
             logger.log('✅ Real F1 audio started on interaction!');
+            // Remove listeners after successful start
+            document.removeEventListener('click', startAudioOnInteraction);
+            document.removeEventListener('touchstart', startAudioOnInteraction);
+            document.removeEventListener('scroll', startAudioOnInteraction);
+            document.removeEventListener('keydown', startAudioOnInteraction);
           }).catch((e) => {
             logger.log('❌ Real audio failed on interaction:', e.message);
             // Fallback to synthetic
             if (f1AudioEngine.current) {
               f1AudioEngine.current.setVolume(0.3);
               f1AudioEngine.current.start();
-              setAudioEnabled(true);
               setUsingSyntheticAudio(true);
               logger.log('✅ Synthetic F1 audio started on interaction!');
+              // Remove listeners after successful start
+              document.removeEventListener('click', startAudioOnInteraction);
+              document.removeEventListener('touchstart', startAudioOnInteraction);
+              document.removeEventListener('scroll', startAudioOnInteraction);
+              document.removeEventListener('keydown', startAudioOnInteraction);
             }
           });
         }
       }
     };
 
-    // Only auto-start on first interaction, not after user manually toggles
-    if (!audioEnabled) {
-      document.addEventListener('click', startAudioOnInteraction);
-      document.addEventListener('touchstart', startAudioOnInteraction);
-      document.addEventListener('scroll', startAudioOnInteraction);
-      document.addEventListener('keydown', startAudioOnInteraction);
+    // Only add listeners if audio should be enabled and user hasn't manually muted
+    if (audioEnabled && !userMuted) {
+      document.addEventListener('click', startAudioOnInteraction, { once: false });
+      document.addEventListener('touchstart', startAudioOnInteraction, { once: false });
+      document.addEventListener('scroll', startAudioOnInteraction, { once: false });
+      document.addEventListener('keydown', startAudioOnInteraction, { once: false });
     }
 
     return () => {
@@ -323,11 +332,11 @@ export default function Home() {
       document.removeEventListener('scroll', startAudioOnInteraction);
       document.removeEventListener('keydown', startAudioOnInteraction);
     };
-  }, [audioEnabled]);
+  }, [audioEnabled, userMuted]);
 
   const toggleAudio = () => {
     if (audioEnabled) {
-      // Stop F1 audio completely
+      // User manually muting - stop audio and mark as user muted
       if (usingSyntheticAudio && f1AudioEngine.current) {
         f1AudioEngine.current.stop();
       }
@@ -336,9 +345,13 @@ export default function Home() {
         audioRef.current.currentTime = 0;
       }
       setAudioEnabled(false);
+      setUserMuted(true); // Track that user manually muted
       setUsingSyntheticAudio(false);
-      logger.log('F1 audio stopped via toggle');
+      logger.log('F1 audio stopped via user toggle');
     } else {
+      // User manually unmuting - start audio and clear muted flag
+      setUserMuted(false); // Clear manual mute flag
+      
       // Start F1 audio - try real first, then synthetic
       if (audioRef.current) {
         audioRef.current.volume = 0.6;
@@ -349,7 +362,7 @@ export default function Home() {
           playPromise.then(() => {
             setAudioEnabled(true);
             setUsingSyntheticAudio(false);
-            logger.log('Real F1 audio started via toggle');
+            logger.log('Real F1 audio started via user toggle');
           }).catch((e) => {
             logger.log('Real audio failed via toggle, using synthetic:', e.message);
             // Fallback to synthetic
@@ -358,7 +371,7 @@ export default function Home() {
               f1AudioEngine.current.start();
               setAudioEnabled(true);
               setUsingSyntheticAudio(true);
-              logger.log('Synthetic F1 audio started via toggle');
+              logger.log('Synthetic F1 audio started via user toggle');
             }
           });
         }
@@ -369,7 +382,7 @@ export default function Home() {
           f1AudioEngine.current.start();
           setAudioEnabled(true);
           setUsingSyntheticAudio(true);
-          logger.log('Synthetic F1 audio started via toggle (no real audio)');
+          logger.log('Synthetic F1 audio started via user toggle (no real audio)');
         }
       }
     }
