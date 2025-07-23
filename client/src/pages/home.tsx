@@ -1697,7 +1697,7 @@ export default function Home() {
                 {/* Premium gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-crimson/5 via-transparent to-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 
-                <CardContent className="p-6 lg:p-8 relative z-10">
+                <CardContent className="p-6 lg:p-8 relative z-10 bg-[#bf000066]">
                   {/* Enhanced Company Header */}
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex items-center">
