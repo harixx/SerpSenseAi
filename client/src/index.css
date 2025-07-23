@@ -74,6 +74,11 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* Enhanced mobile optimization */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    touch-action: manipulation;
+    scroll-behavior: smooth;
   }
 
   body {
@@ -87,6 +92,13 @@
     @apply font-sans antialiased;
     font-family: 'Inter', sans-serif;
     color: #ffffff;
+    /* Enhanced mobile performance */
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
   }
   
   .font-playfair {
@@ -102,42 +114,92 @@
 @layer components {
   /* Mobile-first responsive containers */
   .responsive-container {
-    @apply w-full mx-auto px-4 sm:px-6 lg:px-8;
-    max-width: min(100vw - 2rem, 1400px);
+    @apply w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12;
+    max-width: min(100vw - 1rem, 1400px);
   }
   
   .responsive-grid {
-    @apply grid gap-4 sm:gap-6 lg:gap-8;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    @apply grid gap-3 sm:gap-4 md:gap-6 lg:gap-8;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   }
   
-  /* Typography scaling */
-  .text-responsive-xs { @apply text-xs sm:text-sm; }
-  .text-responsive-sm { @apply text-sm sm:text-base; }
-  .text-responsive-base { @apply text-base sm:text-lg; }
-  .text-responsive-lg { @apply text-lg sm:text-xl lg:text-2xl; }
-  .text-responsive-xl { @apply text-xl sm:text-2xl lg:text-3xl; }
-  .text-responsive-2xl { @apply text-2xl sm:text-3xl lg:text-4xl xl:text-5xl; }
-  .text-responsive-3xl { @apply text-3xl sm:text-4xl lg:text-5xl xl:text-6xl; }
+  /* Enhanced typography scaling for all devices */
+  .text-responsive-xs { @apply text-xs xs:text-sm sm:text-sm; }
+  .text-responsive-sm { @apply text-sm xs:text-base sm:text-base lg:text-lg; }
+  .text-responsive-base { @apply text-base xs:text-lg sm:text-lg lg:text-xl; }
+  .text-responsive-lg { @apply text-lg xs:text-xl sm:text-xl md:text-2xl lg:text-3xl; }
+  .text-responsive-xl { @apply text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl; }
+  .text-responsive-2xl { @apply text-2xl xs:text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl; }
+  .text-responsive-3xl { @apply text-3xl xs:text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl 3xl:text-9xl; }
   
-  /* Button responsive sizing */
+  /* Enhanced button responsive sizing with accessibility */
   .btn-responsive {
-    @apply px-4 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-4;
-    @apply text-sm sm:text-base lg:text-lg;
+    @apply px-3 py-2 xs:px-4 xs:py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-4;
+    @apply text-xs xs:text-sm sm:text-base lg:text-lg;
+    @apply min-h-[44px] touch-target;
+    @apply transition-all duration-200 ease-in-out;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500;
   }
   
-  /* Mobile-optimized touch targets */
+  /* Mobile-optimized touch targets with enhanced accessibility */
   .touch-target {
     @apply min-h-[44px] min-w-[44px];
+    @apply touch-manipulation;
   }
   
-  /* Spacing responsive */
-  .space-responsive-x { @apply space-x-2 sm:space-x-4 lg:space-x-6; }
-  .space-responsive-y { @apply space-y-4 sm:space-y-6 lg:space-y-8; }
+  /* Enhanced spacing responsive */
+  .space-responsive-x { @apply space-x-1 xs:space-x-2 sm:space-x-4 lg:space-x-6 xl:space-x-8; }
+  .space-responsive-y { @apply space-y-3 xs:space-y-4 sm:space-y-6 lg:space-y-8 xl:space-y-10; }
   
-  /* Mobile navigation safe areas */
-  .safe-area-top { padding-top: env(safe-area-inset-top); }
-  .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  /* Enhanced padding responsive */
+  .padding-responsive { @apply p-3 xs:p-4 sm:p-6 lg:p-8 xl:p-10; }
+  .padding-responsive-x { @apply px-3 xs:px-4 sm:px-6 lg:px-8 xl:px-10; }
+  .padding-responsive-y { @apply py-3 xs:py-4 sm:py-6 lg:py-8 xl:py-10; }
+  
+  /* Mobile navigation safe areas with iOS compatibility */
+  .safe-area-top { 
+    padding-top: max(env(safe-area-inset-top), 0.5rem); 
+  }
+  .safe-area-bottom { 
+    padding-bottom: max(env(safe-area-inset-bottom), 0.5rem); 
+  }
+  
+  /* Mobile-specific form enhancements */
+  .form-responsive {
+    @apply w-full max-w-none xs:max-w-sm sm:max-w-md lg:max-w-lg;
+  }
+  
+  .input-responsive {
+    @apply text-base; /* Prevents zoom on iOS */
+    @apply min-h-[44px] touch-target;
+    @apply px-3 py-2 xs:px-4 xs:py-3;
+  }
+  
+  /* Card responsive enhancements */
+  .card-responsive {
+    @apply p-4 xs:p-5 sm:p-6 lg:p-8;
+    @apply rounded-lg xs:rounded-xl;
+    @apply shadow-sm xs:shadow-md sm:shadow-lg;
+  }
+  
+  /* Hero section responsive adjustments */
+  .hero-responsive {
+    @apply pt-16 xs:pt-20 sm:pt-24 md:pt-28 lg:pt-32;
+    @apply pb-12 xs:pb-16 sm:pb-20 md:pb-24 lg:pb-28;
+  }
+  
+  /* Navigation responsive */
+  .nav-responsive {
+    @apply px-3 py-2 xs:px-4 xs:py-3 sm:px-6 sm:py-3;
+    @apply text-sm xs:text-base;
+  }
+  
+  /* Mobile-optimized images */
+  .img-responsive {
+    @apply w-full h-auto;
+    @apply object-cover object-center;
+    @apply rounded-lg xs:rounded-xl;
+  }
 }
 
 @layer utilities {
